@@ -64,6 +64,10 @@ a {
     body {
     font-size: 14px;
     }
+    th, td {
+        padding: 10px; /* Adjust padding for smaller screens */
+        font-size: 14px; /* Adjust font size for smaller screens */
+    }
 }
 
 /* Larger screens */
@@ -138,6 +142,13 @@ img {
     font-size: 1.0em;
     color: mediumvioletred;
 }
+/* Add this CSS for the wrapper */
+.table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Optional for smoother scrolling on iOS */
+}
+
+/* Keep your original table styles */
 th {
     padding: 15px;
     background-color: darkgrey;
@@ -156,6 +167,13 @@ tr:nth-child(odd) {
 tr:nth-child(even) {
     background-color: whitesmoke;
 }
+
+/* Responsive adjustments */
+table {
+    width: 100%;
+    border-collapse: collapse; /* Ensures there are no gaps between cells */
+}
+
 
 .breadcrumb {
     list-style: none;
