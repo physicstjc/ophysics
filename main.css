@@ -178,7 +178,7 @@ table {
 .breadcrumb {
     list-style: none;
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     padding: 8px 16px;
     margin: 0;
     background-color: #f8f9fa;
@@ -188,7 +188,7 @@ table {
 
 .breadcrumb li {
     margin-right: 10px;
-    white-space: nowrap;
+    white-space: wrap;
 }
 
 .breadcrumb li + li:before {
