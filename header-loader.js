@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // If there is more than one element, assume the last one is the file
     let file = pathArray.length > 1 ? pathArray.pop() : '';
-    let breadcrumbHTML = '<nav aria-label="breadcrumb"><ul class="breadcrumb"><li><a href="/">Home</a></li>';
+    let breadcrumbHTML = '<nav aria-label="breadcrumb"><ul class="breadcrumb">';
 
     let pathURL = "";
     pathArray.forEach(function(part, index) {
