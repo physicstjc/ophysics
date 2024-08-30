@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphs of Motion</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+        <style>
+        #quiz-container {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+        }
+        #plot-container {
+            display: flex;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #answer-container {
+            display: flex;
+            align-items: center;
+        }
+        #answer {
+            width: 80%;
+        }
+    </style>
+    </head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+
+        <h2>Graphs of Motion</h2>
+        
+        <img src="kinematics%20graphs.png" alt="Graphs of Motion in Kinematics" width=640px>
+        <p align="center"><i>The graphs of motion for an object released from rest in free fall.</i></p>
+        <h3>Velocity as gradient of displacement-time graph</h3>
+        <p>Since velocity is defined as the rate of change of displacement, its value can be obtained from the gradient of the tangent of a displacement-time graph.</p>
+
+        <h3>Acceleration as gradient of velocity-time graph</h3>
+        <p>In the same way, acceleration can be obtained from the gradient of the velocity-time graph.</p>
+
+        <h3>Displacement as area under velocity-time graph</h3>
+        <p>Conversely, the change in displacement can be obtained from the area under the velocity-time graph. The area referred to is that which is bounded by the line in the graph and the time axis, across the width of duration of change.</p>
+        
+        <p>If the area is found under the time-axis, the change in displacement is then given a negative sign and is associated with a decrease, as opposed to an increase, in displacement.</p>
+        
+        <h3>Velocity as area under acceleration-time graph</h3>
+        <p>In the same way, change in velocity is obtained from the area under the acceleration-time graph. </p>
+
+        <h3>Simulation</h3>
+        <p>The simulation below shows the variation in the displacement, velocity and acceleration of an object being projected upwards from the ground. The object begins with a velocity in the upward direction (taken as positive) and experiences a constant downward acceleration throughout until it returns to the original height.</p>
+        
+        <p>Observe how the graphs change. You can use the sliders to control the time as well as the initial velocity <i>u</i>.</p>
+        <iframe scrolling="no" title="Vertical Throw" src="https://www.geogebra.org/material/iframe/id/zvsydy9f/width/640/height/480/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width=100% height="460px" style="border:0px;"> </iframe>
+    
+        <h3>Checking for Understanding</h3>
+        
+        <table width="100%"><tr><td>
+        <div id="quiz-container">
+        <div id="plot-container"></div>
+        <p id="question"></p>
+        <div id="answer-container">
+            <input type="number" id="answer" placeholder="Your answer">
+            <span id="unit"></span>
+        </div>
+        <div class="button-container">
+            <button onclick="prevQuestion()">Previous</button>
+            <button id="check-button" onclick="checkAnswer()">Check Answer</button>
+            <button onclick="nextQuestion()">Next</button>
+        </div>
+        <p id="score"></p>
+        <div id="solution" style="display: none;">
+            <p>Solution:</p>
+            <p id="solution-text"></p>
+        </div>
+    </div>
+            </td></tr></table>
+        
+    <script>
+        const questions = [
+            {
+                graph: {
+                    x: [0, 2, 4, 6, 8, 10],
+                    y: [0, 10, 20, 30, 40, 50],
+                    title: 'Velocity vs Time for a Car Accelerating at a Constant Rate',
+                    xaxis: 'Time (s)',
+                    yaxis: 'Velocity (m/s)'
+                },
+                question: 'A car accelerates at a constant rate as shown in the graph. What is the change in displacement from t=0s to t=10s?',
+                correctAnswer: 250,
+                unit: 'm',
+                solution: `\\Delta x = \\frac{1}{2} \\times (0 + 50) \\times 10 = 250\\, m`
+            },
+            {
+                graph: {
+                    x: [0, 1, 2, 3, 4, 5],
+                    y: [0, 2, 4, 6, 8, 10],
+                    title: 'Velocity vs Time for a Runner',
+                    xaxis: 'Time (s)',
+                    yaxis: 'Velocity (m/s)'
+                },
+                question: 'A runner increases their velocity at a constant rate as shown in the graph. What is the change in displacement from t=0s to t=5s?',
+                correctAnswer: 25,
+                unit: 'm',
+                solution: `\\Delta x = \\frac{1}{2} \\times (0 + 10) \\times 5 = 25\\, m`
+            },
+            {
+                graph: {
+                    x: [0, 2, 4, 6, 8, 10],
+                    y: [0, 2, 4, 6, 8, 10],
+                    title: 'Displacement vs Time for a Train',
+                    xaxis: 'Time (s)',
+                    yaxis: 'Displacement (m)'
+                },
+                question: 'A train moves as shown in the graph. What is the average velocity from t=0s to t=10s?',
+                correctAnswer: 1,
+                unit: 'm/s',
+                solution: `v_{avg} = \\frac{\\Delta x}{\\Delta t} = \\frac{10 - 0}{10 - 0} = 1\\, m/s`
+            },
+            {
+                graph: {
+                    x: [0, 2, 4, 6, 8, 10],
+                    y: [10, 20, 30, 40, 50, 60],
+                    title: 'Velocity vs Time for a Bicycle',
+                    xaxis: 'Time (s)',
+                    yaxis: 'Velocity (m/s)'
+                },
+                question: 'A bicycle increases its velocity at a constant rate as shown in the graph. What is the change in displacement from t=0s to t=10s?',
+                correctAnswer: 350,
+                unit: 'm',
+                solution: `\\Delta x = \\frac{1}{2} \\times (10 + 60) \\times 10 = 350\\, m`
+            },
+            {
+                graph: {
+                    x: [0, 2, 4, 6, 8, 10],
+                    y: [0, 15, 30, 45, 45, 45],
+                    title: 'Velocity vs Time for a Motorbike',
+                    xaxis: 'Time (s)',
+                    yaxis: 'Velocity (m/s)'
+                },
+                question: 'A motorbike accelerates and then travels at a constant velocity as shown in the graph. What is the change in displacement from t=0s to t=10s?',
+                correctAnswer: 315,
+                unit: 'm',
+                solution: `\\Delta x = \\frac{1}{2} \\times (0 + 45) \\times 6 + 45 \\times 4 = 315\\, m`
+            },
+            {
+                graph: {
+                    x: [0, 2, 4, 6, 8, 10],
+                    y: [0, 10, 20, 30, 30, 30],
+                    title: 'Velocity vs Time for a Skateboard',
+                    xaxis: 'Time (s)',
+                    yaxis: 'Velocity (m/s)'
+                },
+                question: 'A skateboarder accelerates and then travels at a constant velocity as shown in the graph. What is the change in displacement from t=0s to t=10s?',
+                correctAnswer: 180,
+                unit: 'm',
+                solution: `\\Delta x = \\frac{1}{2} \\times (0 + 30) \\times 6 + 30 \\times 4 = 180\\, m`
+            },
+            {
+                graph: {
+                    x: [0, 2, 4, 6, 8, 10],
+                    y: [0, 5, 10, 15, 20, 25],
+                    title: 'Displacement vs Time for a Walker',
+                    xaxis: 'Time (s)',
+                    yaxis: 'Displacement (m)'
+                },
+                question: 'A walker moves as shown in the graph. What is the average velocity from t=0s to t=10s?',
+                correctAnswer: 2.5,
+                unit: 'm/s',
+                solution: `v_{avg} = \\frac{\\Delta x}{\\Delta t} = \\frac{25 - 0}{10 - 0} = 2.5\\, m/s`
+            },
+            {
+                graph: {
+                    x: [0, 2, 4, 6, 8, 10],
+                    y: [0, 10, 20, 30, 40, 50],
+                    title: 'Velocity vs Time for a Rocket',
+                    xaxis: 'Time (s)',
+                    yaxis: 'Velocity (m/s)'
+                },
+                question: 'A rocket accelerates at a constant rate as shown in the graph. What is the change in displacement from t=0s to t=10s?',
+                correctAnswer: 250,
+                unit: 'm',
+                solution: `\\Delta x = \\frac{1}{2} \\times (0 + 50) \\times 10 = 250\\, m`
+            },
+            {
+                graph: {
+                    x: [0, 2, 4, 6, 8, 10],
+                    y: [10, 20, 30, 40, 30, 20],
+                    title: 'Velocity vs Time for a Ball Thrown Upward',
+                    xaxis: 'Time (s)',
+                    yaxis: 'Velocity (m/s)'
+                },
+                question: 'A ball is thrown upward and then falls down as shown in the graph. What is the change in displacement from t=0s to t=10s?',
+                correctAnswer: 150,
+                unit: 'm',
+                solution: `\\Delta x = \\frac{1}{2} \\times (10 + 40) \\times 4 + \\frac{1}{2} \\times (40 + 0) \\times 6 - \\frac{1}{2} \\times (40 + 30) \\times 2 - \\frac{1}{2} \\times (30 + 20) \\times 2 = 150\\, m`
+            },
+            {
+                graph: {
+                    x: [0, 2, 4, 6, 8, 10],
+                    y: [0, 10, 20, 30, 40, 50],
+                    title: 'Velocity vs Time for a Boat',
+                    xaxis: 'Time (s)',
+                    yaxis: 'Velocity (m/s)'
+                },
+                question: 'A boat accelerates at a constant rate as shown in the graph. What is the change in displacement from t=0s to t=10s?',
+                correctAnswer: 250,
+                unit: 'm',
+                solution: `\\Delta x = \\frac{1}{2} \\times (0 + 50) \\times 10 = 250\\, m`
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let attemptedQuestions = [];
+
+        function plotGraph() {
+            const graphData = questions[currentQuestionIndex].graph;
+            const trace = {
+                x: graphData.x,
+                y: graphData.y,
+                mode: 'lines+markers',
+                type: 'scatter'
+            };
+            const layout = {
+                title: graphData.title,
+                xaxis: { title: graphData.xaxis },
+                yaxis: { title: graphData.yaxis }
+            };
+            Plotly.newPlot('plot-container', [trace], layout);
+        }
+
+        function showQuestion() {
+            const questionData = questions[currentQuestionIndex];
+            document.getElementById('question').textContent = questionData.question;
+            document.getElementById('answer').value = '';
+            document.getElementById('unit').textContent = questionData.unit;
+            document.getElementById('solution').style.display = 'none';
+            document.getElementById('check-button').disabled = attemptedQuestions[currentQuestionIndex] === true;
+            document.getElementById('answer').disabled = attemptedQuestions[currentQuestionIndex] === true;
+        }
+
+        function checkAnswer() {
+            const answer = parseFloat(document.getElementById('answer').value);
+            attemptedQuestions[currentQuestionIndex] = true;
+
+            if (answer === questions[currentQuestionIndex].correctAnswer) {
+                score++;
+                alert('Correct answer!');
+            } else {
+                alert('Wrong answer.');
+                showSolution();
+            }
+            document.getElementById('check-button').disabled = true;
+            document.getElementById('answer').disabled = true;
+            updateScore();
+        }
+
+        function showSolution() {
+            const solutionText = questions[currentQuestionIndex].solution;
+            document.getElementById('solution-text').innerHTML = `\\[${solutionText}\\]`;
+            MathJax.typeset();
+            document.getElementById('solution').style.display = 'block';
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex >= questions.length) {
+                currentQuestionIndex = questions.length - 1;
+                alert('You have completed the quiz! Your score is: ' + score + '/' + questions.length);
+            }
+            showQuestion();
+            plotGraph();
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+            }
+            showQuestion();
+            plotGraph();
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = `Score: ${score}/${questions.length}`;
+        }
+
+        // Initialize the quiz
+        showQuestion();
+        plotGraph();
+        updateScore();
+    </script>
+       
+        <div id="footer"></div>        
+    </body>
+</html>
+

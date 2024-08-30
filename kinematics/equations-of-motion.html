@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equations of Motion</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        <h2>Equations of Motion</h2>
+        
+        <h3>Uniform Acceleration in a Straight Line</h3>
+        <p>There is a set of equations that can be used for quick calculations involving the kinematics quantities of displacement, velocity, acceleration and time. In order for these equations to be valid, certain conditions need to be fulfilled. They are:</p>
+            <ol>
+                <li>the acceleration is constant</li>
+                <li>the motion is rectilinear (body is moving along a straight line e.g. left-right, up-down)</li>
+            </ol>
+
+        <p>Consider a body moving with an initial velocity $u$ and travels to the right with constant acceleration $a$ for a time $t$ when its final velocity is $v$. The velocity-time graph of the body can be expressed as shown below.</p>
+        
+        <img src="velocity-time-graph.png" alt="Velocity-time graph" width="320px">
+        
+        <h3>Derivation of Equations</h3>
+        
+        <p>The first of the 4 equations of motion can be obtained from the gradient of the graph. Since the uniform acceleration is the rate of change of velocity over time, it can be written as $a = \dfrac{v - u}{t}$. Shifting the terms around, we have 
+            $$\begin{align}v = u + at
+            \end{align}$$
+        </p>
+        <p>The second equation is based on the fact that the area under the v-t graph gives the change in displacement. Finding the area of the trapezium, we have             
+            $$\begin{align}s = \dfrac{1}{2}(u +v)t
+            \end{align}$$</p>
+        
+        <p>Substituting equation (1) into equation (2), thus removing $v$ from the equation, we have
+            $$\begin{align}s = ut + \dfrac{1}{2}at^2
+            \end{align}$$</p>
+    
+         <p>Substituting a different form of equation (1), $t = \dfrac{v - u}{a}$, into equation (2) (thus removing $t$ from the equation), we have
+            $$\begin{align}v^2 = u^2 + 2as
+            \end{align}$$</p>
+        
+    <div class="container">
+        <h3>Practice</h3>
+
+    <div class="score" id="score">Score: 0/0</div>
+    <div class="problem" id="problem"></div><br>
+    <input type="text" id="answer" placeholder="Enter your answer">
+    <span id="unit"></span>
+    <button id="submit" onclick="checkAnswer()">Submit</button><br>
+    <button id="previous" onclick="previousProblem()">Previous</button>
+    <button id="next" onclick="nextProblem()">Next</button>
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <script>
+    let currentProblemIndex = 0;
+    let score = 0;
+    let attempts = 0;
+    const attemptedProblems = [];
+
+    const problems = [
+      {
+        question: "A car starts from rest and accelerates uniformly at 2.0 m/s² for 10 seconds. What is the final velocity of the car?",
+        correctAnswer: 20,
+        unit: "m/s",
+        equation: "v = u + at",
+        explanation: "Using v = u + at, where u = 0 (starts from rest), a = 2.0 m/s², and t = 10 s, we get v = 0 + 2.0*10 = 20 m/s."
+      },
+      {
+        question: "A car traveling at 15 m/s accelerates uniformly at 3.0 m/s² for 5.0 seconds. What is the final velocity of the car?",
+        correctAnswer: 30,
+        unit: "m/s",
+        equation: "v = u + at",
+        explanation: "Using v = u + at, where u = 15 m/s, a = 3.0 m/s², and t = 5.0 s, we get v = 15 + 3.0*5.0 = 30 m/s."
+      },
+      {
+        question: "A car decelerates uniformly from 20 m/s to a stop in 4.0 seconds. What is its acceleration?",
+        correctAnswer: -5.0,
+        unit: "m/s²",
+        equation: "v = u + at",
+        explanation: "Using v = u + at, where v = 0 (stops), u = 20 m/s, and t = 4.0 s, we get 0 = 20 + a*4.0 => a = -5.0 m/s²."
+      },
+      {
+        question: "A ball is thrown upwards with an initial velocity of 10 m/s. What is the maximum height it reaches? (Take g = 10 m/s²)",
+        correctAnswer: 5.0,
+        unit: "m",
+        equation: "v² = u² + 2as",
+        explanation: "Using v² = u² + 2as, where v = 0 (at max height), u = 10 m/s, a = -10 m/s², we get 0 = 10² + 2*(-10)*s => s = 5.0 m."
+      },
+      {
+        question: "A vehicle accelerates from 5.0 m/s to 25 m/s over a distance of 150 meters. What is its acceleration?",
+        correctAnswer: 2.0,
+        unit: "m/s²",
+        equation: "v² = u² + 2as",
+        explanation: "Using v² = u² + 2as, where v = 25 m/s, u = 5.0 m/s, and s = 150 m, we get 25² = 5.0² + 2*a*150 => a = 2.0 m/s²."
+      },
+      {
+        question: "A bike moving at 10 m/s stops in 20 meters with a uniform deceleration. What is the deceleration?",
+        correctAnswer: -2.5,
+        unit: "m/s²",
+        equation: "v² = u² + 2as",
+        explanation: "Using v² = u² + 2as, where v = 0 (stops), u = 10 m/s, and s = 20 m, we get 0 = 10² + 2*a*20 => a = -2.5 m/s²."
+      },
+      {
+        question: "A runner accelerates from rest to 8.0 m/s in 4.0 seconds. What is the distance covered?",
+        correctAnswer: 16,
+        unit: "m",
+        equation: "s = ut + 0.5at²",
+        explanation: "Using s = ut + 0.5at², where u = 0 (starts from rest), a = 2.0 m/s² (from v = u + at), and t = 4.0 s, we get s = 0 + 0.5*2.0*4.0² = 16 m."
+      },
+      {
+        question: "A train moving with a constant acceleration covers 400 meters in 20 seconds. If its initial velocity is 10 m/s, what is its acceleration?",
+        correctAnswer: 1.0,
+        unit: "m/s²",
+        equation: "s = ut + 0.5at²",
+        explanation: "Using s = ut + 0.5at², where s = 400 m, u = 10 m/s, and t = 20 s, we get 400 = 10*20 + 0.5*a*20² => a = 1.0 m/s²."
+      },
+      {
+        question: "A car travels at a constant speed of 20 m/s for 5.0 seconds and then decelerates uniformly to rest in 10 seconds. What distance does it cover during deceleration?",
+        correctAnswer: 100,
+        unit: "m",
+        equation: "s = ut + 0.5at²",
+        explanation: "Using s = ut + 0.5at² for deceleration, where u = 20 m/s, a = -2.0 m/s² (from v = u + at), and t = 10 s, we get s = 20*10 + 0.5*(-2.0)*10² = 100 m."
+      },
+      {
+        question: "A cyclist moving at 5.0 m/s uniformly accelerates at 1.0 m/s² for 10 seconds. What is the distance covered in this time?",
+        correctAnswer: 100,
+        unit: "m",
+        equation: "s = ut + 0.5at²",
+        explanation: "Using s = ut + 0.5at², where u = 5.0 m/s, a = 1.0 m/s², and t = 10 s, we get s = 5.0*10 + 0.5*1.0*10² = 100 m."
+      },
+      {
+        question: "A car starts from rest and accelerates to a speed of 20 m/s in 10 seconds. What distance does the car cover in this time?",
+        correctAnswer: 100,
+        unit: "m",
+        equation: "s = (u + v)t / 2",
+        explanation: "Using s = (u + v)t / 2, where u = 0 (starts from rest), v = 20 m/s, and t = 10 s, we get s = (0 + 20) * 10 / 2 = 100 meters."
+      },
+      {
+        question: "A cyclist accelerates uniformly from 5.0 m/s to 15 m/s in 6.0 seconds. What is the distance traveled by the cyclist in this time?",
+        correctAnswer: 60,
+        unit: "m",
+        equation: "s = (u + v)t / 2",
+        explanation: "Using s = (u + v)t / 2, where u = 5.0 m/s, v = 15 m/s, and t = 6.0 s, we get s = (5.0 + 15) * 6.0 / 2 = 60 meters."
+      },
+      {
+        question: "A car decelerates from 25 m/s to 5.0 m/s in 8.0 seconds. What distance does the car cover during this deceleration?",
+        correctAnswer: 120,
+        unit: "m",
+        equation: "s = (u + v)t / 2",
+        explanation: "Using s = (u + v)t / 2, where u = 25 m/s, v = 5.0 m/s, and t = 8.0 s, we get s = (25 + 5.0) * 8.0 / 2 = 120 meters."
+      },
+      {
+        question: "A train accelerates from 10 m/s to 30 m/s in 5.0 seconds. What distance does the train travel in this time?",
+        correctAnswer: 100,
+        unit: "m",
+        equation: "s = (u + v)t / 2",
+        explanation: "Using s = (u + v)t / 2, where u = 10 m/s, v = 30 m/s, and t = 5.0 s, we get s = (10 + 30) * 5.0 / 2 = 100 meters."
+      }
+    ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    shuffle(problems);
+
+    function displayProblem() {
+      if (currentProblemIndex >= problems.length) {
+        document.getElementById('problem').innerText = 'Congratulations! You have completed all problems.';
+        document.getElementById('answer').style.display = 'none';
+        document.getElementById('unit').style.display = 'none';
+        document.getElementById('submit').style.display = 'none';
+        document.getElementById('previous').style.display = 'none';
+        document.getElementById('next').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('problem').innerText = problems[currentProblemIndex].question;
+      document.getElementById('unit').innerText = problems[currentProblemIndex].unit;
+      document.getElementById('feedback').innerText = '';
+      const answerInput = document.getElementById('answer');
+      const submitButton = document.getElementById('submit');
+
+      if (attemptedProblems[currentProblemIndex]) {
+        answerInput.value = attemptedProblems[currentProblemIndex].userAnswer;
+        answerInput.disabled = true;
+        submitButton.disabled = true;
+        submitButton.classList.add('disabled');
+        document.getElementById('feedback').innerText = attemptedProblems[currentProblemIndex].feedback;
+      } else {
+        answerInput.value = '';
+        answerInput.disabled = false;
+        submitButton.disabled = false;
+        submitButton.classList.remove('disabled');
+        document.getElementById('feedback').innerText = '';
+      }
+    }
+
+    function updateScore() {
+      document.getElementById('score').innerText = `Score: ${score}/${attempts}`;
+    }
+
+    function checkAnswer() {
+      const userAnswer = parseFloat(document.getElementById('answer').value);
+      const correctAnswer = problems[currentProblemIndex].correctAnswer;
+
+      attempts++;
+      let feedback = '';
+      if (userAnswer === correctAnswer) {
+        score++;
+        feedback = 'Correct!';
+        document.getElementById('feedback').classList.add('correct');
+        document.getElementById('feedback').classList.remove('incorrect');
+      } else {
+        feedback = 'Incorrect. ' + problems[currentProblemIndex].explanation;
+        document.getElementById('feedback').classList.add('incorrect');
+        document.getElementById('feedback').classList.remove('correct');
+      }
+
+      updateScore();
+      attemptedProblems[currentProblemIndex] = { userAnswer, feedback };
+
+      document.getElementById('answer').disabled = true;
+      document.getElementById('submit').disabled = true;
+      document.getElementById('submit').classList.add('disabled');
+      document.getElementById('feedback').innerText = feedback;
+    }
+
+    function nextProblem() {
+      if (currentProblemIndex < problems.length - 1) {
+        currentProblemIndex++;
+        displayProblem();
+      }
+    }
+
+    function previousProblem() {
+      if (currentProblemIndex > 0) {
+        currentProblemIndex--;
+        displayProblem();
+      }
+    }
+
+    displayProblem();
+  </script>
+        
+        <h3>GeoGebra Interactive</h3>
+        <iframe scrolling="no" title="Equations of Motion" src="https://www.geogebra.org/material/iframe/id/mfvvhjrj/width/700/height/480/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width="700px" height="480px" style="border:0px;"> </iframe>
+        
+        
+        <h3>Checking for Understanding <a href="https://docs.google.com/forms/d/e/1FAIpQLSc77JmOn4e3S18ttpJ01cecqesESumYPA-tEIgL-M0jSjpvkQ/viewform" target="_blank">link</a></h3>
+        
+        
+        <div id="footer"></div>        
+    </body>
+</html>
+
