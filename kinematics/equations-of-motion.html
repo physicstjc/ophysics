@@ -48,19 +48,20 @@
          <p>Substituting a different form of equation (1), $t = \dfrac{v - u}{a}$, into equation (2) (thus removing $t$ from the equation), we have
             $$\begin{align}v^2 = u^2 + 2as
             \end{align}$$</p>
-        
-    <div class="container">
-        <h3>Practice</h3>
 
-    <div class="score" id="score">Score: 0/0</div>
-    <div class="problem" id="problem"></div><br>
-    <input type="text" id="answer" placeholder="Enter your answer">
-    <span id="unit"></span>
-    <button id="submit" onclick="checkAnswer()">Submit</button><br>
+    <table width="100%"><tr><td>
+  <h3>Checking for Understanding</h3>
+        <div class="quiz-container">
+    <div><div class="problem" id="problem"></div><br>
+    <input type="text" id="answer" placeholder="Enter your answer" style="width: 200px;"><span id="unit"></span></div>
+    <div>
+    <button id="submit" onclick="checkAnswer()">Submit</button>
     <button id="previous" onclick="previousProblem()">Previous</button>
-    <button id="next" onclick="nextProblem()">Next</button>
+    <button id="next" onclick="nextProblem()">Next</button></div><hr style="visibility: hidden;">
+    <div class="score" id="score">Score: 0/0</div>
     <div class="feedback" id="feedback"></div>
   </div>
+        </td></tr></table>
 
   <script>
     let currentProblemIndex = 0;

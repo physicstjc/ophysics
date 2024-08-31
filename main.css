@@ -7,24 +7,32 @@ body {
     background: #fff;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.06);
     color: #545454;
-    font-family: "Lexend Deca", "LexendDeca", sans-serif !important;
-    font-size: 16px;
-    font-weight: lighter;
+    font-family: "Open Sans", sans-serif !important;
+    font-size: 15px;
+    font-weight: normal;
     line-height: 1.5;
     margin: 0 auto;
     max-width: 720px;
     padding: 2em 2em 4em;
     z-index: 1;
 }
+h2 {
+    font-family: "Roboto Slab", sans-serif !important;
+    font-size: 28px;
+}
+h3 {
+    font-family: "Roboto Slab", sans-serif !important;
+    font-size: 22px;
+    font-weight: normal;
+}
 a {
     color: #007BFF;
     font-weight: normal;
 }
-
 .top-menu {
     background-color: #333;
     overflow: hidden;
-    padding: 10px 0;
+    padding: 5px 0;
 }
 
 .top-menu ul {
@@ -33,17 +41,18 @@ a {
     padding: 0;
     display: flex;
     justify-content: center;
+    flex-direction: row;
 }
 
 .top-menu ul li {
-    margin: 0 15px;
+    margin: 0 10px;
 }
 
 .top-menu ul li a {
     color: white;
     text-decoration: none;
-    padding: 10px 15px;
-    display: block;
+    padding: 5px 10px;
+    display: flex;
     text-align: center;
 }
 
@@ -51,6 +60,41 @@ a {
     background-color: #575757;
     border-radius: 5px;
 }
+
+/* Hide the menu icon by default */
+.menu-icon {
+    display: none;
+}
+
+/* For small screens */
+@media screen and (max-width: 600px) {
+    .top-menu ul {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .top-menu.responsive ul {
+        display: flex;
+    }
+
+    .top-menu ul li {
+        margin: 5px 0;
+        text-align: center;
+    }
+
+    /* Show the menu icon on small screens */
+    .menu-icon {
+        display: block;
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        cursor: pointer;
+    }
+}
+
+
 
 @media (max-width: 600px) {
     .top-menu ul {
@@ -62,18 +106,18 @@ a {
         margin: 5px 0;
     }
     body {
-    font-size: 14px;
+    font-size: 12px;
     }
     th, td {
         padding: 10px; /* Adjust padding for smaller screens */
-        font-size: 14px; /* Adjust font size for smaller screens */
+        font-size: 12px; /* Adjust font size for smaller screens */
     }
 }
 
 /* Larger screens */
 @media (min-width: 1200px) {
   body {
-    font-size: 18px;
+    font-size: 15px;
   }
 }
 figure {
@@ -95,8 +139,8 @@ figcaption {
   padding: 0em;    
 }
 .katex {
-    font-family: sans-serif !important;
-    font-size: 16px !important;
+    font-family: "Open Sans", sans-serif !important;
+    font-size: 15px !important;
 }
 samp {
     display: none;
@@ -125,14 +169,15 @@ img {
 .container {
       display: flex;
       flex-wrap: wrap;
-      background-color: #cbf5dd;
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       width: 94%;
       text-align: left;
     }
-#score {
+.score {
+    display: block;
+    text-align: left;
     font-style: italic;
     font-size: 0.8em;
 }
@@ -271,18 +316,56 @@ table {
     padding: 10px 15px;
     background-color: #f9f9f9;
     border-left: 4px solid #0078D7;
-    font-family: "Lexend Deca", "LexendDeca", sans-serif !important;
-    font-size: 16px;
-    font-weight: 400;
+    font-family: "Open Sans", sans-serif !important;
+    font-weight: normal;
+    font-size: 15px;
     color: #333;
     margin: 16px 0;
     border-radius: 4px;
 }
 
+.callout strong {
+    font-family: "Open Sans", sans-serif !important;
+    font-size: 15px;
+    font-weight: bold;
+}
 .emoji {
     font-family: "Apple Color Emoji", "Segoe UI Emoji", "NotoColorEmoji", "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     line-height: 1em;
     white-space: nowrap;
     margin-right: 10px;
     font-size: 1.5em;
+}
+
+#quiz-container {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+}
+.quiz-container {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 20px;
+}
+#plot-container {
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+button {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#answer-container {
+    display: flex;
+    align-items: center;
+}
+#answer {
+    width: 80%;
 }

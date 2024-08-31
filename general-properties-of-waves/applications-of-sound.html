@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applications of Sound</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        <h2>Applications of Sound</h2> 
+        
+    <h3>Reflection of Sound and Echo</h3>
+    <p>When a sound wave hits a surface, it can bounce back or reflect. This reflected sound wave is known as an echo. For an echo to be heard distinctly, the reflecting surface must be sufficiently far away from the source of the sound. Typically, the distance must be at least 17 meters for the human ear to distinguish the echo from the original sound, given that sound travels at approximately 343 meters per second in air at room temperature.</p>
+
+    <h4>Process of Echo Formation:</h4>
+    <ol>
+        <li><strong>Sound Emission:</strong> A sound wave is produced by a source, such as a clap or a shout.</li>
+        <li><strong>Travel of Sound:</strong> The sound wave travels through the air towards a reflecting surface, like a wall, a cliff, or a building.</li>
+        <li><strong>Reflection:</strong> Upon hitting the surface, the sound wave is reflected back towards the source.</li>
+        <li><strong>Reception:</strong> The reflected sound wave reaches the listener, who perceives it as an echo.</li>
+    </ol>
+
+    <h4>Using Echo for Measuring Distances:</h4>
+    <p>This principle of sound reflection can be used to measure distances through a method called <strong>echo ranging</strong> or <strong>sonar</strong> (Sound Navigation and Ranging). The process involves the following steps:</p>
+    <ol>
+        <li><strong>Sound Pulse Emission:</strong> A device emits a short, sharp sound pulse towards a distant object.</li>
+        <li><strong>Travel of Sound Pulse:</strong> The sound pulse travels to the object and reflects back.</li>
+        <li><strong>Detection of Echo:</strong> The time taken for the echo to return is measured.</li>
+        <li><strong>Calculation of Distance:</strong> Using the speed of sound in the medium and the measured time, the distance to the reflecting surface can be calculated.</li>
+    </ol>
+    
+    <p>The following video outlines a method to do so with a sensor and computer.</p>
+    <iframe width="100%" height="460px" src="https://www.youtube.com/embed/u8cHrD1Zw3U?si=Xj4QfIJuyDe0FkUH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+    <p>You can also use free web-based audio editor like <a href="https://twistedwave.com/online" target="_blank" rel=”nofollow”>Twisted Wave</a> or <a href="https://wavacity.com/" target="_blank" rel=”nofollow”>Wavacity</a>.</p>
+   
+    <table width="100%"><tr><td>
+    <h3>Check for Understanding</h3>
+        <p>A sound pulse is emitted towards a wall and the echo is heard 2 seconds later. A sound pulse is emitted towards a wall and the echo is heard 2 seconds later. Speed of sound in air (at room temperature) = 343 m/s. Find the distance of the wall from the source of sound. </p>
+    
+            
+            <button id="btn1" data-div="ans3" onclick="reveal(this)">Reveal Answer</button>
+            <div id="ans3" style="display:none">
+                <p>Total time for the sound to travel to the wall and back = 2 seconds.</p>
+
+                <p>Distance to Wall = $\dfrac{343 \text{ m/s} × 2 \text{s}}{2} = 343 \text{ m}$</p>
+            <p>The division by 2 accounts for the sound traveling to the object and back.</p></div>
+            </td></tr></table>
+        
+ <h2>Ultrasound</h2>
+    <p>Ultrasound refers to sound waves with frequencies higher than the upper audible limit of human hearing, which is about 20 kHz. Ultrasound has a wide range of applications in various fields due to its ability to penetrate different materials and its non-invasive nature.</p>
+
+    <h3>Sonar (Sound Navigation and Ranging)</h3>
+    <p>Sonar is a technique that uses ultrasound for navigation, communication, and detecting objects underwater. It works by emitting ultrasound pulses and listening for the echoes that bounce back from objects.</p>
+        
+    <h4>How Sonar Works:</h4>
+        
+        <a title="Georg Wiora (Dr. Schorsch), CC BY-SA 3.0 &lt;http://creativecommons.org/licenses/by-sa/3.0/&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Sonar_Principle_EN.svg"><img width="512" alt="Sonar Principle EN" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Sonar_Principle_EN.svg/512px-Sonar_Principle_EN.svg.png?20080409115024"></a>
+    <ol>
+        <li><strong>Emission:</strong> A sonar device emits an ultrasound pulse into the water.</li>
+        <li><strong>Propagation:</strong> The pulse travels through the water until it hits an object (such as a submarine, fish, or the sea floor).</li>
+        <li><strong>Reflection:</strong> The pulse reflects off the object and returns to the sonar device as an echo.</li>
+        <li><strong>Detection:</strong> The sonar device detects the echo and measures the time taken for the pulse to return.</li>
+        <li><strong>Calculation:</strong> Using the speed of sound in water, the distance to the object is calculated using the formula: $\text{Distance} = \dfrac{\text{Speed of Sound in Water × Time}}{2} $</li>
+    </ol>
+
+
+    <h4>Applications of Sonar:</h4>
+    <ul>
+        <li>Navigation for ships and submarines</li>
+        <li>Detecting underwater hazards and objects</li>
+        <li>Mapping the sea floor</li>
+        <li>Fish finding for commercial and recreational fishing</li>
+    </ul>
+    
+    <iframe width="100%" height="460" src="https://www.youtube.com/embed/lruV6Z8sxw0?si=zbY5IUrTFOBbtBeO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+    <h3>Medical Ultrasonography</h3>
+    <p>Medical ultrasonography, also known as ultrasound scanning, uses high-frequency sound waves to create images of the inside of the body. It is widely used for diagnostic and therapeutic purposes, especially for examining soft tissues.</p>
+    <h4>How Medical Ultrasound Works:</h4>
+    <ol>
+        <li><strong>Transducer Emission:</strong> A transducer emits ultrasound waves into the body.</li>
+        <li><strong>Propagation:</strong> The sound waves travel through the body and reflect off tissues, organs, and other structures.</li>
+        <li><strong>Reflection:</strong> The reflected sound waves (echoes) return to the transducer.</li>
+        <li><strong>Detection:</strong> The transducer detects the echoes and sends the data to a computer.</li>
+        <li><strong>Image Formation:</strong> The computer processes the data to create real-time images of the internal structures.</li>
+    </ol>
+
+    <h4>Applications of Medical Ultrasound:</h4>
+        <a title="Nevit Dilmen, CC BY-SA 3.0 &lt;https://creativecommons.org/licenses/by-sa/3.0&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Ultrasound_Scan_ND_0105143736_1439323.png"><img width="512" alt="Ultrasound Scan ND 0105143736 1439323" src="https://upload.wikimedia.org/wikipedia/commons/6/67/Ultrasound_Scan_ND_0105143736_1439323.png?20110108131649"></a>
+    <ul>
+        <li>Monitoring fetal development during pregnancy</li>
+        <li>Diagnosing conditions in organs such as the liver, kidneys, and heart</li>
+        <li>Guiding needle placements for biopsies or injections</li>
+        <li>Examining muscles, tendons, and other soft tissues</li>
+        <li>Detecting gallstones and kidney stones</li>
+    </ul>
+
+    <h4>Advantages of Ultrasound</h4>
+    <ul>
+        <li>Non-invasive and painless</li>
+        <li>No ionizing radiation (unlike X-rays and CT scans)</li>
+        <li>Real-time imaging capabilities</li>
+        <li>Relatively inexpensive and widely available</li>
+    </ul>
+
+    <h4>Limitations of Ultrasound</h4>
+    <ul>
+        <li>Limited penetration depth, making it less effective for imaging deep structures</li>
+        <li>Image quality can be affected by the presence of gas or bone</li>
+        <li>Requires skilled operators to obtain and interpret images</li>
+    </ul>        
+        
+        
+    </body>
+</html>
+

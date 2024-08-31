@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphs of Waves</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+        <h2>Graphs of Waves</h2>
+    
+        <h3>Displacement-Distance Graph</h3>
+        <p>The displacement-distance graph shows the displacement of particles in the medium at a specific moment in time as a function of their position along the wave's direction of travel. This graph gives a snapshot of the wave's shape at that instant.</p>
+    
+        <ul><li>The x-axis represents the distance along the wave's direction of travel.</li>
+        <li>The y-axis represents the displacement of particles from their equilibrium position .</li>
+        </ul>
+        <p>The physical quantities that can be directly obtained from the displacement-distance graph are its amplitude and wavelength.</p>
+
+        <div class="callout">
+        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
+        <span class="callout-text">The <strong>amplitude</strong>, <i>A</i>, is the maximum displacement of particles from their rest position.</span></div>
+    
+        <div class="callout">
+        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
+        <span class="callout-text">The <strong>wavelength</strong>, <i>λ</i>, is the distance between two consecutive points in phase, such as between two adjacent crests.</span></div>
+
+        <canvas id="distanceCanvas" width="600" height="200"></canvas>
+        <div id="controls">
+            <label for="wavelength">Wavelength (mm):</label>
+            <input type="range" id="wavelength" min="50" max="300" value="100">
+            <span id="wavelengthValue">100</span> mm<br>
+        </div>
+        
+        <h3>Displacement-Time Graph</h3>
+        <p>The displacement-time graph shows the displacement of a particular particle in the medium as a function of time. This graph gives insight into how the displacement of a single point on the wave varies over time.</p>
+        <ul>
+        <li>The x-axis represents time.</li>
+        <li>The y-axis represents the displacement of the particle from its equilibrium position.</li>
+        </ul>
+    
+        <p>The physical quantities that can be directly obtained from the displacement-distance graph are its amplitude and period.</p>
+
+        <div class="callout">
+        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
+        <span class="callout-text">The <strong>period</strong>, <i>T</i>, is the time taken for one complete cycle of the wave.</span></div>
+    
+        <p>From the period, we can also calculate the frequency f using the equation $$f =\dfrac{1}{T}$$</p>
+        <div class="callout">
+        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
+        <span class="callout-text">The <strong>frequency</strong>, <i>f</i>, is the number of wave cycles per second.</span></div>
+
+        <p>The SI unit of frequency is the hertz (Hz) and is equivalent to s<sup>-1</sup>.</p>
+
+        <p>In the graph below, you can adjust the frequency to observe the change in the period and number of waves produced over the given time.</p>
+    
+        <canvas id="timeCanvas" width="600" height="200"></canvas>
+        <div id="controls">
+            <label for="frequency">Frequency (Hz):</label>
+            <input type="range" id="frequency" min="0.5" max="10" value="5" step="0.1">
+            <span id="frequencyValue">10</span> Hz
+        </div>
+        
+    <script>
+        const wavelengthSlider = document.getElementById('wavelength');
+        const frequencySlider = document.getElementById('frequency');
+        const wavelengthValue = document.getElementById('wavelengthValue');
+        const frequencyValue = document.getElementById('frequencyValue');
+
+        wavelengthSlider.addEventListener('input', () => {
+            wavelengthValue.textContent = wavelengthSlider.value;
+            drawDistanceGraph();
+        });
+
+        frequencySlider.addEventListener('input', () => {
+            frequencyValue.textContent = frequencySlider.value;
+            drawTimeGraph();
+        });
+
+        function drawDoubleHeadedArrow(ctx, x1, y1, x2, y2, text) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x1 - 5, y1 + 5);
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x1 + 5, y1 + 5);
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - 5, y2 - 5);
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 + 5, y2 - 5);
+            ctx.stroke();
+            ctx.font = '16px Arial';
+            ctx.fillText(text, (x1 + x2) / 2 - 20, (y1 + y2) / 2 - 10);
+        }
+
+        function drawHDoubleHeadedArrow(ctx, x1, y1, x2, y2, text) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x1 + 10, y1 - 5);
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x1 + 10, y1 + 5);
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - 10, y2 - 5);
+            ctx.moveTo(x2, y2);
+            ctx.lineTo(x2 - 10, y2 + 5);
+            ctx.stroke();
+            ctx.font = '16px Arial';
+            ctx.fillText(text, (x1 + x2) / 2 - 20, (y1 + y2) / 2 - 10);
+        }
+
+        function drawDistanceGraph() {
+            const canvas = document.getElementById('distanceCanvas');
+            const ctx = canvas.getContext('2d');
+            const amplitude = 50;
+            const wavelength = parseFloat(wavelengthSlider.value);
+            const frequency = 1;
+            const period = 1 / frequency;
+            const timeScale = canvas.width / period;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Axes
+            ctx.beginPath();
+            ctx.moveTo(50, 0);
+            ctx.lineTo(50, canvas.height);
+            ctx.moveTo(0, canvas.height / 2);
+            ctx.lineTo(canvas.width, canvas.height / 2);
+            ctx.strokeStyle = 'black';
+            ctx.stroke();
+
+            ctx.font = '16px Arial';
+            ctx.fillStyle = 'black';
+            ctx.fillText('Displacement', 5, 20);
+            ctx.fillText('Distance', canvas.width - 60, canvas.height / 2 + 20);
+
+            // Draw Wave
+            ctx.beginPath();
+            ctx.moveTo(50, canvas.height / 2);
+
+            for (let x = 0; x < canvas.width - 50; x++) {
+                const y = canvas.height / 2 + amplitude * Math.sin((2 * Math.PI / wavelength) * x);
+                ctx.lineTo(x + 50, y);
+            }
+
+            ctx.strokeStyle = 'blue';
+            ctx.stroke();
+
+            ctx.strokeStyle = 'red';
+            drawDoubleHeadedArrow(ctx, 60, canvas.height / 2  - amplitude, 60, canvas.height / 2, 'Amplitude');
+            drawHDoubleHeadedArrow(ctx, 50, canvas.height - 10, 50 + wavelength, canvas.height - 10, 'Wavelength');
+        }
+
+        function drawTimeGraph() {
+            const canvas = document.getElementById('timeCanvas');
+            const ctx = canvas.getContext('2d');
+            const amplitude = 50;
+            const frequency = parseFloat(frequencySlider.value);
+            const period = 1 / frequency;
+            const timeScale = canvas.width / frequency;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Axes
+            ctx.beginPath();
+            ctx.moveTo(50, 0);
+            ctx.lineTo(50, canvas.height);
+            ctx.moveTo(0, canvas.height / 2);
+            ctx.lineTo(canvas.width, canvas.height / 2);
+            ctx.strokeStyle = 'black';
+            ctx.stroke();
+
+            ctx.font = '16px Arial';
+            ctx.fillStyle = 'black';
+            ctx.fillText('Displacement', 5, 20);
+            ctx.fillText('Time', canvas.width - 50, canvas.height / 2 + 20);
+
+            // Draw Wave
+            ctx.beginPath();
+            ctx.moveTo(50, canvas.height / 2);
+
+            for (let t = 0; t < canvas.width - 50; t++) {
+                const y = canvas.height / 2 + amplitude * Math.sin((2 * Math.PI * frequency) * (t / canvas.width));
+                ctx.lineTo(t + 50, y);
+            }
+
+            ctx.strokeStyle = 'blue';
+            ctx.stroke();
+
+            ctx.strokeStyle = 'red';
+            drawDoubleHeadedArrow(ctx, 60, canvas.height / 2  - amplitude, 60, canvas.height / 2, 'Amplitude');
+            drawHDoubleHeadedArrow(ctx, 50, canvas.height - 10, 50 + canvas.width / frequency, canvas.height - 10, 'Period');
+        }
+
+        window.onload = () => {
+            drawDistanceGraph();
+            drawTimeGraph();
+        };
+    </script>
+   
+        <h3>A Moving Displacement-Distance Graph</h3>
+        <p>Since the displacement-distance graph is a snapshot of the wave's shape at that instant, the waveform will move over time. This is illustrated using the interactive below. You can choose to have the wave move either towards the left or the right. Observe what happens to the position of the chosen particle. It does not move along with the direction of wave motion or energy transfer, but vertically along the same line and remains as part of the waveform.</p>
+    
+        <iframe scrolling="no" title="Progressive wave particle movement" src="https://www.geogebra.org/material/iframe/id/jnjsgsd5/width/638/height/478/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/true/rc/false/ld/false/sdz/false/ctl/false" width=100% height="478px" style="border:0px;"> </iframe>
+    </body>
+</html>
+

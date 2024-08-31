@@ -25,10 +25,16 @@ function reveal(thispass) {
   }
 }
 //    document.title = 'Physics Notes: ' + (location.pathname.substring(location.pathname.lastIndexOf("/") + 1)).replace('.html','').replace('-',' ').replace('-',' ').toUpperCase()
-
 document.addEventListener("DOMContentLoaded", function() {
     const breadcrumbContainer = document.querySelector("#breadcrumb");
     const pathArray = window.location.pathname.split("/").filter(e => e);
+
+    // Function to convert text to Title Case
+    function toTitleCase(str) {
+        return str.replace(/\w\S*/g, function(txt){
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
 
     // If there is more than one element, assume the last one is the file
     let file = pathArray.length > 1 ? pathArray.pop() : '';
@@ -37,19 +43,20 @@ document.addEventListener("DOMContentLoaded", function() {
     let pathURL = "";
     pathArray.forEach(function(part, index) {
         pathURL += "/" + part;
-        let partFormatted = part.replace(/-/g, ' ');  // Replace dashes with spaces
-        breadcrumbHTML += '<li><a href="' + pathURL + '">' + partFormatted.charAt(0).toUpperCase() + partFormatted.slice(1) + '</a></li>';
+        let partFormatted = toTitleCase(part.replace(/-/g, ' '));  // Replace dashes with spaces and convert to Title Case
+        breadcrumbHTML += '<li><a href="' + pathURL + '">' + partFormatted + '</a></li>';
     });
 
     // Use the document title as the last breadcrumb item and replace dashes
     if (file) {
-        let pageTitle = document.title.replace(/-/g, ' ');  // Replace dashes with spaces
+        let pageTitle = toTitleCase(document.title.replace(/-/g, ' '));  // Replace dashes with spaces and convert to Title Case
         breadcrumbHTML += '<li>' + pageTitle + '</li>';
     }
 
     breadcrumbHTML += '</ul></nav>';
     breadcrumbContainer.innerHTML = breadcrumbHTML;
 });
+
 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -66,3 +73,8 @@ document.addEventListener("DOMContentLoaded", function() {
             throwOnError : false
             });
             });
+
+function toggleMenu() {
+        var menu = document.querySelector('.top-menu');
+        menu.classList.toggle('responsive');
+}

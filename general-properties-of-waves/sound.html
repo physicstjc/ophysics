@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    </head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+        <h2>Sound</h2>
+        <h3>Generation of Sound</h3>
+        
+        <p>Sound is produced when a source vibrates, creating pressure waves in the surrounding medium. For instance, when a guitar string is plucked, it vibrates back and forth, compressing and rarefying the air particles around it. These alternating high and low-pressure regions propagate through the air as longitudinal waves. This mechanical disturbance travels outward from the source, carrying energy away from the vibrating object and into the medium, allowing the sound to be heard by an observer.</p>
+        
+        <p>For sound to travel, a medium (such as air, water, or solid materials) is essential. In the absence of a medium, like in a vacuum, sound waves cannot propagate because there are no particles to transmit the vibrations. The speed and efficiency of sound transmission depend on the medium's properties, such as density and elasticity. For example, sound travels faster in water than in air because water molecules are more closely packed, facilitating quicker transfer of the vibrational energy from one particle to another.</p>
+      
+       <canvas id="soundCanvas" width="600" height="200"></canvas>
+    <script>
+        const canvas = document.getElementById('soundCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const numParticles = 180;
+        const particles = [];
+        const amplitude = 20;
+        const frequency = 0.01;
+        let time = 0;
+
+        function initParticles() {
+            const rows = 10;
+            const cols = 18; // Reduced columns because the first column will be a solid line
+            for (let row = 0; row < rows; row++) {
+                for (let col = 0; col < cols; col++) {
+                    const x = (col / cols) * (canvas.width - 100) + 100;
+                    const y = (row / rows) * canvas.height;
+                    particles.push({ originalX: x, x, y });
+                }
+            }
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                const particle = particles[i];
+                const offset = amplitude * Math.sin(2 * Math.PI * (particle.originalX / canvas.width * 4 - time));
+                particle.x = particle.originalX + offset;
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, 3, 0, 2 * Math.PI);
+                ctx.fillStyle = 'red';
+                ctx.fill();
+            }
+        }
+
+      function drawDiaphragm() {
+            const diaphragmX = 50 + amplitude * Math.sin(2 * Math.PI * frequency * time);
+            ctx.beginPath();
+            ctx.moveTo(diaphragmX, 0);
+            ctx.lineTo(diaphragmX, canvas.height);
+            ctx.strokeStyle = 'blue';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+        function drawBoundaryLine() {
+            ctx.beginPath();
+            ctx.moveTo(100, 0);
+            ctx.lineTo(100, canvas.height);
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        function animate() {
+            drawBoundaryLine();
+            drawDiaphragm();
+            drawParticles();
+            time += frequency;
+            requestAnimationFrame(animate);
+        }
+
+        initParticles();
+        animate();
+    </script>
+        
+        <h3>Pressure Changes in a Sound Wave</h3>
+        <p>In a sound wave, pressure changes are directly linked to the displacement of particles in the medium through which the sound travels. As a vibrating source moves forward, it compresses the air in front of it, creating a region of high pressure known as compression. Conversely, when the source moves backward, it pulls the air particles apart, resulting in a region of low pressure called rarefaction. These alternating high and low-pressure regions form the sound wave as it propagates through the medium.</p>
+        
+        <p>The relationship between pressure and displacement in a progressive sound wave can be visualized by examining how particles oscillate around their equilibrium positions. As the wave travels, particles move back and forth in the direction of the wave propagation. During compression, particles are pushed closer together, increasing the pressure. During rarefaction, particles are spread further apart, decreasing the pressure. The displacement of particles from their equilibrium positions causes these pressure variations, and this movement of particles and pressure changes together facilitates the transmission of sound through the medium. Thus, in a longitudinal sound wave, the oscillation of particles results in a traveling wave of alternating high and low-pressure regions as shown in the simulation below.</p>
+        
+        <iframe scrolling="no" title="Sound Wave (Displacement and Pressure)" src="https://www.geogebra.org/material/iframe/id/dfh2jjxy/width/640/height/480/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/true/rc/false/ld/false/sdz/false/ctl/false" width="640px" height="480px" style="border:0px;"> </iframe>
+        
+        <h3>Frequency and Pitch; Amplitude and Volume</h3>
+        
+        <p>You can use the following sound generator to observe the difference between frequency and pitch. If you are using earphones, ensure that the volume is turned down first, especially when playing high frequency sounds (e.g. 1000 Hz and above.)</p>
+        
+        <p>Use the slider or input box to control the frequency of the generated sound.</p>
+    Frequency: <input type="number" id="frequencyInput" min="1" max="40000" value="440"> Hz
+    <br>
+    <input type="range" id="frequencySlider" min="1" max="4000" value="440">
+    <br>
+    Amplitude: <input type="number" id="amplitudeInput" min="0" max="1" step="0.01" value="0.5"> units
+    <br>
+    <input type="range" id="amplitudeSlider" min="0" max="1" step="0.01" value="0.5">
+    <br>
+    <button id="playButton" class="button">Play</button>
+    <button id="stopButton" class="button">Stop</button>
+    <div id="waveform" style="width:600px;height:400px;"></div>
+
+    <script>
+        const frequencySlider = document.getElementById('frequencySlider');
+        const frequencyInput = document.getElementById('frequencyInput');
+        const amplitudeSlider = document.getElementById('amplitudeSlider');
+        const amplitudeInput = document.getElementById('amplitudeInput');
+        const playButton = document.getElementById('playButton');
+        const stopButton = document.getElementById('stopButton');
+
+        let oscillator;
+        let gainNode;
+        let isPlaying = false;
+
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        function updateWaveform(frequency, amplitude) {
+            const xValues = [];
+            const yValues = [];
+            const sampleRate = 44100;
+            const duration = 0.01; // 10ms for a quick view
+            const numSamples = sampleRate * duration;
+
+            for (let i = 0; i < numSamples; i++) {
+                const t = i / sampleRate;
+                xValues.push(t);
+                yValues.push(amplitude * Math.sin(2 * Math.PI * frequency * t));
+            }
+
+            Plotly.newPlot('waveform', [{
+                x: xValues,
+                y: yValues,
+                mode: 'lines',
+                line: { shape: 'sine' }
+            }], {
+                title: 'Waveform',
+                xaxis: { title: 'Time (s)' },
+                yaxis: { title: 'Amplitude (units)', range: [-1, 1] }
+            });
+        }
+
+        function startSound() {
+            const frequency = parseInt(frequencyInput.value);
+            const amplitude = parseFloat(amplitudeInput.value);
+
+            oscillator = audioContext.createOscillator();
+            gainNode = audioContext.createGain();
+
+            oscillator.type = 'sine';
+            oscillator.frequency.value = frequency;
+
+            gainNode.gain.value = amplitude;
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.start();
+            isPlaying = true;
+        }
+
+        function stopSound() {
+            if (oscillator) {
+                oscillator.stop();
+                isPlaying = false;
+            }
+        }
+
+        frequencySlider.addEventListener('input', function() {
+            const frequency = parseInt(this.value);
+            frequencyInput.value = frequency;
+            updateWaveform(frequency, parseFloat(amplitudeInput.value));
+            if (isPlaying) {
+                oscillator.frequency.value = frequency;
+            }
+        });
+
+        frequencyInput.addEventListener('input', function() {
+            const frequency = parseInt(this.value);
+            if (frequency >= parseInt(frequencySlider.min) && frequency <= parseInt(frequencySlider.max)) {
+                frequencySlider.value = frequency;
+                updateWaveform(frequency, parseFloat(amplitudeInput.value));
+                if (isPlaying) {
+                    oscillator.frequency.value = frequency;
+                }
+            }
+        });
+
+        amplitudeSlider.addEventListener('input', function() {
+            const amplitude = parseFloat(this.value);
+            amplitudeInput.value = amplitude;
+            updateWaveform(parseInt(frequencyInput.value), amplitude);
+            if (isPlaying) {
+                gainNode.gain.value = amplitude;
+            }
+        });
+
+        amplitudeInput.addEventListener('input', function() {
+            const amplitude = parseFloat(this.value);
+            if (amplitude >= parseFloat(amplitudeSlider.min) && amplitude <= parseFloat(amplitudeSlider.max)) {
+                amplitudeSlider.value = amplitude;
+                updateWaveform(parseInt(frequencyInput.value), amplitude);
+                if (isPlaying) {
+                    gainNode.gain.value = amplitude;
+                }
+            }
+        });
+
+        playButton.addEventListener('click', function() {
+            if (!isPlaying) {
+                startSound();
+                playButton.disabled = true;
+                stopButton.disabled = false;
+            }
+        });
+
+        stopButton.addEventListener('click', function() {
+            if (isPlaying) {
+                stopSound();
+                playButton.disabled = false;
+                stopButton.disabled = true;
+            }
+        });
+
+        updateWaveform(parseInt(frequencyInput.value), parseFloat(amplitudeInput.value));
+    </script>
+        
+    
+        
+    </body>
+</html>
+

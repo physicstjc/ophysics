@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed of a Wave</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+   
+        <h2>Speed of a Wave</h2>
+         <div class="callout">
+        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
+        <span class="callout-text">The <strong>speed</strong>, <i>v</i>, of a wave is the distance a wave travels per unit time.</span></div>
+    
+    <p>Let's conduct a simulated experiment using the applet below. Click "Play" and record the time taken for the wave to cover a distance that is equal to its wavelength.</p>
+    
+    <iframe scrolling="no" title="Measuring Speed of a Wave" src="https://www.geogebra.org/material/iframe/id/rfhhusft/width/640/height/480/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/true/rc/false/ld/true/sdz/false/ctl/false" width="100%" height="480px" style="border:0px;"> </iframe>
+    
+    <p>It can be observed that, as a wave moves, it covers a distance of one wavelength over one period. Hence, the relationship between speed of wave, wavelength and period is given as $$v=\dfrac{\lambda}{T}$$</p>
+    
+    <p>As frequency is the inverse of period or  $f = \dfrac{1}{T}$, $$v=f\lambda$$</p>
+    
+    <p>Since the speed of a wave in a homogeneous medium is a constant, changing the frequency changes the wavelength of the wave too, following the relationship $v = f \lambda $ as seen in the simulation below. Observe the animation of the two graphs representing a wave. The displacement-distance graph, when animated, shows the movement of an entire wave while the displacement-time graph represents the movement of a single particle (represented with a red dot) over time.</p>
+        
+   <iframe scrolling="no" title="Graphs of a Progressive Wave" src="https://www.geogebra.org/material/iframe/id/aezgpukm/width/638/height/478/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/true/rc/false/ld/false/sdz/false/ctl/false" width="100%" height="478px" style="border:0px;"> </iframe>     
+        
+
+    <table width="100%"><tr><td>      
+    <div class="quiz-container">
+        <h3>Checking for Understanding</h3>
+
+            <div class="problem" id="problem"></div><br>
+            <input type="text" id="answer" placeholder="Enter your answer" style="width: 200px;">
+            <span id="unit"></span>
+            <button id="submit" onclick="checkAnswer()">Submit</button><br>
+            <button id="previous" onclick="previousProblem()">Previous</button>
+            <button id="next" onclick="nextProblem()">Next</button><hr style="visibility: hidden;">
+            <div class="score" id="score">Score: 0/0</div>
+            <div class="feedback" id="feedback"></div>
+    </div>
+    </td></tr></table>   
+        <script>
+        let currentProblemIndex = 0;
+        let score = 0;
+        let attempts = 0;
+        const attemptedProblems = [];
+
+        const problems = [
+    {
+        question: "A wave has a frequency of 500 Hz and a wavelength of 0.8 meters. What is the speed of the wave?",
+        correctAnswer: 400,
+        unit: "m/s",
+        equation: "Wave Speed = Frequency × Wavelength",
+        explanation: "The speed of the wave is calculated by multiplying the frequency (500 Hz) by the wavelength (0.8 meters). Therefore, the wave speed is 500 Hz × 0.8 m = 400 m/s."
+    },
+    {
+        question: "A wave travels at a speed of 300 m/s and has a wavelength of 1.5 meters. What is the frequency of the wave?",
+        correctAnswer: 200,
+        unit: "Hz",
+        equation: "Frequency = Wave Speed / Wavelength",
+        explanation: "The frequency of the wave is calculated by dividing the wave speed (300 m/s) by the wavelength (1.5 meters). Therefore, the frequency is 300 m/s ÷ 1.5 m = 200 Hz."
+    },
+    {
+        question: "A wave has a period of 0.02 seconds. What is the frequency of the wave?",
+        correctAnswer: 50,
+        unit: "Hz",
+        equation: "Frequency = 1 / Period",
+        explanation: "The frequency of the wave is calculated by taking the reciprocal of the period (0.02 seconds). Therefore, the frequency is 1 ÷ 0.02 s = 50 Hz."
+    },
+    {
+        question: "A wave has a frequency of 200 Hz. What is the period of the wave?",
+        correctAnswer: 0.005,
+        unit: "s",
+        equation: "Period = 1 / Frequency",
+        explanation: "The period of the wave is calculated by taking the reciprocal of the frequency (200 Hz). Therefore, the frequency is 1 ÷ 200 Hz = 0.005 s."
+    },
+    {
+        question: "A sound wave has a frequency of 250 Hz and travels at a speed of 340 m/s in air. What is the wavelength of the sound wave?",
+        correctAnswer: 1.36,
+        unit: "meters",
+        equation: "Wavelength = Wave Speed / Frequency",
+        explanation: "The wavelength of the sound wave is calculated by dividing the wave speed (340 m/s) by the frequency (250 Hz). Therefore, the wavelength is 340 m/s ÷ 250 Hz = 1.36 meters."
+    }
+];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    shuffle(problems);
+
+    function displayProblem() {
+      if (currentProblemIndex >= problems.length) {
+        document.getElementById('problem').innerText = 'Congratulations! You have completed all problems.';
+        document.getElementById('answer').style.display = 'none';
+        document.getElementById('unit').style.display = 'none';
+        document.getElementById('submit').style.display = 'none';
+        document.getElementById('previous').style.display = 'none';
+        document.getElementById('next').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('problem').innerText = problems[currentProblemIndex].question;
+      document.getElementById('unit').innerText = problems[currentProblemIndex].unit;
+      document.getElementById('feedback').innerText = '';
+      const answerInput = document.getElementById('answer');
+      const submitButton = document.getElementById('submit');
+
+      if (attemptedProblems[currentProblemIndex]) {
+        answerInput.value = attemptedProblems[currentProblemIndex].userAnswer;
+        answerInput.disabled = true;
+        submitButton.disabled = true;
+        submitButton.classList.add('disabled');
+        document.getElementById('feedback').innerText = attemptedProblems[currentProblemIndex].feedback;
+      } else {
+        answerInput.value = '';
+        answerInput.disabled = false;
+        submitButton.disabled = false;
+        submitButton.classList.remove('disabled');
+        document.getElementById('feedback').innerText = '';
+      }
+    }
+
+    function updateScore() {
+      document.getElementById('score').innerText = `Score: ${score}/${attempts}`;
+    }
+
+    function checkAnswer() {
+      const userAnswer = parseFloat(document.getElementById('answer').value);
+      const correctAnswer = problems[currentProblemIndex].correctAnswer;
+
+      attempts++;
+      let feedback = '';
+      if (userAnswer === correctAnswer) {
+        score++;
+        feedback = 'Correct!';
+        document.getElementById('feedback').classList.add('correct');
+        document.getElementById('feedback').classList.remove('incorrect');
+      } else {
+        feedback = 'Incorrect. ' + problems[currentProblemIndex].explanation;
+        document.getElementById('feedback').classList.add('incorrect');
+        document.getElementById('feedback').classList.remove('correct');
+      }
+
+      updateScore();
+      attemptedProblems[currentProblemIndex] = { userAnswer, feedback };
+
+      document.getElementById('answer').disabled = true;
+      document.getElementById('submit').disabled = true;
+      document.getElementById('submit').classList.add('disabled');
+      document.getElementById('feedback').innerText = feedback;
+    }
+
+    function nextProblem() {
+      if (currentProblemIndex < problems.length - 1) {
+        currentProblemIndex++;
+        displayProblem();
+      }
+    }
+
+    function previousProblem() {
+      if (currentProblemIndex > 0) {
+        currentProblemIndex--;
+        displayProblem();
+      }
+    }
+
+    displayProblem();
+  </script>
+    </body>
+</html>
+

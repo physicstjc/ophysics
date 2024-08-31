@@ -14,36 +14,7 @@
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
         <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    
-        <style>
-        #quiz-container {
-            width: 100%;
-            max-width: 600px;
-            margin-top: 20px;
-        }
-        #plot-container {
-            display: flex;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-        button {
-            padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        #answer-container {
-            display: flex;
-            align-items: center;
-        }
-        #answer {
-            width: 80%;
-        }
-    </style>
+
     </head>
     
     
@@ -56,34 +27,63 @@
         
         <img src="kinematics%20graphs.png" alt="Graphs of Motion in Kinematics" width=640px>
         <p align="center"><i>The graphs of motion for an object released from rest in free fall.</i></p>
-        <h3>Velocity as gradient of displacement-time graph</h3>
-        <p>Since velocity is defined as the rate of change of displacement, its value can be obtained from the gradient of the tangent of a displacement-time graph.</p>
+    
+        <p>The following simulation shows the movement of a spider along a straight line, with its displacement varying with time. You can observe how the velocity is calculated at each point using the checkbox "Show velocity calculations". The graph of velocity can also be displayed by checking "Show velocity graph".</p>
+    
+        <iframe scrolling="no" title="Displacement time graph with animation" src="https://www.geogebra.org/material/iframe/id/k3ja7bnm/width/640/height/480/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width="100%" height="480px" style="border:0px;"> </iframe>
+    
+        <table cellpadding="5" cellspacing="0">
+            <tr>
+                <th style="text-align:left; vertical-align:top; width:50%;"><h3>Gradient Concepts</h3></th>
+                <th style="text-align:left; vertical-align:top; width:50%;"><h3>Area Under the Graph Concepts</h3></th>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">
+                    <h3>Velocity as gradient of displacement-time graph</h3>
+                    <p>Since velocity is defined as the rate of change of displacement, its value can be obtained from the gradient of the tangent of a displacement-time graph.</p>
+                </td>
+                <td style="vertical-align:top;">
+                    <h3>Displacement as area under velocity-time graph</h3>
+                    <p>The change in displacement can be obtained from the area under the velocity-time graph. The area referred to is that which is bounded by the line in the graph and the time axis, across the width of duration of change.</p>
+                    <p>If the area is found under the time-axis, the change in displacement is then given a negative sign and is associated with a decrease, as opposed to an increase, in displacement.</p>
+                </td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td style="vertical-align:top;">
+                    <h3>Acceleration as gradient of velocity-time graph</h3>
+                    <p>In the same way, acceleration can be obtained from the gradient of the velocity-time graph.</p>
+                </td>
+                <td style="vertical-align:top;">
+                    <h3>Velocity as area under acceleration-time graph</h3>
+                    <p>In the same way, change in velocity is obtained from the area under the acceleration-time graph.</p>
+                </td>
+            </tr>
+        </table>
 
-        <h3>Acceleration as gradient of velocity-time graph</h3>
-        <p>In the same way, acceleration can be obtained from the gradient of the velocity-time graph.</p>
 
-        <h3>Displacement as area under velocity-time graph</h3>
-        <p>Conversely, the change in displacement can be obtained from the area under the velocity-time graph. The area referred to is that which is bounded by the line in the graph and the time axis, across the width of duration of change.</p>
-        
-        <p>If the area is found under the time-axis, the change in displacement is then given a negative sign and is associated with a decrease, as opposed to an increase, in displacement.</p>
-        
-        <h3>Velocity as area under acceleration-time graph</h3>
-        <p>In the same way, change in velocity is obtained from the area under the acceleration-time graph. </p>
 
-        <h3>Simulation</h3>
+        <h3>Simulation of a Vertical Throw</h3>
         <p>The simulation below shows the variation in the displacement, velocity and acceleration of an object being projected upwards from the ground. The object begins with a velocity in the upward direction (taken as positive) and experiences a constant downward acceleration throughout until it returns to the original height.</p>
         
         <p>Observe how the graphs change. You can use the sliders to control the time as well as the initial velocity <i>u</i>.</p>
         <iframe scrolling="no" title="Vertical Throw" src="https://www.geogebra.org/material/iframe/id/zvsydy9f/width/640/height/480/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width=100% height="460px" style="border:0px;"> </iframe>
-    
-        <h3>Checking for Understanding</h3>
-        
+
+        <h3>Simulation of a Bouncing Ball</h3>
+     
+    <p><strong>Displacement-Time Graph</strong>: This graph shows how the ball's height above the ground changes with time. Initially, the displacement decreases at an increasing rate as the ball falls. After a bounce, it increases at a decreasing rate until it reaches a peak (where the velocity becomes zero), and then decreases at an increasing rate again as the ball falls back to the ground. This repeats itself with every bounce.</p>
+    <p><strong>Velocity-Time Graph</strong>: Starting from rest, the velocity increases linearly in the negative direction due to the downward acceleration until it reaches the ground. Just after the bounce, velocity then points towards the upward direction (positive) and its magnitude decreases until it reaches the top. Thereafter, its magnitude increases in the downward direction (negative). This repeats itself with every bounce.</p>
+    <p><strong>Acceleration-Time Graph</strong>: The acceleration remains constant at -<i>g</i> when the ball is in the air but becomes a very large positive value (due to a large upward net force) each time it comes into contact with the ground.</p>
+        <iframe scrolling="no" title="Bouncing Ball" src="https://www.geogebra.org/material/iframe/id/zx2uqua3/width/640/height/480/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width=100% height="460px" style="border:0px;"> </iframe>
+
+        <p></p>
         <table width="100%"><tr><td>
+        <h3>Checking for Understanding</h3>
         <div id="quiz-container">
         <div id="plot-container"></div>
         <p id="question"></p>
         <div id="answer-container">
-            <input type="number" id="answer" placeholder="Your answer">
+            <input type="number" id="answer" placeholder="Your answer" style="width: 200px;">
             <span id="unit"></span>
         </div>
         <div class="button-container">
