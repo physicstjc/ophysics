@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Density and Fluid Pressure</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+    <script src="../plotly-latest.min.js"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+        
+        <h2>Density and Fluid Pressure</h2>
+    
+        <h3>Density</h3>
+        
+        <p>Density is the amount of mass per unit volume. It is typically denoted by the symbol <i>ρ</i> (rho)</p>
+        
+        $$\rho = \dfrac{m}{V}$$
+        
+        where $\rho$ is the density,
+        <br>$m$ is the mass of the substance, and
+        <br>$V$ is the volume it occupies
+        
+        <p>The standard unit for density in the International System of Units (SI) is kilograms per cubic metre (kg m<sup>-3</sup>.</p>
+        
+        <p>When an object is placed in a liquid, the density of the object relative to that of the liquid determines whether it sinks or floats. Objects with: </p>
+        <ol type="a"><li>a lower density compared to the density of the medium will be partially submerged or floating.</li>
+            <li>same density as compared to the density of the medium could be fully submerged but not sinking.</li>
+            <li>higher density than the density of the medium in which it is placed in sinks.</li>
+        </ol>
+        <img src="float-or-sink.png">
+        
+        <h3>Pressure Due to a Liquid Column</h3>
+        
+        <p>The pressure due to a column of liquid, often referred to as hydrostatic pressure, is a result of the weight of the liquid above a given point in a fluid column. The pressure due to a liquid column = height of column × density of the liquid × gravitational field strength</p>
+        
+        <p>The hydrostatic pressure at a certain depth in a fluid is given by the equation:</p>
+        $$P = \rho g h$$
+        
+        <p>where:
+            <br>$\rho$ is the density of the liquid,
+            <br>$g$ is the acceleration due to gravity,
+            <br>$h$ is the depth of the point below the surface of the liquid.</p>
+        
+        <p>In the figure below, water pressure at a specific depth in a fluid is determined by the weight of the water above that point. When a hole is made at a lower position, the depth (and therefore the pressure) is higher. Higher pressure results in a higher initial velocity of water, causing it to travel a greater distance before hitting the ground.</p>
+        <figure>
+        <a title="نجود سلطان, CC BY-SA 4.0 &lt;https://creativecommons.org/licenses/by-sa/4.0&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:7th_grade_oloom_jor_unit-4-2_liquid_pressure-1.png"><img width="256" alt="7th grade oloom jor unit-4-2 liquid pressure-1" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/7th_grade_oloom_jor_unit-4-2_liquid_pressure-1.png"></a>
+        <figcaption>An experiment demonstration the relationship between liquid pressure and the depth of the point below the liquid surface.</figcaption>
+        </figure>
+        
+        <table width="100%"><tr><td>
+            <h3>Check for Understanding</h3>
+            <p>A diver goes from a depth of 10 m to 100 m underwater. Assuming that the gravitational field strength is 10 N kg<sup>−1</sup>, and the density of sea water is about 1030 kg m<sup>−3</sup>, determine the change in water pressure.</p>
+            
+            <button id="btn1" data-div="ans2" onclick="reveal(this)">Reveal Answer</button>
+            <div id="ans2" style="display:none">
+                <p>Pressure due to water above the diver = $h\rho g$</p>
+                <p>Pressure difference = $(100 - 10) \text{ m} \times 1030 \text{ kg m}^{-3} \times 10 \text{ m}= 927,000 \text{ Pa}$ </p>
+            </div></td></tr></table>
+        
+    </body>
+</html>
+

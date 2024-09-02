@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barometer</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+    <script src="../plotly-latest.min.js"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+        <h2>Barometer</h2>
+        
+        <p>A mercury barometer is a device used to measure atmospheric pressure. It was invented by Evangelista Torricelli in 1643 and is based on the principle that atmospheric pressure can support a column of liquid in a sealed tube.</p>
+        
+        <p>The main component of a mercury barometer is a long, narrow glass tube that is closed at one end and open at the other. The tube is filled with mercury, and the open end is then inverted into a container of mercury, forming a reservoir. As air is not allowed into the tube with the open end submerged, the mercury in the tube creates a vacuum above it when the tube is raised vertically as shown in the figure below.</p>
+        
+        <figure>
+       <img width="256" alt="Mercury Barometer" src="mercury-barometer.png">
+        <figcaption>A mercury barometer.</figcaption>
+        </figure>
+        
+        <p>Atmospheric pressure acts on the surface of the mercury in the reservoir and tries to push mercury up the tube and is balanced by the weight of the mercury column in the tube. When equilibrium is reached, the height of the mercury column in the tube represents the atmospheric pressure. At sea level, the atmosphere exerts a pressure of approximately 760 millimetres of mercury (mmHg).</p>
+        
+        <p>To convert the unit of pressure from mmHg to Pa, the equation $p = h\rho g$ can be used. Since the density of mercury is 13 600 kg m<sup>-3</sup>, atmospheric pressure is approximately $760 \text{ mmHg} = 0.760 \text{ m} \times 13 600 \text{ kg m}^{-3} \times 10 \text { m s}^{-1} = 103,000 \text { Pa} $</p>
+    
+        <h3>Setting up a Barometer</h3>
+        <p>Note that mercury is toxic! The use of mercury in barometers is being phased out and being replaced by aneroid barometers.</p>
+        <p>To prepare a mercury barometer, fill up a tube that is at least 80 cm in length with mercury and invert it into a reservoir of mercury while keeping the opening sealed. When the opening of the tube is fully submerged, unseal the tube.</p>
+        <p>Try it with the simulation below. Note that the thickness of the tube does not affect the height of the mercuy column.</p>
+        
+    <iframe style="overflow-y: hidden;" src="https://javalab.org/en/torricellis_experiment_en/" width="100%" height="800px" scrolling="no" sandbox="allow-scripts allow-same-origin allow-downloads" allow="fullscreen">
+</iframe>
+    Source: Java Lab, https://javalab.org
+       
+    </body>
+</html>
+

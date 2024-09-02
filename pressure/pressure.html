@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pressure</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+    <script src="../plotly-latest.min.js"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+        <h2>Pressure</h2>
+   
+        <h3>Definition</h3>
+    
+        <div class="callout">
+        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
+        <span class="callout-text"><strong>Pressure</strong> is defined as the force applied perpendicular to the surface of an object per unit area over which that force is distributed.</span></div>
+    
+        <p>In mathematical terms, it is expressed as:</p>
+        
+        $$P = \dfrac{F}{A}$$
+        
+        where $P$ is the pressure,
+        <br>$F$ is the force applied, and
+        <br>$A$ is the area over which the force is applied
+        
+        <p>Pressure is a scalar quantity, meaning it only has magnitude and no direction.</p>
+        <p>The standard unit of pressure in the International System of Units (SI) is the pascal (Pa), which is equivalent to one newton per square meter (N/m²).</p>
+        <p>Pressure can be measured in various units depending on the context, such as scientific, industrial, or everyday use. While the pascal (Pa) is the SI unit of pressure, other units like atmospheres (atm), bar, and millimeters of mercury (mmHg) are also widely used. Each of these units can be converted to pascals, providing a standard reference for comparison and calculations.</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Unit</th>
+              <th>Symbol</th>
+              <th>Equivalence in Pascals (Pa)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Pascal</td>
+              <td>Pa</td>
+              <td>1 Pa</td>
+            </tr>
+            <tr>
+              <td>Atmosphere</td>
+              <td>atm</td>
+              <td>101,325 Pa</td>
+            </tr>
+            <tr>
+              <td>Bar</td>
+              <td>bar</td>
+              <td>100,000 Pa</td>
+            </tr>
+            <tr>
+              <td>Millimeter of Mercury</td>
+              <td>mmHg</td>
+              <td>133.322 Pa</td>
+            </tr>
+            <tr>
+              <td>Torr</td>
+              <td>Torr</td>
+              <td>133.322 Pa</td>
+            </tr>
+            <tr>
+              <td>Pound per Square Inch</td>
+              <td>psi</td>
+              <td>6,894.76 Pa</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p></p>
+    
+        <table width="100%"><tr><td>
+            <h3>Check for Understanding</h3>
+            <p>A rectangular block with a weight of 50 N is placed on top of a tray of sand. The base of the block has a length of 2 m and a width of 1 m. What is the pressure applied by the block?</p>
+            
+            <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
+            <div id="ans1" style="display:none">
+                <p>$P = \dfrac{F}{A}$</p>
+                <p>$\>\>\>\>= \dfrac{50 \text{ N}}{2 \text{ m} \times 1 \text{ m}}$</p>
+                <p>$\>\>\>\>= \dfrac{50 \text{ N}}{2 \text{ m}^2}$</p>
+                <p>$\>\>\>\>= 25 \text{ Pa}$
+            </p>
+            </div>
+            
+            </td></tr></table>
+        
+        
+    </body>
+</html>
+

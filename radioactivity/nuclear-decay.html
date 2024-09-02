@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radioactive Decay</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+    <script src="../plotly-latest.min.js"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+
+        <h2>Radioactive Decay</h2>
+    
+        <p><strong>Radioactive decay</strong> is the <strong>spontaneous</strong> and <strong>random</strong> emission of radiation from a radioactive source when an unstable nucleus disintegrates to acquire a more stable state. . The three main types of radiation are alpha (α), beta (β), and gamma (γ) rays. They consist of α-particles, β-particles and high frequency electromagnetic photons respectively.</p>
+        
+            <p>- spontaneous means the process is unaffected by any external factors, such as temperature or pressure. And the process is unaffected by chemical reaction.</p>
+            <p>- random emission means it is impossible to predict which nucleus will decay next, but each has the same constant probability of decay per unit time. The probability of decay follows the laws of statistics.</p>
+
+        
+        <p>Radioactive decays can be expressed in the form of equations typically indicating the initial radioactive substance, the resulting decay products, and the specific type of emitted particles or radiation involved in the process. The <strong>conservation of nucleons</strong> in a radioactive decay equation is a fundamental principle in nuclear physics that states that the total number of nucleons (protons and neutrons) remains constant before and after a radioactive decay event. In other words, the sum of protons and neutrons in the parent nucleus is equal to the sum of protons and neutrons in the daughter nuclei and any emitted particles (such as alpha or beta particles). This conservation principle ensures that the total mass and charge within a nuclear reaction remains constant, preserving fundamental properties of the nucleus during radioactive decay processes, even though individual protons and neutrons may change their states or positions within the nucleus.</p>
+        
+        <h3>Alpha Decay</h3>
+        <p>An alpha decay is the process by which a nucleus emits an alpha (α) particle. An α-particle is a doubly positively charged helium nucleus consisting of 2 protons and 2 neutrons ($^4_2\text{He}^{2+}$). It is emitted with discrete energy. This emission results in a new atom with a mass number smaller by 4 and an atomic number smaller by 2 than the original atom.</p>
+        <p>The general equation for alpha decays can be represented by:$$^A_Z\text{X}\rightarrow{}^{A-4}_{Z-2}\text{Y}+^4_2\text{He}$$</p>
+        <p>For example,$$^{226}_{88}\text{Ra}\rightarrow{}^{222}_{86}\text{Rn}+^4_2\text{He}$$</p>
+        
+        <h3>Beta Decay</h3>
+        <p>A begta decay is the process by which a nucleus emits a beta (β) particle. A β-particle is a high speed electron originating from the nucleus through nuclear transformation in which a neutron changes into a proton and an electron.
+            $$^1_0\text{n}\rightarrow{}^1_1\text{p}+^0_{-1}\text{e}$$ 
+            
+            It occurs for nuclides with too high a neutron–proton ratio.</p>
+        <p>This emission does not change the nucleon number of the parent nuclide. So the new atom has the same mass number but an atomic number that is larger by 1. The general equation for beta decays can be represented by:$$^A_Z\text{X}\rightarrow{}^{A}_{Z+1}\text{Y}+^0_{-1}\text{e}$$</p>
+        <p>For example,$$^{214}_{82}\text{Pb}\rightarrow{}^{214}_{83}\text{Bi}+^0_{-1}\text{e}$$</p>
+        
+        <h3>Gamma Decay</h3>
+        <p>A gamma decay is the process by which a nucleus emits a gamma (γ) particle. A γ-particle is a high frequency electromagnetic photon of discrete energy spectrum. It is emitted when a radioactive nuclide in its excited state (denoted by *) returns to ground state. It often follows another decay process such as alpha or beta emission which has left the daughter nucleus in an excited state. This emission does not result in any change in nuclear structure
+.
+            $$^A_X\text{X}^*\rightarrow{}^A_Z\text{X}+\gamma$$ 
+            
+        For example, a beta decay can leave a nuclide in its nuclide state
+            $$^{24}_{11}\text{Na}\rightarrow{}^{24}_{12}\text{Mg*}+^0_{-1}\text{e}$$
+   which is followed by the gamma decay $$^{24}_{12}\text{Mg}^*\rightarrow{}^{24}_{12}\text{Mg}+\gamma$$</p>
+
+      
+        
+        <div id="footer"></div>        
+    </body>
+</html>
+

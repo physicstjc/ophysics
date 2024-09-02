@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Measuring Radioactivity</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+    <script src="../plotly-latest.min.js"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+
+        <h2>Measuring Radioactivity</h2>
+       
+        <p>Radioactivity is measured experimentally using radiation detectors such as Geiger-Muller tubes. The process involves placing the radioactive source near the detector, allowing the radiation (alpha, beta or gamma particles) to ionize the molecules of the detector material. This process involves knocking electrons out of their atomic orbits, creating pairs of positively charged ions and free electrons. These free electrons are then attracted to the positively charged anode in the detector, creating an electrical current or pulse that can be measured. These electrical signals are then converted into counts or a measurable output.</p>
+        
+        <figure><a title="Geiger_Mueller_Counter_with_Circuit-de.svg: Dirk Hünniger
+derivative work: Nevdka, CC BY-SA 3.0 &lt;http://creativecommons.org/licenses/by-sa/3.0/&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Geiger_Mueller_Counter_with_Circuit-en.svg"><img width="512" alt="Geiger Mueller Counter with Circuit-en" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Geiger_Mueller_Counter_with_Circuit-en.svg/512px-Geiger_Mueller_Counter_with_Circuit-en.svg.png"></a>
+        <figcaption>Geiger-Muller counter.</figcaption>
+        </figure>
+        
+        <p><strong>Background radiation</strong>, due to naturally occurring radiation in the environment, is often subtracted from the measurements to isolate the radiation emitted by the radioactive source. The resulting data can be used to calculate the activity of the source or assess radiation exposure levels, crucial for various applications in fields like nuclear physics, healthcare, and radiation protection.</p>
+        
+        <p>The following is a simulation of an experiment carried out with two sources of radiation: a banana (containing trace amounts of potassium-40 and a cesium-137 sample. The background count can also be simulated. Using the counts per minute (CPM) values, the actual CPM for each radiation source is obtained by deducting the background count from the total CPM.</p>
+        
+        <div id="controls">
+        <label for="source">Source:</label>
+        <select id="source">
+            <option value="background">Background</option>
+            <option value="banana">Banana</option>
+            <option value="cesium-137">Cesium-137</option>
+        </select>
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+        <br>
+        <label for="view">View:</label>
+        <select id="view">
+            <option value="cumulative">Cumulative Count</option>
+            <option value="sample">Sample Count</option>
+            <option value="cpm">Counts Per Minute (CPM)</option>
+        </select>
+        <div>
+            <span>Total Count: <span id="totalCount" class="lcd">0</span></span>
+            <span>Time: <span id="timer" class="lcd timer">0</span>s</span>
+        </div>
+    </div>
+    <div id="plot" style="width: 100%; height: 300px;"></div>
+    <script>
+        const totalCountDisplay = document.getElementById('totalCount');
+        const timerDisplay = document.getElementById('timer');
+        const startButton = document.getElementById('start');
+        const stopButton = document.getElementById('stop');
+        const sourceSelect = document.getElementById('source');
+        const viewSelect = document.getElementById('view');
+
+        let totalCount = 0;
+        let timer = 0;
+        let interval;
+        let counting = false;
+        let sampleCounts = [];
+        let cumulativeCounts = [];
+        let cpmCounts = [];
+
+        const cumulativeData = {
+            x: [],
+            y: [],
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Cumulative Count'
+        };
+
+        const sampleData = {
+            x: [],
+            y: [],
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Sample Count',
+            visible: false
+        };
+
+        const cpmData = {
+            x: [],
+            y: [],
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Counts Per Minute (CPM)',
+            visible: false
+        };
+
+        const layout = {
+            title: 'Geiger-Muller Counter Simulation',
+            xaxis: { title: 'Time (s)' },
+            yaxis: { title: 'Counts' }
+        };
+
+        Plotly.newPlot('plot', [cumulativeData, sampleData, cpmData], layout);
+
+        function startCounting() {
+            if (counting) return;
+            counting = true;
+            interval = setInterval(() => {
+                timer++;
+                const sampleCount = getRandomCount(sourceSelect.value);
+                totalCount += sampleCount;
+                totalCountDisplay.textContent = totalCount;
+                timerDisplay.textContent = timer;
+
+                cumulativeCounts.push(totalCount);
+                cumulativeData.x.push(timer);
+                cumulativeData.y.push(totalCount);
+
+                sampleCounts.push(sampleCount);
+                sampleData.x.push(timer);
+                sampleData.y.push(sampleCount);
+
+                const cpm = calculateCPM();
+                cpmCounts.push(cpm);
+                cpmData.x.push(timer);
+                cpmData.y.push(cpm);
+
+                updatePlot();
+            }, 1000);
+        }
+
+        function stopCounting() {
+            counting = false;
+            clearInterval(interval);
+        }
+
+        function getRandomCount(source) {
+            switch (source) {
+                case 'background': return Math.floor(Math.random() * 4.2);
+                case 'banana': return Math.floor(Math.random() * 6) + 3;
+                case 'cesium-137': return Math.floor(Math.random() * 12) + 7;
+                default: return 0;
+            }
+        }
+
+        function calculateCPM() {
+            const elapsedMinutes = timer / 60;
+            return elapsedMinutes > 0 ? totalCount / elapsedMinutes : totalCount;
+        }
+
+        function updateView() {
+            const view = viewSelect.value;
+            cumulativeData.visible = view === 'cumulative';
+            sampleData.visible = view === 'sample';
+            cpmData.visible = view === 'cpm';
+            layout.yaxis.title = view === 'cpm' ? 'CPM' : 'Counts';
+            updatePlot();
+        }
+
+        function updatePlot() {
+            Plotly.update('plot', [cumulativeData, sampleData, cpmData], layout);
+        }
+
+        function resetData() {
+            totalCount = 0;
+            timer = 0;
+            totalCountDisplay.textContent = totalCount;
+            timerDisplay.textContent = timer;
+            sampleCounts = [];
+            cumulativeCounts = [];
+            cpmCounts = [];
+
+            cumulativeData.x = [];
+            cumulativeData.y = [];
+            sampleData.x = [];
+            sampleData.y = [];
+            cpmData.x = [];
+            cpmData.y = [];
+            updatePlot();
+        }
+
+        startButton.addEventListener('click', startCounting);
+        stopButton.addEventListener('click', stopCounting);
+        viewSelect.addEventListener('change', updateView);
+        sourceSelect.addEventListener('change', resetData);
+
+        updateView();
+    </script>
+        
+        
+        <p><strong>Half-life</strong> is the time taken for half of the radioactive atoms in a sample to undergo radioactive decay. This time interval is characteristic of each radioactive isotope and remains constant for that isotope. During one half-life, half of the radioactive material decays, emitting radiation or particles, while the other half remains unchanged. The concept of half-life is crucial for understanding the rate of decay and predicting how much radioactive material will remain over time.</p>
+        
+        Using the simulation below, you can observe the effect of half-life on the rate at which the number of radioactive particles decay, represented by the changing of colour from grey to red.
+        
+        <iframe src="https://physicstjc.github.io/sls/radioactive-decay/" width=100% height=480px style="border:none;"></iframe>
+        
+        <p>The graph in the applet below shows how the amount of radioactive atoms changes in a sample with time. By moving the first slider, you can see how the decay curve reduces by half the value after each half-life. By moving the second slider, you can see how the curve changes with the value of half-life.</p>
+        
+        <iframe scrolling="no" title="Half-Life Action!!!" src="https://www.geogebra.org/material/iframe/id/rjfgfaue/width/688/height/501/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/true/sdz/true/ctl/false" width="688px" height="501px" style="border:0px;"> </iframe>
+        
+                  
+        <table width="100%"><tr><td>
+            <h3>Check for Understanding</h3>
+            <p>A source contains a radioactive material. Without the radioactive source present, a detector records a background count rate of 20 counts per minute.</p>
+            <p>This source is placed in a fixed position near the detector. Initially a count rate of 520 per minute is recorded.</p>
+            <p>What count rate is recorded after a time of two half-lifes of the radioactive source?</p>
+            <ol type="A"><li>125 counts per minute</li>
+            <li>130 counts per minute</li>
+            <li>135 counts per minute</li>
+            <li>145 counts per minute</li></ol>
+            
+            <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
+            <div id="ans1" style="display:none">
+            <p>A. Count Rate = Measurement - Background Count Rate = 520 - 20 = 500 counts per minute</p>
+            <p>After two half-lifes, count rate = $(\dfrac{1}{2})^2 \times 500 = 125$ counts per minute</p>
+            </div>
+            
+            </td></tr></table>
+        
+            
+        
+        <div id="footer"></div>        
+    </body>
+</html>
+

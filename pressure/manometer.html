@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manometer</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+    <script src="../plotly-latest.min.js"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+        
+        <h2>Manometer</h2>
+        
+        <p>A manometer is a device used to measure the pressure of a gas or liquid. It typically consists of a U-shaped tube filled with a liquid, often mercury or a colored liquid, and is open to the atmosphere at one or both ends. When measuring the pressure of a gas or liquid, one end of the U-shaped tube is connected to the source of the pressure, and the other end is left open to the atmosphere. The difference in height between the two liquid columns in the U-shaped tube is directly related to the pressure difference between the two points.</p>
+        
+        <p>The basic principle behind a manometer is the balancing of pressures. The pressure of the gas or liquid being measured pushes the liquid in the tube, causing an imbalance in the levels of the liquid in the two legs of the U-shaped tube. The height difference between the two liquid columns is proportional to the pressure difference. By measuring this height difference, often in millimeters or inches, the pressure of the gas or liquid can be determined.</p>
+        
+        <p>In the diagram below, the pressure in the flask <i>P</i><sub>1</sub> is smaller than the atmospheric pressure <i>P</i><sub>2</sub>. This results in the height of the column of liquid in the side of the flask <i>h</i><sub>1</sub> being taller than that of the side exposed to the atmosphere <i>h</i><sub>2</sub>. The relationship between the difference in pressure and the difference in height can be expressed as:</p>
+        
+        $$P_2 - P_1 = (h_1 - h_2) \rho g$$    
+        
+        <p>If mercury of density 13,600 kg m<sup>-3</sup> is used in the tube, atmospheric pressure is 1.03 × 10<sup>5</sup> Pa and the heights h<sub>1</sub> and h<sub>2</sub> are 0.20 m and 0.10 m respectively, the pressure of the gas in the flask can be shown:</p>
+        
+        $$1.03 \times 10^5 \text{ Pa} - P_1 = (0.20 - 0.10)\text{ m} \times 13600 \text{ kg m}^{-3} \times 10\text{ m s}^{-2}$$
+        $$P_1 = 89400 \text{ Pa}$$
+        
+        <figure>        <a title="Steven Baltakatei Sandoval, CC BY-SA 4.0 &lt;https://creativecommons.org/licenses/by-sa/4.0&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Fluid_tube_manometer_P1_lt_P2_rho_h_plain.svg"><img width="512" alt="Fluid tube manometer P1 lt P2 rho h plain" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Fluid_tube_manometer_P1_lt_P2_rho_h_plain.svg/512px-Fluid_tube_manometer_P1_lt_P2_rho_h_plain.svg.png"></a>
+        <figcaption>The difference in height h<sub>1</sub> and h<sub>2</sub> shows the difference between pressure P<sub>1</sub> and P<sub>2</sub></figcaption>
+        </figure>
+        
+        <p>When the pressure in the flask <i>P</i><sub>1</sub> is greater than the atmospheric pressure <i>P</i><sub>2</sub>. This results in the column of liquid in the side of the flask being lower. The relationship between the difference in pressure and the difference in height can be expressed as</p>
+        $$P_1 - P_2 = (h_2 - h_1) \rho g$$    
+        <figure>
+            <img width="450" alt="Manometer" src="manometer-a.png">
+            <figcaption>The positions of the liquid when <i>P</i><sub>1</sub> is more than <i>P</i><sub>2</sub></figcaption>
+        </figure>
+        
+        <p>Use the following simulation to practise reading the pressure in the flask. The unit used is cmHg.</p>
+        <iframe scrolling="no" title="U Tube Manometer" src="https://www.geogebra.org/material/iframe/id/qyuncz3h/width/640/height/480/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width="640px" height="480px" style="border:0px;"> </iframe>    
+    </body>
+</html>
+

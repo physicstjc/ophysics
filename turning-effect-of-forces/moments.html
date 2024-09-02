@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centre of Gravity and Stability</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+    <script src="../plotly-latest.min.js"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+        <h2>Moments</h2>
+        <p>The moment of a force, also known as torque, about a pivot is a measure of its turning effect. Mathematically, it is defined as the product of the force applied and the perpendicular distance from the pivot to the line of action of the force. The formula for torque (<i>τ</i>) is:</p>
+        
+        $$\tau = F \times d$$
+        
+        where $\tau$ is the moment or torque,
+        <br>$F$ is the force, and
+        <br>$d$ is the perpendicular distance from pivot to line of action of force
+        
+        <p>The unit of torque is the Newton-meter (N m).</p>
+        
+        <p>Everyday examples of the moment of a force can be found in numerous situations:
+
+            <ul><li><strong>Doors and Levers</strong>: When you push or pull a door, the turning effect (torque) is determined by the force you apply and the distance from the hinge to the point where you apply the force.</li>
+            <li><strong>Wrenches and Bolts</strong>: When tightening or loosening a bolt with a wrench, the torque applied is the force you exert on the wrench multiplied by the length of the wrench.</li>
+            <li><strong>Opening a Bottle</strong>: When you use a bottle opener to open a bottle, the turning effect is created by the force applied to the bottle cap and the distance from the pivot point (the edge of the cap) to where you apply the force.</li></ul>
+        
+        <table width="100%"><tr><td>
+            <h3>Extension</h3>
+            <p><i>Note that the use of trigonometry to find perpendicular distance between line of action and the force is not required in the O-level syllabus</i></p>
+            
+            <button id="btn1" data-div="ans1" onclick="reveal(this)">Read on anyway...</button>
+            <div id="ans1" style="display:none">
+            <p>Using the applet below, you can adjust the direction of the force and observe how the perpendicular distance from its line of action and pivot is calculated.</p>
+        
+        <p>The formula for torque can hence be written as:
+
+        $$\tau = F \times L \sin{\theta}$$
+        
+        where $\tau$ is the moment or torque,
+        <br>$F$ is the force,
+        <br>$L$ is the length of the lever, and
+        <br>$\theta$ is the angle between the line of action of the force and the lever.</p>
+        
+        
+        <iframe scrolling="no" title="Moment of a Force" src="https://www.geogebra.org/material/iframe/id/qzyczffy/width/638/height/478/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/true/rc/false/ld/false/sdz/false/ctl/false" width="100%" height="478px" style="border:0px;"> </iframe>
+            
+                
+            
+            </div>
+            
+            </td></tr></table>
+        
+      
+        <p>Understanding the moment of a force is crucial in designing and analyzing structures, machines, and various mechanical systems. It helps engineers and designers ensure that the components can withstand the applied forces and function effectively.</p>
+        
+        <h3>Direction of Turning Effect</h3>
+
+        The moment of a force can be said to be either clockwise or anticlockwise when looking at the plane in which the object is able to rotate. Consider a seesaw as an example: if a person applies a downward force on the right end of the seesaw, causing it to rotate, the resulting moment is considered clockwise. Conversely, if the force is applied to the left end, inducing a rotation in the opposite direction, it is deemed an anticlockwise moment. 
+        <div id="footer"></div>        
+    </body>
+</html>
+

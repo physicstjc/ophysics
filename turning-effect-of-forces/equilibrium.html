@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equilibrium</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+    <script src="../plotly-latest.min.js"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+        <h2>Equilibrium</h2>
+    
+        <h3>Principle of Moments</h3>
+        
+        <blockquote>The principle of moments states that for a body to be in equilibrium, the sum of the clockwise moments about any axis must be equal to the sum of the anticlockwise moments about the same axis.</blockquote>
+
+        <p>To apply this principle to new situations or solve related problems, follow these steps:
+        </p>
+    
+        <ol>
+            <li>Identify the pivot point or axis about which moments are to be calculated.</li>
+            <li>Determine all the forces acting on the object and their respective distances from the pivot point.</li>
+            <li>Calculate the moment of each force by multiplying the force by its perpendicular distance from the pivot.</li>
+            <li>Categorize the moments into clockwise and anticlockwise directions.</li>
+            <li>Sum up all the clockwise moments and all the anticlockwise moments.</li>
+            <li>For the object to be in equilibrium, set the sum of the clockwise moments equal to the sum of the anticlockwise moments and solve for any unknowns.</li>
+        </ol>
+
+        <table width="100%"><tr><td>
+            <h3>Check for Understanding</h3>
+            <p>A uniform beam of length 4.0 m and weight 200 N is pivoted at its left end and in equilibrium. A vertical force $F$ is applied at a distance of 3.0 m from the left end of the beam. The weight of the beam acts vertically downward at its center.</p>
+            
+            <p>Determine the magnitude and direction of the force $F$ required to keep the beam in equilibrium.</p>
+            
+            <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
+            <div id="ans1" style="display:none">
+            <p>According to the principle of moments, the sum of the clockwise moments is equal to the sum of the anticlockwise moments for a body in equilibrium.</p>
+            
+                
+                <p>Taking moments about the left end of the beam, clockwise moment is due to the weight of the beam at its centre at a distance of 2.0 m from the pivot.</p>
+                
+                <p>Therefore, it must be balanced by an anti-clockwise moment due to force $F$ at a distance of 3.0 m from the chosen pivot. The direction force $F$ must be upward, as shown in the diagram below.</p>
+            
+                <img src="moments-about-a-beam.png">
+                
+                <p>
+                Since, sum of clockwise moments = sum of anti-clockwise moments,<br>
+                200 N × 2.0 m = <i>F</i> × 3.0 m<br>
+                <i>F</i> ≈ 133 N (upward)
+                </p>
+            
+            </div>
+            
+            </td></tr></table>
+
+    <div class="quiz-container">
+            <h3>Check for Understanding</h3>
+            <div class="problem" id="problem"></div><br>
+            <div><input type="text" id="answer" placeholder="Enter your answer" style="width:200px;"><span id="unit"></span></div>
+        
+            <div class="button-container"><button id="submit" onclick="checkAnswer()">Submit</button>    
+            <button id="previous" onclick="previousProblem()">Previous</button>
+            <button id="next" onclick="nextProblem()">Next</button></div>
+            <div class="feedback" id="feedback"></div>
+            <div class="score" id="score">Score: 0/0</div>
+        
+    </div>
+        
+        <script>
+        let currentProblemIndex = 0;
+        let score = 0;
+        let attempts = 0;
+        const attemptedProblems = [];
+
+        const problems = [
+            {
+                question: "A 3-meter-long beam is balanced at its center. If a 20 N weight is hung 1 meter from one end, what force must be applied at the other end to keep the beam in equilibrium?",
+                correctAnswer: 10,
+                unit: "N",
+                equation: "Moment = Force × Distance",
+                explanation: "Using the principle of moments, the moment on one side must equal the moment on the other side. Moment = 20 N × 1 m = 20 Nm. To balance, 10 N × 2 m = 20 Nm, so the force needed is 10 N."
+            },
+            {
+                question: "A seesaw is balanced with a child weighing 300 N sitting 2 meters from the pivot. If an adult weighing 600 N sits on the other side, how far from the pivot must the adult sit to keep the seesaw balanced?",
+                correctAnswer: 1,
+                unit: "m",
+                equation: "Moment = Force × Distance",
+                explanation: "Using the principle of moments, the moments must balance. Clockwise moment = 300 N × 2 m = 600 Nm. To balance, anticlockwise moment = 600 N × Distance. Distance = 600 Nm / 600 N = 1 m."
+            },
+            {
+                question: "A uniform meter ruler is pivoted at its 50 cm mark. A 10 N weight is suspended at the 30 cm mark. At which mark should a 20 N weight be placed to balance the ruler?",
+                correctAnswer: 55,
+                unit: "cm",
+                equation: "Moment = Force × Distance",
+                explanation: "Using the principle of moments, 10 N × (50 cm - 30 cm) = 20 N × (x cm - 50 cm). Solving for x, we get 10 N × 20 cm = 20 N × (x - 50 cm). 200 = 20(x - 50), x = 60 cm."
+            },
+            {
+                question: "A beam is 4 meters long and is pivoted at one end. A weight of 50 N is placed 1 meter from the pivot. How far from the pivot should an upward 20 N force be appled to balance the beam?",
+                correctAnswer: 2.5,
+                unit: "m",
+                equation: "Moment = Force × Distance",
+                explanation: "Using the principle of moments, the moments must balance. 50 N × 1 m = 20 N × Distance. Distance = 50 Nm / 20 N = 2.5 m."
+            }
+        ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    shuffle(problems);
+
+    function displayProblem() {
+      if (currentProblemIndex >= problems.length) {
+        document.getElementById('problem').innerText = 'Congratulations! You have completed all problems.';
+        document.getElementById('answer').style.display = 'none';
+        document.getElementById('unit').style.display = 'none';
+        document.getElementById('submit').style.display = 'none';
+        document.getElementById('previous').style.display = 'none';
+        document.getElementById('next').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('problem').innerText = problems[currentProblemIndex].question;
+      document.getElementById('unit').innerText = problems[currentProblemIndex].unit;
+      document.getElementById('feedback').innerText = '';
+      const answerInput = document.getElementById('answer');
+      const submitButton = document.getElementById('submit');
+
+      if (attemptedProblems[currentProblemIndex]) {
+        answerInput.value = attemptedProblems[currentProblemIndex].userAnswer;
+        answerInput.disabled = true;
+        submitButton.disabled = true;
+        submitButton.classList.add('disabled');
+        document.getElementById('feedback').innerText = attemptedProblems[currentProblemIndex].feedback;
+      } else {
+        answerInput.value = '';
+        answerInput.disabled = false;
+        submitButton.disabled = false;
+        submitButton.classList.remove('disabled');
+        document.getElementById('feedback').innerText = '';
+      }
+    }
+
+    function updateScore() {
+      document.getElementById('score').innerText = `Score: ${score}/${attempts}`;
+    }
+
+    function checkAnswer() {
+      const userAnswer = parseFloat(document.getElementById('answer').value);
+      const correctAnswer = problems[currentProblemIndex].correctAnswer;
+
+      attempts++;
+      let feedback = '';
+      if (userAnswer === correctAnswer) {
+        score++;
+        feedback = 'Correct!';
+        document.getElementById('feedback').classList.add('correct');
+        document.getElementById('feedback').classList.remove('incorrect');
+      } else {
+        feedback = 'Incorrect. ' + problems[currentProblemIndex].explanation;
+        document.getElementById('feedback').classList.add('incorrect');
+        document.getElementById('feedback').classList.remove('correct');
+      }
+
+      updateScore();
+      attemptedProblems[currentProblemIndex] = { userAnswer, feedback };
+
+      document.getElementById('answer').disabled = true;
+      document.getElementById('submit').disabled = true;
+      document.getElementById('submit').classList.add('disabled');
+      document.getElementById('feedback').innerText = feedback;
+    }
+
+    function nextProblem() {
+      if (currentProblemIndex < problems.length - 1) {
+        currentProblemIndex++;
+        displayProblem();
+      }
+    }
+
+    function previousProblem() {
+      if (currentProblemIndex > 0) {
+        currentProblemIndex--;
+        displayProblem();
+      }
+    }
+
+    displayProblem();
+  </script>
+        
+        <div id="footer"></div>        
+    </body>
+</html>
+

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrical Power</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        <h2>Electrical Power</h2>
+                
+        <p>Electrical power $P$ is given by</p>
+        
+        $$P = IV$$
+        
+        <p align="center">where $P$ is the electrical power (unit: watt, W), <br>$I$ is electric current (unit: ampere, A), and<br>$V$ is the potential difference (unit: volt, V)</p>
+        
+        <p>The rate of energy converted from electrical energy to other forms as a 2.0 A current passes through a device experiencing a potential difference of 3.0 V is, therefore, 6.0 W or 6.0 J per second.</p>
+        
+        <p>Substituting the relationship $V = IR$ or $I =\dfrac{V}{R}$ into the equation, we can obtain the alternative equations $$P = I^2R$$ and $$P = \dfrac{V^2}{R}$$ respectively. Any of these 3 equations can be used to calculate electrical power, and the choice on which to use depends or whether current or potential difference gets to be constant.</p>
+        
+        <table width="100%"><tr><td>
+            <h3>Check for Understanding</h3>
+            <p>Light bulb A has a resistance of 2 $\Omega$ and light bulb B has a resistance of 4 $\Omega$. Which of the light bulbs is brighter when they are arranged:</p>
+            <ol>
+            <li>in series?</li>
+            <li>in parallel?</li></ol>
+            
+            
+            <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
+            <div id="ans1" style="display:none">
+             <ol>
+            <li>In series, the light bulb with the larger resistance shines brigher. Since current is the same through both bulbs, we can compare the power output by referrring to the ratio of power using the equation $P = I^2R$.</li>$$\dfrac{P_A}{P_B}=\dfrac{I_A^2R_A}{I_B^2R_B} = \dfrac{R_A}{R_B} = \dfrac{2}{4} = 0.5$$ In fact, bulb B has twice the power of bulb A.
+            <li>in parallel, it is the bulb with smaller resistance that is brighter. Since potential difference is the same across both bulbs ($V_A = V_B$), we can show this using the equation $P = \dfrac{V^2}{R}$. $$\dfrac{P_A}{P_B}=\dfrac{\frac{V_A^2}{R_A}}{\frac{V_B^2}{R_B}} = \dfrac{R_B}{R_A} = \dfrac{4}{2} = 2 $$ Therefore, bulb A has twice the power of bulb B.</li></ol></div>
+            
+            </td></tr></table>
+        
+       
+        <div id="footer"></div>        
+    </body>
+</html>
+

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrical Safety</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        <h2>Electrical Safety</h2>
+        
+        <h3>Common Dangers</h3>
+        
+        <p>Electric shocks and fire are usually caused by:</p>
+        <ol><li>Using wires with <strong>damaged insulation</strong> which could lead to electric shock if a bare or exposed live wire is touched or fire due to a short circuit that causes overheating.</li>
+        <li><strong>Overloading</strong> of cables which could lead to fires. Overheating could be caused by connecting too many applicances to one power outlet or the use of thin wires for large currents. A <a href="https://www.channelnewsasia.com/singapore/water-heater-safety-electrocution-deaths-lakeside-experts-2558816">recent accident in Singapore</a> that caused the death of 3 people occurred as a result of the overloading of cables connected to a water heater.</li>
+        <li><strong>Water</strong>, or rather, the ions dissolved in water could provide an alternative path for current to flow. </li></ol>
+        
+        <h3>Wiring in a Mains Plug</h3>
+    
+        <p>In electrical systems, <strong>live</strong>, <strong>neutral</strong>, and <strong>earth</strong> are terms used to describe different types of wires that perform specific functions:</p>
+
+        <ul>
+          <li><strong>Live wire</strong>: This wire carries the current from the power source to the electrical device. In Singapore, it is typically color-coded as brown. The live wire is the most dangerous because it is always at a high voltage relative to the neutral and earth wires.</li>
+          <li><strong>Neutral wire</strong>: This wire completes the electrical circuit by carrying the current back to the power source. In Singapore, it is usually color-coded as blue. The neutral wire is at or close to zero voltage, providing a return path for the current.</li>
+          <li><strong>Earth (or Ground) Wire</strong>: This wire provides a safety path for electrical current to flow to the ground in case of a fault, preventing electric shocks. In Singapore, it is typically color-coded as yellow-green. The earth wire is connected to the metal casing of appliances and is not meant to carry current during normal operation.</li>
+        </ul>
+
+    
+        <h3>Safety Features in the Household Circuit</h3>
+        
+        <ol><li>A <strong>fuse</strong> is a safety device connected to the live wire to prevent excessive current flow. It consists of a short piece of thin wire that is designed to melt and break (thus creating an open circuit) when the current passing through it exceeds its specified value. The fuse must be replaced after it blows. </li>
+        <li>A <strong>circuit breaker</strong> is a safety device connected to live wires which can switch off the electrical supply when a large current flows through it. Circuit breakers are usually electromagnetic switches which can be conveniently reset after the fault has been corrected.</li>
+            <li>The <strong>earth wire</strong>, when used, is connected to the metal casing of an appliance and directed to the ground. In the event that a stray wire or any fault causes the live wire to be connected to the metal casing, the earth wire provides a path to the ground for the current when the switch is closed, causing a sudden surge in current which then either blows the fuse or activates the circuit breaker.</li>
+            <li><strong>Double insulation</strong> refers to the insulation of both the electrical cables from the internal components and the insulation of the internal components from the external casings. The external casing might be made of a non-conducting material such as plastic.</li>
+        </ol>
+        
+        <p>Use the applet below to observe the parts of the electric circuit that becomes live (indicated with red lines) when the switch is closed and a fault occurs. Think about how the fuse and the earth wire helps to switch the circuit off automatically when a fault occurs, thus preventing electric shocks or fires.</p>
+        <iframe scrolling="no" title="Practical Electricity" src="https://www.geogebra.org/material/iframe/id/pmatpapk/width/640/height/480/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width="100%" height="480px" style="border:0px;"> </iframe>
+        
+        
+        
+        <table width="100%"><tr><td>
+            <h3>Check for Understanding</h3>
+            <p>1. How do the safety features in a household circuit prevent the metal casing in a household appliance from staying live when a stray live wire becomes connected to its metal casing?</p>
+            
+            <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
+            <div id="ans1" style="display:none">
+            <p>For a device using a metal casing, an <strong>earth wire</strong> and a <strong>fuse</strong> or <strong>circuit breaker</strong> will prevent the device from staying live. When the switch comes on, a large current will flow to the earth thus blowing the fuse or activating the circuit breaker.</p>
+            
+            <p>For a device using <strong>double insulation</strong>, even if the live wire touches the internal components, the user is still insulated from the live components due to the external casing (e.g. plastic).</p></div>
+            
+            </td></tr></table>
+        
+               <table width="100%"><tr><td>
+          
+            <p>2. How do the safety features in a household circuit prevent the wires from overheating when the live wire in an applicance becomes connected directly to the neutral wire?</p>
+            
+            <button id="btn1" data-div="ans2" onclick="reveal(this)">Reveal Answer</button>
+            <div id="ans2" style="display:none">
+            <p>When the switch is closed, a large current passes directly from the live wire to the neutral wire, bypassing the heating element. (This is called a short circuit.) The heat generated then blows the <strong>fuse</strong> or activates the <strong>circuit breaker</strong>, thus preventing further current flow.</p></div>
+            
+            </td></tr></table>
+        
+        <div id="footer"></div>        
+    </body>
+</html>
+

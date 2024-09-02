@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydraulic Press</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+    <script src="../plotly-latest.min.js"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+        <h2>Hydraulic Press</h2>
+        
+        <p>A hydraulic press is a machine that utilizes the principles of Pascal's law to generate a compressive force by applying pressure. Pascal's law states that a change in pressure applied to an enclosed fluid is transmitted undiminished to all portions of the fluid and to the walls of its container.</p>
+        
+        <p>The hydraulic press consists of two sets of cylinders, each with a movable piston. The piston can move up and down inside the cylinder. Hydraulic fluid (usually oil) is used to transmit force. The fluid fills the space between the piston and the walls of the cylinder.</p>
+        
+        <p>A force is applied to a small piston (the input piston) in one part of the hydraulic press. The hydraulic fluid transmits the pressure to a larger piston (the output piston) located in another part of the hydraulic press. Since the pressure is transmitted undiminished, the force acting on the larger piston is much greater than the force applied to the smaller piston. This is due to the relationship between force, pressure, and area (as expressed in the pressure equation $P = \dfrac{F}{A}$. The larger piston, being subject to this increased pressure, experiences a greater force.</p>
+        
+        <p>Using the applet below, investigate the effect on the force on the output piston as the cross-sectional areas of the cylinders change.</p>
+        
+        <iframe scrolling="no" title="Hydraulic Press" src="https://www.geogebra.org/material/iframe/id/egyer7nk/width/638/height/478/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/true/rc/false/ld/false/sdz/false/ctl/false" width="638px" height="478px" style="border:0px;"> </iframe>
+        
+        <table width="100%"><tr><td>
+            <h3>Check for Understanding</h3>
+            <p>A hydraulic press has a small piston with a diameter of 5 cm and a large piston with a diameter of 30 cm. A force of 500 N is applied to the small piston.</p>
+            
+            <p>Calculate the force exerted by the hydraulic press on the larger piston. Assume the hydraulic fluid is incompressible and neglect any friction or losses.</p>
+            
+            <button id="btn1" data-div="ans2" onclick="reveal(this)">Reveal Answer</button>
+            <div id="ans2" style="display:none">
+                <p>Note that the areas of both pistons uses the formula for the area of a circle</p>
+                $A = \pi r^2 = \pi (\dfrac{d}{2})^2$
+                <p>where $A$ is the area
+                <br>$r$ is the radius
+                <br>$d$ is the diameter</p>
+                <p>Area of small piston, $A_1 = \pi \times (0.025)^2 = 0.00196 \text{ m}^2$</p>
+                <p>Area of large piston, $A_2 = \pi \times (0.15)^2 = 0.0707 \text{ m}^2$</p>
+                
+                <p>Pressure on the small piston, $P_1 = \dfrac{F_1}{A_1} = \dfrac{500 \text{ N}}{0.00196 \text{ m}^2} = 2.55 \times 10^5 \text{ Pa}$</p>
+                <p>Force on the large piston, $F_2 = P_1 \times A_2 = 2.55 \times 10^5 \text{ Pa} \times 0.0707 \text{ m}^2 \approx 18 000 \text{ N}$</p>
+            </div>
+            
+            </td></tr></table>
+        
+    </body>
+</html>
+
