@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    </head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+        
+        <h2>Power</h2>
+        <h3>Definition</h3>
+        <div class="callout">
+        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
+        <span class="callout-text">Power is defined as the rate of energy transfer.</span></div>
+
+        <p>In mathematical terms, it is expressed as:</p>
+        
+        $$P = \dfrac{E}{t}$$
+        
+        where $P$ is the power,
+        <br>$E$ is the energy transferred, and
+        <br>$t$ is the time taken
+        
+        <p>The standard unit of power is the watt (W), where one watt equals one joule of work done per second (1 W = 1 J/s). For example, if a person does 100 joules of work in 20 seconds, the power exerted is 5.0 watts. </p>
+        
+        
+        <table width="100%"><tr><td>
+            <h3>Check for Understanding</h3>
+            <p>An elevator has a mass of 1000 kg and carries a maximum load of 800 kg. Determine the minimum power that the motor must deliver to lift the fully loaded elevator at a constant speed of 3.0 m s<sup>-1</sup>.</p>
+            
+            <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
+            <div id="ans1" style="display:none">
+                <p>Given that elevator is travelling at constant speed, this means that the work done by the motor is equal to the gain in gravitational potential energy of the elevator and the load.</p>
+                <p>$P = \dfrac{E}{t} = \dfrac{mgh}{t}$</p>
+                <p>$\>\>\>\>= 1800 \text{ kg} \times 10 \text{ N kg}^{-1} \times 3.0 \text{ m s}^{-1}$</p>
+                <p>$\>\>\>\>= 53 000 \text{ W}$
+            </p>
+            </div>
+            
+            </td></tr></table>
+        
+       
+        
+    </body>
+</html>
+

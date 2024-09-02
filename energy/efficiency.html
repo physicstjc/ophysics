@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Efficiency</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    </head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+        
+        <h2>Efficiency</h2>
+        <p>Efficiency is a measure of how effectively energy is converted from one form to another or how effectively a device performs its intended function with minimal energy waste. It is typically expressed as a percentage and calculated using the formula: $$ \text{Efficiency}=\dfrac{\text{Useful Energy Output}}{\text{Total Energy Input}} \times 100%$$</p>
+        <p>For example, if an electric motor consumes 1000 joules of electrical energy and produces 800 joules of mechanical energy, its efficiency would be 80%. This indicates that 80% of the input energy is converted into useful work, while the remaining 20% is lost as heat, sound, or other forms of non-useful energy.</p>
+        
+        <p>The concept of efficiency is crucial in both everyday applications and industrial processes. High-efficiency devices and systems use less energy to perform the same amount of work, leading to cost savings and reduced environmental impact. For instance, energy-efficient appliances, such as LED lights and high-efficiency furnaces, consume less electricity or fuel, resulting in lower utility bills and decreased greenhouse gas emissions. Similarly, in manufacturing, improving the efficiency of machines and processes can enhance productivity and profitability by reducing energy costs and waste.</p>
+        
+        
+        <table width="100%"><tr><td>
+        <h3>Check for Understanding</h3>
+            <p>A filament bulb, rated at 40 W, has an efficiency of 10% in converting its electrical energy supply into light. Calculate the quantity of light energy emitted in five minutes.</p>
+        
+            <button id="btn1" data-div="ans2" onclick="reveal(this)">Reveal Answer</button>
+            <div id="ans2" style="display:none">
+                <p>Energy used by bulb, $E = P \times t = 40 (5 \times 60) = 1.2 \times 10^4 \text{ J}$
+                <p>Since 10% of this energy is converted to light energy, amount of light energy = $0.10 \times 1.2 \times 10^4 \text{ J} = 1.2 \times 10^3 \text{J}$</p>
+                
+            </div>
+            
+            </td></tr></table>
+        <p></p>
+          <div class="quiz-container">
+        <h3>Check for Understanding</h3>
+            <div class="problem" id="problem"></div><br>
+            <div><input type="text" id="answer" placeholder="Enter your answer" style="width:200px">
+            <span id="unit"></span></div>
+            <div><button id="submit" onclick="checkAnswer()">Submit</button>
+            <button id="previous" onclick="previousProblem()">Previous</button>
+            <button id="next" onclick="nextProblem()">Next</button></div>
+            <div class="feedback" id="feedback"></div>
+            <div class="score" id="score">Score: 0/0</div>
+    </div>
+        
+        <script>
+        let currentProblemIndex = 0;
+        let score = 0;
+        let attempts = 0;
+        const attemptedProblems = [];
+
+        const problems = [
+            {
+                question: "A light bulb converts 100 J of electrical energy into light energy. If the efficiency of the bulb is 20%, how much light energy is produced?",
+                correctAnswer: 20,
+                unit: "J",
+                equation: "Efficiency = (Useful Energy Output / Total Energy Input) × 100",
+                explanation: "Using the efficiency formula, Useful Energy Output = Efficiency × Total Energy Input / 100. Therefore, Useful Energy Output = 20% × 100 J / 100 = 20 J."
+            },
+            {
+                question: "A car engine converts 2000 J of chemical energy from fuel into 500 J of kinetic energy. What is the efficiency of the engine?",
+                correctAnswer: 25,
+                unit: "%",
+                equation: "Efficiency = (Useful Energy Output / Total Energy Input) × 100",
+                explanation: "Using the efficiency formula, Efficiency = (Useful Energy Output / Total Energy Input) × 100. Therefore, Efficiency = (500 J / 2000 J) × 100 = 25%."
+            },
+            {
+                question: "A hydroelectric power plant converts 10,000 J of potential energy from water into 8000 J of electrical energy. What is the efficiency of the power plant?",
+                correctAnswer: 80,
+                unit: "%",
+                equation: "Efficiency = (Useful Energy Output / Total Energy Input) × 100",
+                explanation: "Using the efficiency formula, Efficiency = (Useful Energy Output / Total Energy Input) × 100. Therefore, Efficiency = (8000 J / 10,000 J) × 100 = 80%."
+            },
+            {
+                question: "An electric heater converts 1500 J of electrical energy into 1350 J of thermal energy. What is the efficiency of the heater?",
+                correctAnswer: 90,
+                unit: "%",
+                equation: "Efficiency = (Useful Energy Output / Total Energy Input) × 100",
+                explanation: "Using the efficiency formula, Efficiency = (Useful Energy Output / Total Energy Input) × 100. Therefore, Efficiency = (1350 J / 1500 J) × 100 = 90%."
+            }
+        ];
+       
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    shuffle(problems);
+
+    function displayProblem() {
+      if (currentProblemIndex >= problems.length) {
+        document.getElementById('problem').innerText = 'Congratulations! You have completed all problems.';
+        document.getElementById('answer').style.display = 'none';
+        document.getElementById('unit').style.display = 'none';
+        document.getElementById('submit').style.display = 'none';
+        document.getElementById('previous').style.display = 'none';
+        document.getElementById('next').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('problem').innerText = problems[currentProblemIndex].question;
+      document.getElementById('unit').innerText = problems[currentProblemIndex].unit;
+      document.getElementById('feedback').innerText = '';
+      const answerInput = document.getElementById('answer');
+      const submitButton = document.getElementById('submit');
+
+      if (attemptedProblems[currentProblemIndex]) {
+        answerInput.value = attemptedProblems[currentProblemIndex].userAnswer;
+        answerInput.disabled = true;
+        submitButton.disabled = true;
+        submitButton.classList.add('disabled');
+        document.getElementById('feedback').innerText = attemptedProblems[currentProblemIndex].feedback;
+      } else {
+        answerInput.value = '';
+        answerInput.disabled = false;
+        submitButton.disabled = false;
+        submitButton.classList.remove('disabled');
+        document.getElementById('feedback').innerText = '';
+      }
+    }
+
+    function updateScore() {
+      document.getElementById('score').innerText = `Score: ${score}/${attempts}`;
+    }
+
+    function checkAnswer() {
+      const userAnswer = parseFloat(document.getElementById('answer').value);
+      const correctAnswer = problems[currentProblemIndex].correctAnswer;
+
+      attempts++;
+      let feedback = '';
+      if (userAnswer === correctAnswer) {
+        score++;
+        feedback = 'Correct!';
+        document.getElementById('feedback').classList.add('correct');
+        document.getElementById('feedback').classList.remove('incorrect');
+      } else {
+        feedback = 'Incorrect. ' + problems[currentProblemIndex].explanation;
+        document.getElementById('feedback').classList.add('incorrect');
+        document.getElementById('feedback').classList.remove('correct');
+      }
+
+      updateScore();
+      attemptedProblems[currentProblemIndex] = { userAnswer, feedback };
+
+      document.getElementById('answer').disabled = true;
+      document.getElementById('submit').disabled = true;
+      document.getElementById('submit').classList.add('disabled');
+      document.getElementById('feedback').innerText = feedback;
+    }
+
+    function nextProblem() {
+      if (currentProblemIndex < problems.length - 1) {
+        currentProblemIndex++;
+        displayProblem();
+      }
+    }
+
+    function previousProblem() {
+      if (currentProblemIndex > 0) {
+        currentProblemIndex--;
+        displayProblem();
+      }
+    }
+
+    displayProblem();
+
+  </script>
+        
+    </body>
+</html>
+

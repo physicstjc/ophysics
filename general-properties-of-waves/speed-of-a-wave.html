@@ -36,21 +36,19 @@
         
    <iframe scrolling="no" title="Graphs of a Progressive Wave" src="https://www.geogebra.org/material/iframe/id/aezgpukm/width/638/height/478/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/true/rc/false/ld/false/sdz/false/ctl/false" width="100%" height="478px" style="border:0px;"> </iframe>     
         
-
-    <table width="100%"><tr><td>      
+  
     <div class="quiz-container">
         <h3>Checking for Understanding</h3>
 
             <div class="problem" id="problem"></div><br>
-            <input type="text" id="answer" placeholder="Enter your answer" style="width: 200px;">
-            <span id="unit"></span>
-            <button id="submit" onclick="checkAnswer()">Submit</button><br>
+            <div><input type="text" id="answer" placeholder="Enter your answer" style="width: 200px;">
+            <span id="unit"></span></div>
+            <div class="button-container"><button id="submit" onclick="checkAnswer()">Submit</button>
             <button id="previous" onclick="previousProblem()">Previous</button>
-            <button id="next" onclick="nextProblem()">Next</button><hr style="visibility: hidden;">
+            <button id="next" onclick="nextProblem()">Next</button><hr style="visibility: hidden;"></div>
             <div class="score" id="score">Score: 0/0</div>
             <div class="feedback" id="feedback"></div>
-    </div>
-    </td></tr></table>   
+    </div>   
         <script>
         let currentProblemIndex = 0;
         let score = 0;
@@ -182,6 +180,9 @@
 
     displayProblem();
   </script>
+    <h3>Checking for Understanding</h3>
+        
+    <iframe scrolling="no" title="Wave Quiz" src="wave-quiz.html" width="600px" height="370px"></iframe>
     </body>
 </html>
 

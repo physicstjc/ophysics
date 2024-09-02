@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Work</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    </head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+        <h2>Work</h2>
+        <p>Work is done when a force is applied to an object, causing it to move in the direction of the force.</p>
+    
+        <div class="callout">
+        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
+        <span class="callout-text">Work done by a force is the product of the force and the distance moved in the direction of the force.</span></div>
+
+        <p>The amount of work done can be calculated using the formula:</p>
+        <p align="center">$W = F \times s$</p>
+        
+        <p>where $W$ is the work done by the force $F$,
+        <br>and $s$ is the distance moved in the direction of the force.</p>
+      
+        <p>To apply this relationship in new situations or solve related problems, follow these steps: first, identify the force applied and the distance over which it acts. Ensure that the distance is measured in the same direction as the force. Multiply the magnitude of the force by the distance to find the work done.</p>
+        
+        <p>For example, if a person pushes a box with a force of 50 N over a distance of 3 meters, the work done is 50 N × 3.0 m = 150 J. By understanding and applying this formula, students can solve various problems involving work, whether it's lifting an object, moving it horizontally, or analyzing situations where forces and distances are given.</p>
+        
+                    
+        <table width="100%"><tr><td>
+            <h3>Check for Understanding</h3>
+            <p>A boy is pulling a box with a horizontal force of 10 N. There is a frictional force of 2.0 N due to the ground. After moving 3.0 m, what is:</p>
+            <ol><li>the work done by the boy,</li>
+                <li>the work done against friction,</li>
+                <li>the net work done?</li>
+            </ol>
+            <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
+            <div id="ans1" style="display:none">
+            <ol><li>Work done by the boy = Force exerted by the boy × distance moved in the direction of the force <br>
+                = 10 N × 3.0 m = 30 J
+                </li>
+                <li>Work done against friction = - work done by friction <br>
+                    = - (2.0 N)(-3.0 m) = 6.0 J</li>
+                <li>Net work done = Work done by boy + Work done by friction
+                <br> = Work done by boy - Work done against friction
+                <br> = 30 J - 6.0 J = 24 J</li>
+            </ol>
+            </div>
+            
+            </td></tr></table>
+        
+         <div class="quiz-container">
+            <h3>Check for Understanding</h3>
+            <div class="problem" id="problem"></div><br>
+            <div><input type="text" id="answer" placeholder="Enter your answer" style="width:200px">
+            <span id="unit"></span>
+            <div class="button">    
+            <button id="submit" onclick="checkAnswer()">Submit</button>
+            <button id="previous" onclick="previousProblem()">Previous</button>
+            <button id="next" onclick="nextProblem()">Next</button></div>
+            <div class="feedback" id="feedback"></div>
+            <div class="score" id="score">Score: 0/0</div>
+    </div>
+        
+        <script>
+        let currentProblemIndex = 0;
+        let score = 0;
+        let attempts = 0;
+        const attemptedProblems = [];
+
+        const problems = [
+            {
+                question: "A force of 10 N is applied to push a box across a floor for a distance of 5.0 meters. How much work is done by the force?",
+                correctAnswer: 50,
+                unit: "J",
+                equation: "Work done = Force × Distance",
+                explanation: "Using the formula Work done = Force × Distance, where Force = 10 N and Distance = 5.0 m, we get Work done = 10 N × 5.0 m = 50 J."
+            },
+            {
+                question: "A person lifts a 20 kg box to a height of 2.0 meters. What is the work done against gravity? (Take g = 9.8 m/s². Give your answer in 2 significant figures.)",
+                correctAnswer: 390,
+                unit: "J",
+                equation: "Work done = Force × Distance",
+                explanation: "Using the formula Work done = Force × Distance, where Force = mass × gravity = 20 kg × 9.8 m/s² = 196 N and Distance = 2.0 m, we get Work done = 196 N × 2 m = 392 J = 390 J (2 sig. fig.). Note that if the question had asked for work done by gravity, the answer will be -390 J."
+            },
+            {
+                question: "A car engine exerts a force of 5000 N to move the car 100 meters along a road. How much work is done by the engine?",
+                correctAnswer: 500000,
+                unit: "J",
+                equation: "Work done = Force × Distance",
+                explanation: "Using the formula Work done = Force × Distance, where Force = 5000 N and Distance = 100 m, we get Work done = 5000 N × 100 m = 500000 J."
+            }
+        ];
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    shuffle(problems);
+
+    function displayProblem() {
+      if (currentProblemIndex >= problems.length) {
+        document.getElementById('problem').innerText = 'Congratulations! You have completed all problems.';
+        document.getElementById('answer').style.display = 'none';
+        document.getElementById('unit').style.display = 'none';
+        document.getElementById('submit').style.display = 'none';
+        document.getElementById('previous').style.display = 'none';
+        document.getElementById('next').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('problem').innerText = problems[currentProblemIndex].question;
+      document.getElementById('unit').innerText = problems[currentProblemIndex].unit;
+      document.getElementById('feedback').innerText = '';
+      const answerInput = document.getElementById('answer');
+      const submitButton = document.getElementById('submit');
+
+      if (attemptedProblems[currentProblemIndex]) {
+        answerInput.value = attemptedProblems[currentProblemIndex].userAnswer;
+        answerInput.disabled = true;
+        submitButton.disabled = true;
+        submitButton.classList.add('disabled');
+        document.getElementById('feedback').innerText = attemptedProblems[currentProblemIndex].feedback;
+      } else {
+        answerInput.value = '';
+        answerInput.disabled = false;
+        submitButton.disabled = false;
+        submitButton.classList.remove('disabled');
+        document.getElementById('feedback').innerText = '';
+      }
+    }
+
+    function updateScore() {
+      document.getElementById('score').innerText = `Score: ${score}/${attempts}`;
+    }
+
+    function checkAnswer() {
+      const userAnswer = parseFloat(document.getElementById('answer').value);
+      const correctAnswer = problems[currentProblemIndex].correctAnswer;
+
+      attempts++;
+      let feedback = '';
+      if (userAnswer === correctAnswer) {
+        score++;
+        feedback = 'Correct!';
+        document.getElementById('feedback').classList.add('correct');
+        document.getElementById('feedback').classList.remove('incorrect');
+      } else {
+        feedback = 'Incorrect. ' + problems[currentProblemIndex].explanation;
+        document.getElementById('feedback').classList.add('incorrect');
+        document.getElementById('feedback').classList.remove('correct');
+      }
+
+      updateScore();
+      attemptedProblems[currentProblemIndex] = { userAnswer, feedback };
+
+      document.getElementById('answer').disabled = true;
+      document.getElementById('submit').disabled = true;
+      document.getElementById('submit').classList.add('disabled');
+      document.getElementById('feedback').innerText = feedback;
+    }
+
+    function nextProblem() {
+      if (currentProblemIndex < problems.length - 1) {
+        currentProblemIndex++;
+        displayProblem();
+      }
+    }
+
+    function previousProblem() {
+      if (currentProblemIndex > 0) {
+        currentProblemIndex--;
+        displayProblem();
+      }
+    }
+
+    displayProblem();
+  </script>
+        
+        
+        
+        
+    </body>
+</html>
+
