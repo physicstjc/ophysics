@@ -49,20 +49,18 @@
             $$\begin{align}v^2 = u^2 + 2as
             \end{align}$$</p>
 
-    <table width="100%"><tr><td>
-  <h3>Checking for Understanding</h3>
         <div class="quiz-container">
-    <div><div class="problem" id="problem"></div><br>
+      <h3>Checking for Understanding</h3>
+            <div><div class="problem" id="problem"></div><br>
     <input type="text" id="answer" placeholder="Enter your answer" style="width: 200px;"><span id="unit"></span></div>
-    <div>
+    <div class="button-container">
     <button id="submit" onclick="checkAnswer()">Submit</button>
     <button id="previous" onclick="previousProblem()">Previous</button>
-    <button id="next" onclick="nextProblem()">Next</button></div><hr style="visibility: hidden;">
+    <button id="next" onclick="nextProblem()">Next</button></div>
     <div class="score" id="score">Score: 0/0</div>
     <div class="feedback" id="feedback"></div>
   </div>
-        </td></tr></table>
-
+    
   <script>
     let currentProblemIndex = 0;
     let score = 0;
@@ -178,38 +176,40 @@
     }
 
     shuffle(problems);
-
-    function displayProblem() {
-      if (currentProblemIndex >= problems.length) {
+function displayProblem() {
+    if (currentProblemIndex >= problems.length) {
         document.getElementById('problem').innerText = 'Congratulations! You have completed all problems.';
         document.getElementById('answer').style.display = 'none';
         document.getElementById('unit').style.display = 'none';
         document.getElementById('submit').style.display = 'none';
         document.getElementById('previous').style.display = 'none';
         document.getElementById('next').style.display = 'none';
+        document.getElementById('feedback').style.display = 'none'; // Hide feedback
         return;
-      }
+    }
 
-      document.getElementById('problem').innerText = problems[currentProblemIndex].question;
-      document.getElementById('unit').innerText = problems[currentProblemIndex].unit;
-      document.getElementById('feedback').innerText = '';
-      const answerInput = document.getElementById('answer');
-      const submitButton = document.getElementById('submit');
+    document.getElementById('problem').innerText = problems[currentProblemIndex].question;
+    document.getElementById('unit').innerText = problems[currentProblemIndex].unit;
+    document.getElementById('feedback').innerText = '';
+    document.getElementById('feedback').style.display = 'block'; // Show feedback for other problems
 
-      if (attemptedProblems[currentProblemIndex]) {
+    const answerInput = document.getElementById('answer');
+    const submitButton = document.getElementById('submit');
+
+    if (attemptedProblems[currentProblemIndex]) {
         answerInput.value = attemptedProblems[currentProblemIndex].userAnswer;
         answerInput.disabled = true;
         submitButton.disabled = true;
         submitButton.classList.add('disabled');
         document.getElementById('feedback').innerText = attemptedProblems[currentProblemIndex].feedback;
-      } else {
+    } else {
         answerInput.value = '';
         answerInput.disabled = false;
         submitButton.disabled = false;
         submitButton.classList.remove('disabled');
         document.getElementById('feedback').innerText = '';
-      }
     }
+}
 
     function updateScore() {
       document.getElementById('score').innerText = `Score: ${score}/${attempts}`;
@@ -242,10 +242,13 @@
     }
 
     function nextProblem() {
-      if (currentProblemIndex < problems.length - 1) {
-        currentProblemIndex++;
-        displayProblem();
-      }
+        if (currentProblemIndex < problems.length - 1) {
+            currentProblemIndex++;
+            displayProblem();
+        } else if (currentProblemIndex === problems.length - 1) {
+            currentProblemIndex++;
+            displayProblem();
+        }
     }
 
     function previousProblem() {

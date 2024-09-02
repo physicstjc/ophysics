@@ -87,12 +87,13 @@
             <span id="unit"></span>
         </div>
         <div class="button-container">
+            <button id="check-button" onclick="checkAnswer()">Submit</button>           
             <button onclick="prevQuestion()">Previous</button>
-            <button id="check-button" onclick="checkAnswer()">Check Answer</button>
             <button onclick="nextQuestion()">Next</button>
         </div>
         <p id="score"></p>
-        <div id="solution" style="display: none;">
+        <p id="feedback"></p>
+            <div id="solution" style="display: none;">
             <p>Solution:</p>
             <p id="solution-text"></p>
         </div>
@@ -175,7 +176,7 @@
                     yaxis: 'Velocity (m/s)'
                 },
                 question: 'A skateboarder accelerates and then travels at a constant velocity as shown in the graph. What is the change in displacement from t=0s to t=10s?',
-                correctAnswer: 180,
+                correctAnswer: 210,
                 unit: 'm',
                 solution: `\\Delta x = \\frac{1}{2} \\times (0 + 30) \\times 6 + 30 \\times 4 = 180\\, m`
             },
@@ -195,12 +196,12 @@
             {
                 graph: {
                     x: [0, 2, 4, 6, 8, 10],
-                    y: [0, 10, 20, 30, 40, 50],
+                    y: [50, 40, 30, 20, 10, 0],
                     title: 'Velocity vs Time for a Rocket',
                     xaxis: 'Time (s)',
                     yaxis: 'Velocity (m/s)'
                 },
-                question: 'A rocket accelerates at a constant rate as shown in the graph. What is the change in displacement from t=0s to t=10s?',
+                question: 'A rocket decelerates at a constant rate as shown in the graph. What is the change in displacement from t=0s to t=10s?',
                 correctAnswer: 250,
                 unit: 'm',
                 solution: `\\Delta x = \\frac{1}{2} \\times (0 + 50) \\times 10 = 250\\, m`
@@ -221,98 +222,106 @@
             {
                 graph: {
                     x: [0, 2, 4, 6, 8, 10],
-                    y: [0, 10, 20, 30, 40, 50],
+                    y: [60, 60, 60, 40, 20, 0],
                     title: 'Velocity vs Time for a Boat',
                     xaxis: 'Time (s)',
                     yaxis: 'Velocity (m/s)'
                 },
-                question: 'A boat accelerates at a constant rate as shown in the graph. What is the change in displacement from t=0s to t=10s?',
-                correctAnswer: 250,
+                question: 'A boat moves at constant speed for the first 4 seconds and then decelerates at a constant rate as shown in the graph. What is the change in displacement from t=0s to t=10s?',
+                correctAnswer: 420,
                 unit: 'm',
-                solution: `\\Delta x = \\frac{1}{2} \\times (0 + 50) \\times 10 = 250\\, m`
+                solution: `\\Delta x = 60 \\times 4 + \\frac{1}{2} \\times 60 \\times (10 - 4) = 420\\, m`
             }
         ];
 
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let attemptedQuestions = [];
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let attemptedQuestions = [];
 
-        function plotGraph() {
-            const graphData = questions[currentQuestionIndex].graph;
-            const trace = {
-                x: graphData.x,
-                y: graphData.y,
-                mode: 'lines+markers',
-                type: 'scatter'
-            };
-            const layout = {
-                title: graphData.title,
-                xaxis: { title: graphData.xaxis },
-                yaxis: { title: graphData.yaxis }
-            };
-            Plotly.newPlot('plot-container', [trace], layout);
+    function plotGraph() {
+        const graphData = questions[currentQuestionIndex].graph;
+        const trace = {
+            x: graphData.x,
+            y: graphData.y,
+            mode: 'lines+markers',
+            type: 'scatter'
+        };
+        const layout = {
+            title: graphData.title,
+            xaxis: { title: graphData.xaxis },
+            yaxis: { title: graphData.yaxis }
+        };
+        Plotly.newPlot('plot-container', [trace], layout);
+    }
+
+    function showQuestion() {
+        const questionData = questions[currentQuestionIndex];
+        document.getElementById('question').textContent = questionData.question;
+        document.getElementById('answer').value = '';
+        document.getElementById('unit').textContent = questionData.unit;
+        document.getElementById('solution').style.display = 'none';
+        document.getElementById('check-button').disabled = attemptedQuestions[currentQuestionIndex] === true;
+        document.getElementById('answer').disabled = attemptedQuestions[currentQuestionIndex] === true;
+        document.getElementById('feedback').textContent = ''; // Clear feedback on new question
+    }
+
+    function checkAnswer() {
+        const answer = parseFloat(document.getElementById('answer').value);
+        attemptedQuestions[currentQuestionIndex] = true;
+
+        if (answer === questions[currentQuestionIndex].correctAnswer) {
+            score++;
+            document.getElementById('feedback').textContent = 'Correct answer!';
+            document.getElementById('feedback').style.color = 'green';
+        } else {
+            document.getElementById('feedback').textContent = 'Wrong answer.';
+            document.getElementById('feedback').style.color = 'red';
+            showSolution();
         }
+        document.getElementById('check-button').disabled = true;
+        document.getElementById('answer').disabled = true;
+        updateScore();
+    }
 
-        function showQuestion() {
-            const questionData = questions[currentQuestionIndex];
-            document.getElementById('question').textContent = questionData.question;
-            document.getElementById('answer').value = '';
-            document.getElementById('unit').textContent = questionData.unit;
-            document.getElementById('solution').style.display = 'none';
-            document.getElementById('check-button').disabled = attemptedQuestions[currentQuestionIndex] === true;
-            document.getElementById('answer').disabled = attemptedQuestions[currentQuestionIndex] === true;
-        }
-
-        function checkAnswer() {
-            const answer = parseFloat(document.getElementById('answer').value);
-            attemptedQuestions[currentQuestionIndex] = true;
-
-            if (answer === questions[currentQuestionIndex].correctAnswer) {
-                score++;
-                alert('Correct answer!');
-            } else {
-                alert('Wrong answer.');
-                showSolution();
+    function showSolution() {
+        const solutionText = questions[currentQuestionIndex].solution;
+        document.getElementById('solution-text').innerHTML = `\\[${solutionText}\\]`;
+        MathJax.typeset();
+        document.getElementById('solution').style.display = 'block';
+    }
+    function nextQuestion() {
+        if (currentQuestionIndex === questions.length - 1 && attemptedQuestions[currentQuestionIndex]) {
+            document.getElementById('feedback').textContent = `You have completed the quiz! Your score is: ${score}/${attemptedQuestions.length}`;
+            document.getElementById('feedback').style.color = 'blue';
+        } else {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion();
+                plotGraph();
             }
-            document.getElementById('check-button').disabled = true;
-            document.getElementById('answer').disabled = true;
-            updateScore();
         }
+    }
 
-        function showSolution() {
-            const solutionText = questions[currentQuestionIndex].solution;
-            document.getElementById('solution-text').innerHTML = `\\[${solutionText}\\]`;
-            MathJax.typeset();
-            document.getElementById('solution').style.display = 'block';
+
+    function prevQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
         }
-
-        function nextQuestion() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex >= questions.length) {
-                currentQuestionIndex = questions.length - 1;
-                alert('You have completed the quiz! Your score is: ' + score + '/' + questions.length);
-            }
-            showQuestion();
-            plotGraph();
-        }
-
-        function prevQuestion() {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-            }
-            showQuestion();
-            plotGraph();
-        }
-
-        function updateScore() {
-            document.getElementById('score').textContent = `Score: ${score}/${questions.length}`;
-        }
-
-        // Initialize the quiz
         showQuestion();
         plotGraph();
-        updateScore();
-    </script>
+    }
+
+    function updateScore() {
+        const attemptedCount = attemptedQuestions.filter(Boolean).length;
+        document.getElementById('score').textContent = `Score: ${score}/${attemptedCount}`;
+    }
+
+
+    // Initialize the quiz
+    showQuestion();
+    plotGraph();
+    updateScore();
+</script>
        
         <div id="footer"></div>        
     </body>

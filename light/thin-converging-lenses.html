@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thin Converging Lenses</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+        
+        <h2>Thin Converging Lenses</h2>
+        
+        <h3>Action of a Thin Converging Lens on a Beam of Light</h3>
+        
+        <p>A thin converging lens, often referred to as a convex lens, focuses parallel rays of light to a single point known as the focal point. This action occurs because the lens is thicker at its center than at its edges, causing light rays to bend towards the axis as they pass through. When a parallel beam of light (such as sunlight) enters the lens, each ray is refracted at both the air-to-lens and lens-to-air interfaces. The degree of bending depends on the curvature of the lens surfaces and the refractive index of the lens material. As a result, all parallel rays converge at the focal point on the opposite side of the lens, a distance known as the focal length.</p>
+        
+        <p>Features of a thin converging lens include:</p>
+        <ol>
+            <li>Optical centre, C - the centre of the lens</li>
+            <li>Principal axis - an imaginary line drawn through the centre of a lens and perpendicular to the surface of the lens</li>
+            <li>Focal point or Principal Focus, F – the point where all rays parallel to the principal axis converge</li>
+            <li>Focal plane - a plane that is perpendicular to the principal axis of a lens and passes through the focal point.</li>
+        </ol>
+        <img src="thin-converging-lens.png">
+        
+        <h3>Focal Length</h3>
+        
+        <blockquote>The focal length of a lens is the distance between the lens and the focal point, where parallel rays of light converge after passing through the lens.</blockquote>
+        
+        <p>For a thin converging lens, the focal length is the point where parallel rays of light that enter the lens converge to a single point on the opposite side. The focal length depends on the curvature of the lens surfaces and the refractive index of the lens material. </p>
+        
+        
+        <h3>Drawing Ray Diagrams</h3>
+        
+        
+        <p>Follow the following steps to draw ray diagrams for a thin converging lens:</p>
+
+        <ol><li>Draw the Lens and Principal Axis:<br>
+            <ul>
+                <li>Start by drawing a vertical line to represent the lens.</li>
+                <li>Draw a horizontal line through the center of the lens to represent the principal axis.</li></ul>
+            </li>
+            <br>
+            <li>Mark the Optical Center (C):
+                <ul>
+                <li>Label the center of the lens as the optical center (C).</li>
+                </ul>
+            </li>
+            <br>
+            <li>Mark the Focal Points (F) and Focal Length:
+                <ul>
+                    <li>Mark the focal points (F) on both sides of the lens along the principal axis. These should be equidistant from the optical center. The distance from the lens to each focal point is the focal length (f).</li>
+                </ul>
+            </li>
+            <br>        
+            <li>Position the Object:
+                <ul>
+                    <li>Draw the object (usually represented as an arrow) at the desired position along the principal axis. The base of the arrow should be on the principal axis.</li>
+                </ul>
+            </li>
+            <br>
+            <li>Draw the Rays:
+                <ul>
+                    <li>Ray 1 (Parallel Ray): Draw a ray from the top of the object parallel to the principal axis. After passing through the lens, this ray will refract through the focal point on the opposite side.</li>
+                    <li>Ray 2 (Focal Ray): Draw a ray from the top of the object passing through the focal point on the same side of the object. After passing through the lens, this ray will travel parallel to the principal axis.</li>
+                    <li>Ray 3 (Optical Center Ray): Draw a ray from the top of the object through the optical center of the lens. This ray will pass straight through without bending.</li>
+                </ul>
+            </li>
+                <canvas id="rayDiagram" width="400" height="300"></canvas>
+            <br>
+            <li>Locate the Image:
+                <ul>
+                    <li>The point where the refracted rays intersect (or appear to intersect) is the location of the top of the image.</li>
+                    <li>Draw the image arrow from the principal axis to this intersection point. The base of the image arrow should be on the principal axis.</li>
+                </ul>
+            </li>
+        </ol>
+        
+        
+
+    <script>
+        const canvas = document.getElementById('rayDiagram');
+        const ctx = canvas.getContext('2d');
+
+        // Lens position and focal length
+        const lensX = 200;
+        const lensY = 150;
+        const focalLength = 50;
+
+        // Object position
+        const objectX = 100;
+        const objectY = 100;
+        const objectHeight = 50;
+
+        // Draw the lens
+        ctx.beginPath();
+        ctx.moveTo(lensX, lensY - 100);
+        ctx.lineTo(lensX, lensY + 100);
+        ctx.stroke();
+
+        // Draw the principal axis
+        ctx.beginPath();
+        ctx.moveTo(0, lensY);
+        ctx.lineTo(canvas.width, lensY);
+        ctx.strokeStyle = 'black';
+        ctx.stroke();
+
+        // Draw the focal points
+        ctx.fillStyle = 'red';
+        ctx.fillRect(lensX + focalLength - 2, lensY - 2, 4, 4);
+        ctx.fillRect(lensX - focalLength - 2, lensY - 2, 4, 4);
+        ctx.fillText('F', lensX + focalLength - 10, lensY - 10);
+        ctx.fillText('F', lensX - focalLength - 10, lensY - 10);
+
+        // Draw the object
+        ctx.beginPath();
+        ctx.moveTo(objectX, lensY);
+        ctx.lineTo(objectX, objectY);
+        ctx.strokeStyle = 'blue';
+        ctx.stroke();
+
+        // Ray 1: Parallel to principal axis
+        ctx.beginPath();
+        ctx.moveTo(objectX, objectY);
+        ctx.lineTo(lensX, objectY);
+        ctx.strokeStyle = 'green';
+        ctx.stroke();
+
+        // Refracted Ray 1: Passes through focal point
+        ctx.beginPath();
+        ctx.moveTo(lensX, objectY);
+        ctx.lineTo(lensX + focalLength * 2, lensY + 0.5 * objectY);
+        ctx.strokeStyle = 'green';
+        ctx.stroke();
+
+        // Ray 2: Through focal point to lens
+        ctx.beginPath();
+        ctx.moveTo(objectX, objectY);
+        ctx.lineTo(lensX, lensY + focalLength);
+        ctx.strokeStyle = 'orange';
+        ctx.stroke();
+
+        // Refracted Ray 2: Parallel to principal axis
+        ctx.beginPath();
+        ctx.moveTo(lensX, lensY + focalLength);
+        ctx.lineTo(lensX + focalLength * 2, lensY + focalLength);
+        ctx.strokeStyle = 'orange';
+        ctx.stroke();
+
+        // Ray 3: Through optical center
+        ctx.beginPath();
+        ctx.moveTo(objectX, objectY);
+        ctx.lineTo(lensX, lensY);
+        ctx.strokeStyle = 'purple';
+        ctx.stroke();
+
+        // Refracted Ray 3: Continues straight through
+        ctx.beginPath();
+        ctx.moveTo(lensX, lensY);
+        ctx.lineTo(lensX + focalLength * 2, lensY + (lensY - objectY));
+        ctx.strokeStyle = 'purple';
+        ctx.stroke();
+
+        // Add labels to the rays
+        ctx.fillStyle = 'black';
+        ctx.fillText('Ray 1', (objectX + lensX) / 2, objectY - 10);
+        ctx.fillText('Ray 2', (objectX + lensX - focalLength) / 2, lensY + 20);
+        ctx.fillText('Ray 3', (objectX + lensX) / 2, (objectY + lensY) / 2 - 10);
+
+    </script>
+        
+        
+        <h3>Characteristics of Image</h3>
+        
+        <p>Explore, using the simulation below, the characteristics of the image formed when the object is placed at different distances away from the lens.</p>
+        <iframe scrolling="no" title="Thin Converging Lens (Movable)" src="https://www.geogebra.org/material/iframe/id/upcrp7c6/width/720/height/480/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/true/ctl/false" width="720px" height="480px" style="border:0px;"> </iframe>
+
+        <table border="0">
+          <tr>
+            <th>Object Position</th>
+            <th>Image Position</th>
+            <th>Image Nature</th>
+            <th>Image Size</th>
+            <th>Image Orientation</th>
+            <th>Examples</th>
+          </tr>
+          <tr>
+            <td>At infinity</td>
+            <td>At focus (F)</td>
+            <td>Real</td>
+            <td>Diminished (point size)</td>
+            <td>Inverted</td>
+            <td>Sunlight focused by a magnifying glass</td>
+          </tr>
+          <tr>
+            <td>Beyond 2F</td>
+            <td>Between F and 2F</td>
+            <td>Real</td>
+            <td>Diminished</td>
+            <td>Inverted</td>
+            <td>Object viewed through a camera lens</td>
+          </tr>
+          <tr>
+            <td>At 2F</td>
+            <td>At 2F</td>
+            <td>Real</td>
+            <td>Same size</td>
+            <td>Inverted</td>
+            <td>Object at twice the focal length of a projector lens</td>
+          </tr>
+          <tr>
+            <td>Between F and 2F</td>
+            <td>Beyond 2F</td>
+            <td>Real</td>
+            <td>Magnified</td>
+            <td>Inverted</td>
+            <td>Slide being projected onto a distant screen</td>
+          </tr>
+          <tr>
+            <td>At focus (F)</td>
+            <td>At infinity</td>
+            <td>No image</td>
+            <td>Infinite size</td>
+            <td>Inverted</td>
+            <td>Object at the focal length of a lens, no clear image formed</td>
+          </tr>
+          <tr>
+            <td>Between lens and F</td>
+            <td>On the same side as the object</td>
+            <td>Virtual</td>
+            <td>Magnified</td>
+            <td>Upright</td>
+            <td>Object viewed through a magnifying glass</td>
+          </tr>
+        </table>
+
+
+        <h4>Real vs Virtual Images</h4>
+        <p>Real images are formed when light rays converge and actually intersect at a point after passing through the converging lens. Real images are usually inverted relative to the object. These images can be projected onto a screen because the light rays physically converge at a point.</p>
+        
+        <p>Virtual images are formed when light rays diverge, and the image appears to be at a location from which the light rays appear to come. The light rays do not actually meet but seem to diverge from a point behind the lens. Virtual images are typically upright relative to the object. These images cannot be projected onto a screen because the light rays do not actually converge at a point. The image can only be seen by looking into the lens.</p>
+    </body>
+</html>
+

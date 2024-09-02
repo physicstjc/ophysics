@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refraction</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+        
+        <h2>Refraction</h2>
+            
+        <h3>Refractive Index</h3>
+
+        <div class="callout">
+        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
+        <span class="callout-text">The refractive index (𝑛) of a medium is defined as the ratio of the speed of light in a vacuum (𝑐) to the speed of light in the medium (𝑣)</span></div>
+    
+        <p>Mathematically, this can be expressed as:$$n = \dfrac{c}{v}$$</p>    
+        <p>The speed of light in a vacuum is a constant value, representing the maximum speed at which light can travel, which is approximately $3.0 \times 10^8$ m/s. When light travels through a medium (such as air, water, or glass), it slows down due to interactions with the particles in the medium. The speed of light in the medium is always less than the speed of light in a vacuum.</p>
+        
+        <p>The refractive index 𝑛 is a dimensionless number that indicates how much the light slows down in the medium compared to its speed in a vacuum. For example, if the refractive index of water is 1.33, this means light travels 1.33 times slower in water than in a vacuum.</p>
+        
+        <h3>Laws of Refraction</h3>
+        
+        <p>The laws of refraction describe how light (or any wave) changes direction when it passes from one medium to another. These laws are fundamental to understanding phenomena such as lenses, prisms, and the behavior of light in various materials.</p>
+        
+        <h4>The First Law of Refraction</h4>
+        <blockquote>The incident ray, the refracted ray, and the normal lie in the same plane</blockquote>
+        
+        <p>This means that the path taken by the light ray before and after refraction, as well as the normal, all lie in a single two-dimensional plane.</p>
+       
+        <h4>The Second Law of Refraction, a.k.a. Snell's Law</h4>
+         <blockquote>The ratio of the sine of the angle of incidence $\theta_i$ to the sine of the angle of reflection $\theta_r$ is constant and is equal to the ratio of the refractive indices of the two media. </blockquote>
+        
+        <p>This can be expressed mathematically as: $\dfrac{\sin \theta_i}{\sin \theta_r} = \dfrac{n_r}{n_i}$</p>
+        
+        <p>or equivalently, $n_i \sin \theta_i = n_r \sin \theta_r$</p>
+        
+        <p>where:</p>
+            <ul.b>
+              <li>$\theta_i$ is the angle of incidence (the angle between the incident ray and the normal)</li>
+              <li>$\theta_r$ is the angle of refraction (the angle between the refracted ray and the normal)</li>
+              <li>$n_i$ is the refractive index of the medium through which the incident ray passes</li>
+              <li>$n_r$ is the refractive index of the second through which the refracted ray passes</li>
+            </ul.b>
+        
+        <img src="refracted-ray.png" width="360px">
+        <table width="100%">
+   
+            <tr>
+            <td>     <h3>Check for Understanding</h3>
+                <p>Consider light traveling from air ($n_1 = 1$) into water ($n_2 = 1.33$). If the angle of incidence in air is $30 \degree$, calculate the angle of refraction in water.</p>
+                <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
+                <div id="ans1" style="display:none">
+                    <p>Using Snell's law: $$n_1 \sin \theta_1 = n_2 \sin \theta_2$$</p>
+                    <p>$$1 \cdot \sin 30 \degree = 1.33 \cdot \sin \theta_2$$</p>
+                    <p>$$\sin \theta_2 = \dfrac{\sin 30 \degree}{1.33} = \dfrac{0.5}{1.33} \approx 0.376$$</p>
+                    <p>$$\theta_2 = \sin^{-1}(0.376) \approx 22.1  \degree$$</p>
+                </div>
+            </td>
+        </tr>
+        </table>
+    
+        <h3>Refracted Image</h3>
+        <p>A refracted image is formed when light passes through a boundary between two different media, changing direction due to the change in speed of light in each medium. Here are the key characteristics of a refracted image:</p>
+
+            <ol>
+                <li>The refracted image appears to be at a different position from where the object actually is. This is due to the bending of light rays as they pass from one medium to another.</li>
+                <li>The image may appear distorted because the light rays do not travel in straight lines after refraction. This can cause objects to look bent, stretched, or compressed.</li>
+                <li>Depending on the refractive indices of the two media, the image can appear larger (magnified) or smaller (reduced) than the actual object.</li>
+                <li>A refracted image can be virtual or real.</li>
+                
+            </ol>
+        
+        <p>Using the simulation below, adjust the positions of the object and eye to observe how the rays of light reaches the eye from the object. The eye is assumed to be in air. The refractive index of the medium in which the object is round can be varied using the slider. You can also adjust the position of the eye. It will appear that the image alway looks closer than the object if the light is coming from a medium with higher refractive index.</p>
+        
+        <iframe scrolling="no" title="Where is the Fish? A Refraction Simulation" src="https://www.geogebra.org/material/iframe/id/kdszgpfg/width/640/height/480/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width="640px" height="480px" style="border:0px;"> </iframe>
+        
+
+    
+    <h3>Experiment to Verify Snell's Law</h3>
+    <iframe width="100%" height="460" src="https://www.youtube.com/embed/NPuu1xleDQE?si=3xYzArT1dM9vq2RR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    
+        <h3>Practice</h3>
+        <p>You can use the following interactive to practise calculations involving Snell's law. Use the pink slider to change the quantity to find. Adjust the refractice indices using the sliders to vary the values in the question. You can also shift the origin of the incident ray.</p>
+        
+        <iframe scrolling="no" title="Refraction Self-Test" src="https://www.geogebra.org/material/iframe/id/myqcfy6x/width/640/height/360/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width="640px" height="360px" style="border:0px;"> </iframe>
+        <p></p>
+        <div class="quiz-container">
+     <h3>Check for Understanding</h3>
+    
+    <div class="problem" id="problem"></div><br>
+    <div class="button-container"><button id="submit" onclick="checkAnswer()">Submit</button>
+    <button id="previous" onclick="previousProblem()">Previous</button>
+    <button id="next" onclick="nextProblem()">Next</button></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="score" id="score">Score: 0/0</div>
+</div>
+
+<script>
+    let currentProblemIndex = 0;
+    let score = 0;
+    let attempts = 0;
+    const attemptedProblems = [];
+
+    const problems = [
+        {
+            question: "What is the formula for Snell's law?",
+            correctAnswer: "n₁ * sin(θ₁) = n₂ * sin(θ₂)",
+            options: ["n₁ * cos(θ₁) = n₂ * cos(θ₂)", "n₁ * cos(θ₂) = n₂ * cos(θ₁)", "n₁ * sin(θ₁) = n₂ * sin(θ₂)", "n₁ * sin(θ₂) = n₂ * sin(θ₁)"],
+            explanation: "Snell's law relates the angles of incidence and refraction to the refractive indices of the two media."
+        },
+        {
+            question: "If light travels from air (n₁ = 1.0) into water (n₂ = 1.33) at an angle of 30 degrees, what is the angle of refraction in the water?",
+            correctAnswer: "22.1°",
+            options: ["19.5°", "22.1°", "30.0°", "45.0°"],
+            explanation: "Using Snell's law: sin(θ₂) = n₁/n₂ * sin(θ₁) => sin(θ₂) = 1/1.33 * sin(30°) => θ2 ≈ 22.1°."
+        },
+        {
+            question: "If the refractive index of medium 1 is 1.5 and medium 2 is 2.0, and the angle of incidence is 45°, what is the angle of refraction?",
+            correctAnswer: "30°",
+            options: ["15°", "30°", "45°", "60°"],
+            explanation: "Using Snell's law: sin(θ₂) = n₁/n₂ * sin(θ₁) => sin(θ₂) = 1.5/2.0 * sin(45°) => θ₂ ≈ 30°."
+        },
+        {
+            question: "In Snell's law, what does 'n' represent?",
+            correctAnswer: "Refractive index",
+            options: ["Speed of light", "Frequency", "Wavelength", "Refractive index"],
+            explanation: "In Snell's law, 'n' represents the refractive index of a medium."
+        }
+    ];
+ function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        shuffle(problems);
+
+       function displayProblem() {
+            if (currentProblemIndex >= problems.length) {
+                const summaryMessage = `Congratulations! You have completed all problems. Your score is ${score} out of ${attempts}.`;
+                document.getElementById('problem').innerText = summaryMessage;
+                document.getElementById('submit').style.display = 'none';
+                document.getElementById('previous').style.display = 'none';
+                document.getElementById('next').style.display = 'none';
+                document.getElementById('feedback').innerText = '';
+                return;
+            }
+
+            const problem = problems[currentProblemIndex];
+            document.getElementById('problem').innerHTML = `
+                <p>${problem.question}</p>
+                ${problem.options.map(option => `
+                    <label>
+                        <input type="radio" name="answer" value="${option}"> ${option}
+                    </label><br>
+                `).join('')}
+            `;
+            document.getElementById('feedback').innerText = '';
+
+            if (attemptedProblems[currentProblemIndex]) {
+                const { userAnswer, feedback } = attemptedProblems[currentProblemIndex];
+                document.querySelector(`input[name="answer"][value="${userAnswer}"]`).checked = true;
+                document.querySelectorAll('input[name="answer"]').forEach(radio => radio.disabled = true);
+                document.getElementById('submit').disabled = true;
+                document.getElementById('submit').classList.add('disabled');
+                document.getElementById('feedback').innerText = feedback;
+            } else {
+                document.getElementById('submit').disabled = false;
+                document.getElementById('submit').classList.remove('disabled');
+            }
+        }
+
+
+        function updateScore() {
+            document.getElementById('score').innerText = `Score: ${score}/${attempts}`;
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.querySelector('input[name="answer"]:checked').value;
+            const correctAnswer = problems[currentProblemIndex].correctAnswer;
+
+            attempts++;
+            let feedback = '';
+            if (userAnswer === correctAnswer) {
+                score++;
+                feedback = 'Correct!';
+                document.getElementById('feedback').classList.add('correct');
+                document.getElementById('feedback').classList.remove('incorrect');
+            } else {
+                feedback = 'Incorrect. ' + problems[currentProblemIndex].explanation;
+                document.getElementById('feedback').classList.add('incorrect');
+                document.getElementById('feedback').classList.remove('correct');
+            }
+
+            updateScore();
+            attemptedProblems[currentProblemIndex] = { userAnswer, feedback };
+
+            const radios = document.querySelectorAll('input[name="answer"]');
+            radios.forEach(radio => radio.disabled = true);
+            document.getElementById('submit').disabled = true;
+            document.getElementById('submit').classList.add('disabled');
+            document.getElementById('feedback').innerText = feedback;
+        }
+
+        function nextProblem() {
+            if (currentProblemIndex < problems.length - 1) {
+                currentProblemIndex++;
+                displayProblem();
+            } else if (currentProblemIndex === problems.length - 1) {
+                currentProblemIndex++;
+                displayProblem();
+            }
+        }
+
+
+        function previousProblem() {
+            if (currentProblemIndex > 0) {
+                currentProblemIndex--;
+                displayProblem();
+            }
+        }
+
+        displayProblem();
+</script>
+        
+        
+    </body>
+</html>
+
