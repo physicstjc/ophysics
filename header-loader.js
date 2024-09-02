@@ -78,3 +78,4 @@ function toggleMenu() {
         var menu = document.querySelector('.top-menu');
         menu.classList.toggle('responsive');
 }
+

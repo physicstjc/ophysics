@@ -25,9 +25,22 @@ h3 {
     font-size: 22px;
     font-weight: normal;
 }
+h4 {
+    font-family: "Roboto Slab", sans-serif !important;
+    font-size: 18px;
+    font-weight: normal;
+}
 a {
     color: #007BFF;
     font-weight: normal;
+}
+ul li {
+    margin-top: 5px; /* Optional: Add spacing between elements */
+    margin-bottom: 5px; /* Optional: Add spacing between elements */
+}
+ol li {
+    margin-top: 5px; /* Optional: Add spacing between elements */
+    margin-bottom: 5px; /* Optional: Add spacing between elements */
 }
 .top-menu {
     background-color: #333;
@@ -167,19 +180,27 @@ img {
     }
 }
 .container {
-      display: flex;
-      flex-wrap: wrap;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 94%;
-      text-align: left;
-    }
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    flex-wrap: wrap;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    text-align: left;
+}
+
+.container > * {
+    width: 100%; /* Ensure each child element takes up full width */
+    margin-bottom: 10px; /* Optional: Add spacing between elements */
+}
 .score {
+    clear: both;
     display: block;
     text-align: left;
     font-style: italic;
     font-size: 0.8em;
+    vertical-align: center;
 }
 
 #feedback {
@@ -307,7 +328,8 @@ table {
 }
 
 .learning-outcome ol li {
-    margin-bottom: 10px; /* Adjust the value to your preference */
+    margin-top: 10px; /* Adjust the value to your preference */
+    margin-bottom: 5px; /* Adjust the value to your preference */
     position: relative;
 }
 .callout {
@@ -329,6 +351,7 @@ table {
     font-size: 15px;
     font-weight: bold;
 }
+
 .emoji {
     font-family: "Apple Color Emoji", "Segoe UI Emoji", "NotoColorEmoji", "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols;
     line-height: 1em;
@@ -337,15 +360,16 @@ table {
     font-size: 1.5em;
 }
 
-#quiz-container {
-    width: 100%;
-    max-width: 600px;
-    margin-top: 20px;
-}
 .quiz-container {
-    width: 100%;
-    max-width: 600px;
-    margin-top: 20px;
+    width: 94%;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    flex-wrap: wrap;
+    padding: 20px;
+    border-width: inherit;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    background-color: gainsboro;
 }
 #plot-container {
     display: flex;
@@ -353,14 +377,15 @@ table {
     margin-bottom: 20px;
 }
 .button-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
+    display: flex; /* Keep buttons inline */
+    width: auto; /* Allows buttons to stay inline */
 }
+
 button {
     padding: 10px;
     font-size: 16px;
     cursor: pointer;
+    margin-right: 10px; /* Optional: Add spacing between buttons */
 }
 #answer-container {
     display: flex;
