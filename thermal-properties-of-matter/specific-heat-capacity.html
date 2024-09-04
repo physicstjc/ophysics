@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Specific Heat Capacity</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+
+        
+    <h2>Specific Heat Capacity</h2>
+    
+    <div class="callout">
+    <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
+    <span class="callout-text"><strong><em>Specific heat capacity</em></strong> is the amount of heat absorbed by a substance per unit mass per unit temperature change.</span></div>
+    
+    <p>$$c = \dfrac{Q}{m \Delta T}$$</p>
+    
+    <p>where $c$ is the specific heat capacity of the substance (in J kg<sup>-1</sup> $\degree$C<sup>-1</sup>),<br>
+    $Q$ is the heat transfer or energy absrobed (in J),<br>
+    $m$ is the mass of the substance (in kg), and<br>
+    $\Delta T$ is the change in temperature (in $\degree$C or K)</p>
+    
+    <p> It is an intrinsic property of the material and is independent of the amount of substance. Different substances have different specific heat capacities, which reflect how much energy is required to change their temperatures. The following is a table of some of the commonly known specific heat capacities.</p>
+
+    <table>
+        <tr>
+            <th>Substance</th>
+            <th>Specific Heat Capacity (J kg<sup>-1</sup>°C<sup>-1</sup>)</th>
+        </tr>
+        <tr>
+            <td>Water</td>
+            <td>4186</td>
+        </tr>
+        <tr>
+            <td>Ice</td>
+            <td>2100</td>
+        </tr>
+        <tr>
+            <td>Aluminum</td>
+            <td>897</td>
+        </tr>
+        <tr>
+            <td>Iron</td>
+            <td>450</td>
+        </tr>
+        <tr>
+            <td>Copper</td>
+            <td>385</td>
+        </tr>
+        <tr>
+            <td>Lead</td>
+            <td>128</td>
+        </tr>
+        <tr>
+            <td>Air</td>
+            <td>1005</td>
+        </tr>
+        <tr>
+            <td>Ethanol</td>
+            <td>2440</td>
+        </tr>
+    </table>
+    
+    <p>To calculate the amount of thermal transfer $Q$ needed to raise a substance of specific heat capacity $c$ and mass $m$ by a temperature change of $\Delta T$, we can use this formula: $$Q = mc\Delta T$$</p>
+    <table width="100%"><tr><td>
+            <h3>Check for Understanding</h3>
+            <p>How much heat energy is required to raise the temperature of 2 kg of water from 25°C to 75°C? The specific heat capacity of water is 4190 J kg<sup>-1</sup> °C<sup>-1</sup>.</p>
+            
+            <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
+            <div id="ans1" style="display:none">
+            
+             <p>Note that the change in temperature is</p>
+            <p>$\Delta T = T_{final} - T_{initial}$ = 75°C - 25°C = 50°C</p>
+            
+            <p>Now, substitute the values into the heat energy formula:</p>
+            <p>$Q = mc\Delta T$</p>
+            <p>$Q$ = (2 kg) × (4190 J/kg·°C) × (50°C)</p>
+            <p>$Q$ = 2 × 4190 × 50</p>
+            <p>$Q$ = 419 000 J</p>
+            
+            <p>So, the heat energy required is <strong>419,000 joules</strong> (or 419 kJ).</p>
+        </div>
+            
+            </td></tr></table>
+        
+    
+    <h3>Heat Capacity</h3>
+    <div class="callout">
+    <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
+        <span class="callout-text"><strong><em>Heat capacity</em></strong> is the amount of heat absorbed by a substance per unit temperature change.</span></div>
+    
+    <p>It is the product of the mass $m$ and the specific heat capacity $c$ of the substance.$$C = mc$$</p>
+    <p>Combining with the expression for specific heat capacity $c = \dfrac{Q}{m \Delta T}$, $$C= \dfrac{Q}{\Delta T}$$</p>
+    <p>where $C$ is the heat capacity of the substance (in J $\degree$C<sup>-1</sup>),<br>
+    $Q$ is the heat transfer or energy absrobed (in J), and<br>
+    $\Delta T$ is the change in temperature (in $\degree$C or K)</p>
+    
+    <p>When two objects of different heat capacities are placed in thermal contact such that heat transfer can take place between them, the final equilibrium temperature will be closer to the initial temperature of the body with a higher heat capacity. The following simulation will demonstrate this.</p>
+    
+    <iframe src="heat-capacity-simulation.html" width="100%" height="460px"></iframe>
+    
+
+    <div class="quiz-container">
+        <h3>Check for Understanding</h3>
+        <div class="problem" id="problem"></div><br>
+        <div class="button-container">
+        <button id="submit" onclick="checkAnswer()">Submit</button><br>
+        <button id="previous" onclick="previousProblem()">Previous</button>
+        <button id="next" onclick="nextProblem()">Next</button></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="score" id="score">Score: 0/0</div>
+    </div>
+    
+    <script>
+        let currentProblemIndex = 0;
+        let score = 0;
+        let attempts = 0;
+        const attemptedProblems = [];
+
+        const problems = [
+        {
+            question: "Which of the following best defines specific heat capacity?",
+            correctAnswer: "The amount of heat required to raise the temperature of 1 kg of a substance by 1°C.",
+            options: [
+                "The amount of heat required to raise the temperature of a substance by 1°C.",
+                "The amount of heat required to change 1 kg of a substance from solid to liquid.",
+                "The amount of heat required to raise the temperature of 1 kg of a substance by 1°C.",
+                "The total heat contained within a substance."
+            ],
+            explanation: "Specific heat capacity is defined as the amount of heat required to raise the temperature of 1 kg of a substance by 1°C."
+        },
+        {
+            question: "How much heat is required to raise the temperature of 2.0 kg of water by 10°C? (Specific heat capacity of water = 4200 J/kg°C)",
+            correctAnswer: "84,000 J",
+            options: ["42,000 J", "84,000 J", "126,000 J", "168,000 J"],
+            explanation: "The heat required (Q) is calculated using Q = mcΔT. Here, m = 2 kg, c = 4200 J/kg°C, and ΔT = 10°C, so Q = 2 × 4200 × 10 = 84,000 J."
+        },
+        {
+            question: "A block of aluminum is heated from 25°C to 75°C. If the heat capacity of the block is 450 J/°C, how much heat is absorbed?",
+            correctAnswer: "22,500 J",
+            options: ["11,250 J", "22,500 J", "45,000 J", "90,000 J"],
+            explanation: "The heat absorbed (Q) is calculated using Q = CΔT. Here, C = 450 J/kg°C, and ΔT = 50°C, so Q = 450 × 50 = 22,500 J."
+        },
+        {
+            question: "If 200 J of heat is added to 100 g of a substance, raising its temperature by 5°C, what is the specific heat capacity of the substance?",
+            correctAnswer: "400 J/kg°C",
+            options: ["200 J/kg°C", "400 J/kg°C", "800 J/kg°C", "1600 J/kg°C"],
+            explanation: "The specific heat capacity (c) is calculated using c = Q / (mΔT). Here, Q = 2000 J, m = 0.1 kg, and ΔT = 5°C, so c = 200 / (0.1 × 5) = 400 J/kg°C."
+        },
+        {
+            question: "A 0.20 kg piece of iron at 150°C is placed in 0.50 kg of water at 25°C. Assuming no heat is lost to the surroundings, what is the final temperature of the system? (Specific heat capacity of iron = 450 J/kg°C, water = 4200 J/kg°C)",
+            correctAnswer: "30.1°C",
+            options: ["27.8°C", "28.4°C", "29.6°C", "30.1°C"],
+            explanation: "The heat lost by iron is equal to the heat gained by water: 0.20 x 450 x (150 - T) = 0.50 x 4200 x (T - 25). Solving for T gives 30.1°C."
+        }
+
+    ];
+
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        shuffle(problems);
+       function displayProblem() {
+            if (currentProblemIndex >= problems.length) {
+                const summaryMessage = `Congratulations! You have completed all problems. Your score is ${score} out of ${attempts}.`;
+                document.getElementById('problem').innerText = summaryMessage;
+                document.getElementById('submit').style.display = 'none';
+                document.getElementById('previous').style.display = 'none';
+                document.getElementById('next').style.display = 'none';
+                document.getElementById('feedback').innerText = '';
+                return;
+            }
+
+            const problem = problems[currentProblemIndex];
+            document.getElementById('problem').innerHTML = `
+                <p>${problem.question}</p>
+                ${problem.options.map(option => `
+                    <label>
+                        <input type="radio" name="answer" value="${option}"> ${option}
+                    </label><br>
+                `).join('')}
+            `;
+            document.getElementById('feedback').innerText = '';
+
+            if (attemptedProblems[currentProblemIndex]) {
+                const { userAnswer, feedback } = attemptedProblems[currentProblemIndex];
+                document.querySelector(`input[name="answer"][value="${userAnswer}"]`).checked = true;
+                document.querySelectorAll('input[name="answer"]').forEach(radio => radio.disabled = true);
+                document.getElementById('submit').disabled = true;
+                document.getElementById('submit').classList.add('disabled');
+                document.getElementById('feedback').innerText = feedback;
+            } else {
+                document.getElementById('submit').disabled = false;
+                document.getElementById('submit').classList.remove('disabled');
+            }
+        }
+
+
+        function updateScore() {
+            document.getElementById('score').innerText = `Score: ${score}/${attempts}`;
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.querySelector('input[name="answer"]:checked').value;
+            const correctAnswer = problems[currentProblemIndex].correctAnswer;
+
+            attempts++;
+            let feedback = '';
+            if (userAnswer === correctAnswer) {
+                score++;
+                feedback = 'Correct!';
+                document.getElementById('feedback').classList.add('correct');
+                document.getElementById('feedback').classList.remove('incorrect');
+            } else {
+                feedback = 'Incorrect. ' + problems[currentProblemIndex].explanation;
+                document.getElementById('feedback').classList.add('incorrect');
+                document.getElementById('feedback').classList.remove('correct');
+            }
+
+            updateScore();
+            attemptedProblems[currentProblemIndex] = { userAnswer, feedback };
+
+            const radios = document.querySelectorAll('input[name="answer"]');
+            radios.forEach(radio => radio.disabled = true);
+            document.getElementById('submit').disabled = true;
+            document.getElementById('submit').classList.add('disabled');
+            document.getElementById('feedback').innerText = feedback;
+        }
+
+        function nextProblem() {
+            if (currentProblemIndex < problems.length - 1) {
+                currentProblemIndex++;
+                displayProblem();
+            } else if (currentProblemIndex === problems.length - 1) {
+                currentProblemIndex++;
+                displayProblem();
+            }
+        }
+
+
+        function previousProblem() {
+            if (currentProblemIndex > 0) {
+                currentProblemIndex--;
+                displayProblem();
+            }
+        }
+
+        displayProblem();
+
+    </script>
+
+</body>
+</html>
+

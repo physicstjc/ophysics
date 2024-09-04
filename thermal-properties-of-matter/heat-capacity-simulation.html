@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heat Transfer Simulation</title>
+    <script src="../plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.9em;
+            padding: 10px;
+            margin: 0;
+        }
+        canvas {
+            border: 1px solid #000;
+            max-width: 100%;
+            height: auto;
+        }
+        #controls {
+            margin: 10px 0;
+            text-align: center;
+        }
+        #controls label {
+            margin: 5px 10px;
+            display: inline;
+        }
+        #controls input, #controls button {
+            margin: 5px 0;
+            width: 150px
+        }
+        h1 {
+            font-size: 1.2em;
+            text-align: center;
+        }
+        #tempGraph {
+            width: 100%;
+            max-width: 580px;
+            height: auto;
+            margin: 0 auto;
+        }
+        @media (min-width: 600px) {
+            #controls label {
+                display: inline-block;
+                margin: 0 10px;
+            }
+            #controls input, #controls button {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="heatCanvas" width="580" height="100"></canvas>
+    <div id="tempGraph" style="width:460px;height:260px;"></div>
+
+    <div id="controls">
+        <label for="heatCapacity1">Heat Capacity of Body 1: <span id="hc1Value">100</span> J/°C</label>
+        <input type="range" id="heatCapacity1" min="20" max="200" value="100" step="1"><br>
+        <label for="heatCapacity2">Heat Capacity of Body 2: <span id="hc2Value">100</span> J/°C</label>
+        <input type="range" id="heatCapacity2" min="20" max="200" value="100" step="1">
+        <div><button id="startButton">Start Simulation</button></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('heatCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let heatCapacity1 = 100;
+        let heatCapacity2 = 100;
+
+        const body1 = { x: 50, y: 25, width: 100, height: 50, temp: 100, color: 'red' };
+        const body2 = { x: 450, y: 25, width: 100, height: 50, temp: 0, color: 'blue' };
+
+        let equilibriumReached = false;
+        let equilibriumTime = 0;
+        let startTime;
+        let animationFrame;
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Update colors based on temperature
+            body1.color = temperatureToColor(body1.temp);
+            body2.color = temperatureToColor(body2.temp);
+
+            // Draw bodies
+            ctx.fillStyle = body1.color;
+            ctx.fillRect(body1.x, body1.y, body1.width, body1.height);
+
+            ctx.fillStyle = body2.color;
+            ctx.fillRect(body2.x, body2.y, body2.width, body2.height);
+
+            // Draw temperatures
+            ctx.fillStyle = 'black';
+            ctx.font = '20px Arial';
+            ctx.fillText(`${body1.temp.toFixed(1)}°C`, body1.x + 20, body1.y + 30);
+            ctx.fillText(`${body2.temp.toFixed(1)}°C`, body2.x + 20, body2.y + 30);
+
+            // Draw arrow
+            ctx.beginPath();
+            ctx.moveTo(200, 45);
+            ctx.lineTo(400, 45);
+            ctx.lineTo(390, 35);
+            ctx.moveTo(400, 45);
+            ctx.lineTo(390, 55);
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = 'black';
+            ctx.stroke();
+        }
+
+        function temperatureToColor(temp) {
+            const red = Math.min(255, Math.max(0, 255 - (100 - temp) * 2.55));
+            const blue = Math.min(255, Math.max(0, 255 - temp * 2.55));
+            const green = Math.min(255, Math.max(0, 255 - Math.abs(50 - temp) * 5.1));
+            return `rgb(${red}, ${green}, ${blue})`;
+        }
+
+        function updateTemperatures() {
+            const heatTransferRate = 0.5;
+            const deltaTemp = (body1.temp - body2.temp) * heatTransferRate;
+            const deltaTemp1 = deltaTemp / heatCapacity1;
+            const deltaTemp2 = deltaTemp / heatCapacity2;
+
+            body1.temp -= deltaTemp1;
+            body2.temp += deltaTemp2;
+
+            if (body1.temp < 0) body1.temp = 0;
+            if (body2.temp > 100) body2.temp = 100;
+
+            draw();
+        }
+
+        function checkEquilibrium() {
+            return Math.abs(body1.temp - body2.temp) < 0.1;
+        }
+
+        function updateGraph(temp1, temp2, time) {
+            Plotly.extendTraces('tempGraph', {
+                x: [[time], [time]],
+                y: [[temp1], [temp2]]
+            }, [0, 1]);
+
+            if (checkEquilibrium() && !equilibriumReached) {
+                equilibriumReached = true;
+                equilibriumTime = time;
+            }
+        }
+
+        function animate(timestamp) {
+            const timeElapsed = (timestamp - startTime) / 1000;
+
+            if (equilibriumReached && timeElapsed - equilibriumTime > 5) {
+                cancelAnimationFrame(animationFrame);
+                return;
+            }
+
+            updateTemperatures();
+            updateGraph(body1.temp, body2.temp, timeElapsed);
+
+            animationFrame = requestAnimationFrame(animate);
+        }
+
+        document.getElementById('heatCapacity1').addEventListener('input', (e) => {
+            heatCapacity1 = e.target.value;
+            document.getElementById('hc1Value').innerText = heatCapacity1;
+        });
+
+        document.getElementById('heatCapacity2').addEventListener('input', (e) => {
+            heatCapacity2 = e.target.value;
+            document.getElementById('hc2Value').innerText = heatCapacity2;
+        });
+
+        document.getElementById('startButton').addEventListener('click', () => {
+            equilibriumReached = false;
+            equilibriumTime = 0;
+            body1.temp = 100;
+            body2.temp = 0;
+            draw();
+            Plotly.newPlot('tempGraph', [{
+                x: [0],
+                y: [body1.temp],
+                mode: 'lines',
+                name: 'Body 1',
+                line: {color: 'red'}
+            }, {
+                x: [0],
+                y: [body2.temp],
+                mode: 'lines',
+                name: 'Body 2',
+                line: {color: 'blue'}
+            }], {
+                xaxis: {title: 'Time (s)'},
+                yaxis: {title: 'Temperature', range: [0, 100]},
+                margin: {l: 40, r: 20, t: 20, b: 40},
+                responsive: true  // Add this line for responsiveness
+            });
+            startTime = performance.now();
+            requestAnimationFrame(animate);
+        });
+
+        draw();
+
+        // Initialize the graph with empty data but with axes
+        Plotly.newPlot('tempGraph', [{
+            x: [],
+            y: [],
+            mode: 'lines',
+            name: 'Body 1',
+            line: {color: 'red'}
+        }, {
+            x: [],
+            y: [],
+            mode: 'lines',
+            name: 'Body 2',
+            line: {color: 'blue'}
+        }], {
+            xaxis: {title: 'Time (s)'},
+            yaxis: {title: 'Temperature', range: [0, 100]},
+            margin: {l: 40, r: 20, t: 20, b: 40},
+            legend: {
+                x: 0,  // x-position (1 is far right, 0 is far left)
+                y: 0,  // y-position (1 is top, 0 is bottom)
+                orientation: 'h'  // vertical ('v') or horizontal ('h')
+            },
+            responsive: true  // Add this line for responsiveness
+        });
+    </script>
+</body>
+</html>
