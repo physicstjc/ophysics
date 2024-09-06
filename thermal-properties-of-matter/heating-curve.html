@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase Change Simulation</title>
+    <script src="../plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 500px;
+            margin: 10px auto;
+            padding: 10px;
+            border-radius: 0px;
+            background: #fff;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        #controls {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        select, input[type="range"] {
+            font-size: 16px;
+            padding: 0px;
+            margin-left: 10px;
+            transition: all 0.2s;
+        }
+
+        select:focus, input[type="range"]:focus {
+            outline: none;
+            border-color: #aaa;
+        }
+
+        #graph {
+            width: 500px;
+            height: 300px;
+            margin-bottom: 10px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 5px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        #description {
+            margin-top: 5px;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 0px;
+            box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="controls">
+        <label for="substanceSelector">Substance:</label>
+        <select id="substanceSelector">
+            <option value="water">Water</option>
+            <option value="nitrogen">Nitrogen</option>
+        </select>
+    </div>
+    <div class="slider-label">
+        <label for="timelineSlider">Time (minutes):</label>
+        <span id="timeValue">0 min</span>
+    </div>
+    <input type="range" id="timelineSlider" min="0" max="100" value="0">
+    <div class="slider-label">
+        <label for="heatRateSlider">Heat Rate (J/min):</label>
+        <span id="heatRateValue">200 J/min</span>
+    </div>
+    <input type="range" id="heatRateSlider" min="10" max="400" value="200">
+    <div id="graph"></div>
+    <div id="description">Select a substance to start the simulation.</div>
+
+    <script>
+        const substances = {
+            water: {
+                meltingPoint: 0,
+                boilingPoint: 100,
+                specificHeatSolid: 2.1, // J/g°C
+                specificHeatLiquid: 4.18, // J/g°C
+                specificHeatGas: 2.0, // J/g°C
+                latentHeatFusion: 334, // J/g
+                latentHeatVaporization: 2260, // J/g
+                initialTemperature: -40, // °C
+                finalTemperature: 140, // °C
+                mass: 100, // g
+            },
+            nitrogen: {
+                meltingPoint: -210,
+                boilingPoint: -196,
+                specificHeatSolid: 1.65, // J/g°C
+                specificHeatLiquid: 2.04, // J/g°C
+                specificHeatGas: 1.04, // J/g°C
+                latentHeatFusion: 25.7, // J/g
+                latentHeatVaporization: 199, // J/g
+                initialTemperature: -250, // °C
+                finalTemperature: -150, // °C
+                mass: 100, // g
+            }
+        };
+
+        let selectedSubstance = 'water';
+        let currentTime = 0;
+        let heatRate = 200;
+
+        const substanceSelector = document.getElementById('substanceSelector');
+        const timelineSlider = document.getElementById('timelineSlider');
+        const heatRateSlider = document.getElementById('heatRateSlider');
+        const timeValueElement = document.getElementById('timeValue');
+        const heatRateValueElement = document.getElementById('heatRateValue');
+        const descriptionElement = document.getElementById('description');
+        let time = [];
+        let temperature = [];
+
+        function calculateHeatingCurve(substance) {
+            const {
+                meltingPoint,
+                boilingPoint,
+                specificHeatSolid,
+                specificHeatLiquid,
+                specificHeatGas,
+                latentHeatFusion,
+                latentHeatVaporization,
+                initialTemperature,
+                finalTemperature,
+                mass
+            } = substances[substance];
+
+            let times = [0];
+            let temperatures = [initialTemperature];
+            let t = 0;
+
+            // Heating solid
+            const solidHeatingTime = (mass * specificHeatSolid * Math.abs(meltingPoint - initialTemperature)) / heatRate;
+            for (let i = 0; i <= solidHeatingTime; i++) {
+                t++;
+                times.push(t);
+                temperatures.push(initialTemperature + ((meltingPoint - initialTemperature) / solidHeatingTime) * i);
+            }
+
+            // Melting (latent heat)
+            const meltingTime = (mass * latentHeatFusion) / heatRate;
+            for (let i = 0; i <= meltingTime; i++) {
+                t++;
+                times.push(t);
+                temperatures.push(meltingPoint);
+            }
+
+            // Heating liquid
+            const liquidHeatingTime = (mass * specificHeatLiquid * Math.abs(boilingPoint - meltingPoint)) / heatRate;
+            for (let i = 0; i <= liquidHeatingTime; i++) {
+                t++;
+                times.push(t);
+                temperatures.push(meltingPoint + ((boilingPoint - meltingPoint) / liquidHeatingTime) * i);
+            }
+
+            // Boiling (latent heat)
+            const boilingTime = (mass * latentHeatVaporization) / heatRate;
+            for (let i = 0; i <= boilingTime; i++) {
+                t++;
+                times.push(t);
+                temperatures.push(boilingPoint);
+            }
+
+            // Heating gas
+            const gasHeatingTime = (mass * specificHeatGas * Math.abs(finalTemperature - boilingPoint)) / heatRate;
+            for (let i = 0; i <= gasHeatingTime; i++) {
+                t++;
+                times.push(t);
+                temperatures.push(boilingPoint + ((finalTemperature - boilingPoint) / gasHeatingTime) * i);
+            }
+
+            time = times;
+            temperature = temperatures;
+
+            // Update timeline slider based on new time range
+            timelineSlider.max = time.length - 1;
+            Plotly.react('graph', [{
+                x: time,
+                y: temperature,
+                mode: 'lines',
+                name: 'Heating Curve'
+            }, {
+                x: [time[0]],
+                y: [temperature[0]],
+                mode: 'markers',
+                marker: { size: 10, color: 'blue' }
+            }], {
+                title: 'Temperature Change during Phase Transitions',
+                xaxis: {
+                    title: 'Time (minutes)',
+                    range: [0, Math.max(...time)]
+                },
+                yaxis: {
+                    title: 'Temperature (°C)',
+                    range: [Math.min(...temperature) - 10, Math.max(...temperature) + 10]
+                },
+                width: 500,
+                height: 300,
+                showlegend: false
+            });
+        }
+
+function updateDescription(timeIndex) {
+    const temp = temperature[timeIndex];
+    const substance = substances[selectedSubstance];
+    let description = "";
+
+    if (temp < substance.meltingPoint) {
+        description = `The substance is in a solid state. The average kinetic energy (KE) of the particles is increasing as the temperature rises, while the potential energy (PE) remains relatively constant as particles vibrate in place.`;
+    } else if (temp === substance.meltingPoint) {
+        description = `The substance is melting. The temperature remains constant during this phase change, so the average KE of the particles remains the same. The potential energy (PE) increases as energy is used to break the bonds between particles, allowing them to move more freely.`;
+    } else if (temp > substance.meltingPoint && temp < substance.boilingPoint) {
+        description = `The substance is in a liquid state. The average KE of the particles continues to increase as the temperature rises, leading to more vigorous movement of particles. The potential energy (PE) remains relatively stable during this stage.`;
+    } else if (temp === substance.boilingPoint) {
+        description = `The substance is boiling. The temperature remains constant during this phase change, so the average KE of the particles does not increase. The potential energy (PE) increases significantly as energy is used to overcome intermolecular forces and convert the liquid into a gas.`;
+    } else {
+        description = `The substance is in a gaseous state. The average KE of the particles increases further as the temperature rises, causing particles to move rapidly and spread apart. The potential energy (PE) remains relatively constant as particles are already free from intermolecular forces.`;
+    }
+
+    descriptionElement.textContent = description;
+}
+
+
+        function updateGraphAndDescription(timeIndex) {
+            Plotly.restyle('graph', {
+                x: [[time[timeIndex]]],
+                y: [[temperature[timeIndex]]]
+            }, [1]);
+
+            updateDescription(timeIndex);
+            timeValueElement.textContent = `${time[timeIndex]} min`;
+        }
+
+        substanceSelector.addEventListener('change', function () {
+            selectedSubstance = substanceSelector.value;
+            calculateHeatingCurve(selectedSubstance);
+            currentTime = 0;
+            timelineSlider.value = currentTime;
+            updateGraphAndDescription(currentTime);
+        });
+
+        heatRateSlider.addEventListener('input', function () {
+            heatRate = parseInt(heatRateSlider.value);
+            heatRateValueElement.textContent = `${heatRate} J/min`;
+            calculateHeatingCurve(selectedSubstance);
+            currentTime = 0;
+            timelineSlider.value = currentTime;
+            updateGraphAndDescription(currentTime);
+        });
+
+        timelineSlider.addEventListener('input', function () {
+            currentTime = parseInt(timelineSlider.value);
+            updateGraphAndDescription(currentTime);
+        });
+
+        // Initialize with default substance and heat rate
+        calculateHeatingCurve(selectedSubstance);
+        Plotly.newPlot('graph', [{
+            x: time,
+            y: temperature,
+            mode: 'lines',
+            name: 'Heating Curve'
+        }, {
+            x: [time[0]],
+            y: [temperature[0]],
+            mode: 'markers',
+            marker: { size: 10, color: 'blue' }
+        }], {
+            title: 'Temperature Change during Phase Transitions',
+            xaxis: {
+                title: 'Time (minutes)',
+                range: [0, Math.max(...time)]
+            },
+            yaxis: {
+                title: 'Temperature (°C)',
+                range: [Math.min(...temperature) - 10, Math.max(...temperature) + 10]
+            },
+            width: 500,
+            height: 300,
+            showlegend: false
+        });
+
+        // Set initial state
+        currentTime = 0;
+        timelineSlider.max = time.length - 1;
+        updateGraphAndDescription(currentTime);
+
+    </script>
+</body>
+</html>
