@@ -201,6 +201,7 @@ img {
     font-style: italic;
     font-size: 0.8em;
     vertical-align: center;
+    margin-top: 15px;
 }
 
 #feedback {
@@ -380,12 +381,19 @@ table {
     display: flex; /* Keep buttons inline */
     width: auto; /* Allows buttons to stay inline */
 }
-
 button {
-    padding: 10px;
-    font-size: 16px;
+    background-color: #0078D7;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin: 2px;
+    border-radius: 8px;
     cursor: pointer;
-    margin-right: 10px; /* Optional: Add spacing between buttons */
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+button:hover {
+    background-color: #0056b3;
 }
 #answer-container {
     display: flex;
@@ -429,4 +437,24 @@ button {
             display: none;
             overflow: hidden;
             transition: max-height 0.2s ease-out;
+        }
+/* Progress Bar Styles */
+.progress-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 25px;
+            margin-top: 20px;
+            height: 25px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+        }
+.progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #4CAF50;
+            text-align: center;
+            line-height: 25px;
+            color: white;
+            border-radius: 25px 0 0 25px;
+            transition: width 0.4s ease;
         }
