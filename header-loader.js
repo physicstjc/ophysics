@@ -92,3 +92,15 @@ for (let i = 0; i < accordions.length; i++) {
         }
     });
 }
+
+        function updateProgressBar() {
+            const progressBar = document.getElementById('progress-bar');
+            const total = problems.length;
+            let completed = 0;
+            attemptedProblems.forEach(problem => {
+                if (problem) completed++;
+            });
+            const percentage = Math.round((completed / total) * 100);
+            progressBar.style.width = `${percentage}%`;
+            progressBar.innerText = `${percentage}% Completed`;
+        }
