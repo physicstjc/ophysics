@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Combination Circuits</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+
+    
+</head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+
+
+        <h2>Combination Circuits</h2>
+
+        <p>When all the components in a circuit are linked through series connections, it's called a series circuit. If they are connected through parallel connections, it's known as a parallel circuit. A third type, called a compound or combination circuit, involves both series and parallel connections.</p>
+        
+        <p>In the circuit described, the total resistance and the potential difference (voltage) across resistors, as well as the current, can be calculated based on how the resistors are connected in each mode. Let’s go through each mode using the simulation below that allows students to practise calculating potential differences and currents of a simple circuit consisting of two resistors in series (in mode 1) and two combination circuits (in modes 2 and 3). These three different modes can be accessed by clicking on the pink-coloured switch.</p>
+        
+        <iframe scrolling="no" title="DC Circuits" src="https://www.geogebra.org/material/iframe/id/jkckp9pr/width/638/height/478/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width="638px" height="478px" style="border:0px;" allowfullscreen> </iframe>
+        
+        <h4>Mode 1: Two Resistors in Series</h4>
+            <p>When resistors \( R_1 \) and \( R_2 \) are connected in series, the total resistance is simply the sum of the individual resistances:</p>
+            <p>\[ R_{\text{total}} = R_1 + R_2 \]</p>
+            <p>The current \( I \) through the circuit is given by Ohm's Law:</p>
+            <p>\[ I = \frac{V_{\text{total}}}{R_{\text{total}}} = \frac{V_{\text{total}}}{R_1 + R_2} \]</p>
+            <p>where \( V_{\text{total}} \) is the total potential difference supplied by the source.</p>
+            <p>The potential difference across each resistor can be calculated using:</p>
+            <p>\[ V_1 = I \cdot R_1, \quad V_2 = I \cdot R_2 \]</p>
+
+        <h4>Mode 2: \( R_1 \) and \( R_3 \) in Parallel, \( R_2 \) in Series</h4>
+            <p>In this mode, resistors \( R_1 \) and \( R_3 \) are in parallel, and \( R_2 \) is in series with the combination. First, calculate the equivalent resistance of the parallel combination:</p>
+            <p>\[ \frac{1}{R_{\text{parallel}}} = \frac{1}{R_1} + \frac{1}{R_3} \]</p>
+            <p>Thus, the total resistance is:</p>
+            <p>\[ R_{\text{total}} = R_{\text{parallel}} + R_2 \]</p>
+            <p>The current through the circuit is:</p>
+            <p>\[ I = \frac{V_{\text{total}}}{R_{\text{total}}} \]</p>
+            <p>The potential difference across \( R_2 \) is:</p>
+            <p>\[ V_2 = I \cdot R_2 \]</p>
+            <p>Since \( R_1 \) and \( R_3 \) are in parallel, they share the same potential difference:</p>
+            <p>\[ V_1 = V_3 = V_{\text{total}} - V_2 \]</p>
+            <p>The current through each parallel resistor can be found using Ohm’s Law:</p>
+            <p>\[ I_1 = \frac{V_1}{R_1}, \quad I_3 = \frac{V_1}{R_3} \]</p>
+
+        <h4>Mode 3: \( R_1 \) and \( R_2 \) in Series, \( R_3 \) in Parallel</h4>
+            <p>Here, resistors \( R_1 \) and \( R_2 \) are connected in series, and the combination is in parallel with \( R_3 \). First, calculate the resistance of the series combination:</p>
+            <p>\[ R_{\text{series}} = R_1 + R_2 \]</p>
+            <p>Then, find the total resistance of the parallel combination:</p>
+            <p>\[ \frac{1}{R_{\text{total}}} = \frac{1}{R_{\text{series}}} + \frac{1}{R_3} \]</p>
+            <p>The total current is:</p>
+            <p>\[ I = \frac{V_{\text{total}}}{R_{\text{total}}} \]</p>
+            <p>The voltage across the parallel combination is the same for both branches:</p>
+            <p>\[ V_1 + V_2 = V_3 = V_{\text{total}} \]</p>
+            <p>The current through \( R_3 \) is:</p>
+            <p>\[ I_3 = \frac{V_3}{R_3} \]</p>
+            <p>The current through \( R_1 \) and \( R_2 \), which are in series, is the same:</p>
+            <p>\[ I_{\text{series}} = \frac{V_{\text{total}}}{R_1 + R_2} \]</p>
+            <p>The voltage across each series resistor is:</p>
+            <p>\[ V_1 = I_{\text{series}} \cdot R_1, \quad V_2 = I_{\text{series}} \cdot R_2 \]</p>
+
+    <div class="quiz-container">
+        
+        <h3>Check for Understanding</h3>
+        <div class="problem" id="problem"></div><br>
+        <div class="button-container">
+            <button id="submit" onclick="checkAnswer()">Submit</button><br><br>
+            <button id="previous" onclick="previousProblem()">Previous</button>
+            <button id="next" onclick="nextProblem()">Next</button>
+        </div>
+        <div class="feedback" id="feedback"></div>
+        <div class="score" id="score">Score: 0/0</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar">0%</div>
+        </div>
+    </div>
+    
+    <script>
+        let currentProblemIndex = 0;
+        let score = 0;
+        let attempts = 0;
+        const attemptedProblems = [];
+
+        const problems = [
+            {
+                diagram: '2p1s.png',
+                question: "In the circuit diagram, if R₁ = 100 Ω, R₂ = 200 Ω, R₃ = 300 Ω, and the emf (E) is 12 V, what is the total resistance of the circuit?",
+                correctAnswer: "220 Ω",
+                options: [
+                    "220 Ω",
+                    "300 Ω",
+                    "120 Ω",
+                    "150 Ω"
+                ],
+                explanation: "For the diagram, R₁ is in series with the parallel combination of R₂ and R₃. First, calculate the parallel resistance of R₂ and R₃:\nR₂||R₃ = (R₂ × R₃) / (R₂ + R₃) = (200 × 300) / (200 + 300) = 60000 / 500 = 120 Ω.\nThen, add R₁ in series:\nR_total = R₁ + (R₂||R₃) = 100 + 120 = 220 Ω."
+            },
+            {
+                diagram: '2s1p.png',
+                question: "Refer to the circuit diagram. If R₁ = 150 Ω, R₂ = 150 Ω, R₃ = 300 Ω, and the emf (E) is 18 V, what is the total current supplied by the emf?",
+                correctAnswer: "0.16 A",
+                options: [
+                    "0.12 A",
+                    "0.16 A",
+                    "0.18 A",
+                    "0.24 A"
+                ],
+                explanation: "R₂ and R₃ are in series: R_series = R₂ + R₃ = 150 + 300 = 450 Ω.\nThis series combination is in parallel with R₁ = 150 Ω.\nEquivalent resistance:\nR_eq = (R_series × R₁) / (R_series + R₁) = (450 × 150) / (450 + 150) = 67500 / 600 = 112.5 Ω.\nTotal current:\nI_total = E / R_eq = 18 / 112.5 = 0.16 A."
+            },
+            {
+                diagram: '2p1s.png',
+                question: "Using the circuit diagram, if R₁ = 220 Ω, R₂ = 330 Ω, R₃ = 470 Ω, and the emf (E) is 24 V, what is the potential difference across R₁?",
+                correctAnswer: "12.8 V",
+                options: [
+                    "12.8 V",
+                    "24 V",
+                    "8 V",
+                    "6 V"
+                ],
+                explanation: "In the circuit diagram, R₁ is in series with the parallel combination of R₂ and R₃. First, calculate R₂||R₃:\nR₂||R₃ = (330 × 470) / (330 + 470) = 155100 / 800 ≈ 193.875 Ω.\nTotal resistance:\nR_total = R₁ + (R₂||R₃) = 220 + 193.875 = 413.875 Ω.\nTotal current:\nI_total = E / R_total = 24 / 413.875 ≈ 0.058 A.\nPotential difference across R₁:\nV_R1 = I_total × R₁ ≈ 0.058 × 220 ≈ 12.8 V."
+            },
+            {
+                diagram: '2s1p.png',
+                question: "Refer to the circuit diagram. If R₁ = 100 Ω, R₂ = 200 Ω, R₃ = 100 Ω, and the emf (E) is 10 V, what is the voltage across R₁?",
+                correctAnswer: "10 V",
+                options: [
+                    "2.5 V",
+                    "5 V",
+                    "7.5 V",
+                    "10 V"
+                ],
+                explanation: "In the diagram, R₂ and R₃ are in series: R_series = R₂ + R₃ = 200 + 100 = 300 Ω.\nThis series combination is in parallel with R₁ = 100 Ω.\nEquivalent resistance:\nR_eq = (R_series × R₁) / (R_series + R₁) = (300 × 100) / (300 + 100) = 30000 / 400 = 75 Ω.\nTotal current:\nI_total = E / R_eq = 10 / 75 ≈ 0.133 A.\nVoltage across R₁:\nSince R₁ is in parallel with the series combination, the voltage across R₁ is equal to the emf, which is 10 V."
+            },
+            {
+                diagram: '2p1s.png',
+                question: "In the circuit diagram, if R₁ = 50 Ω, R₂ = 50 Ω, R₃ = 100 Ω, and the emf (E) is 20 V, what is the current flowing through R₁?",
+                correctAnswer: "0.24 A",
+                options: [
+                    "0.08 A",
+                    "0.16 A",
+                    "0.24 A",
+                    "0.32 A"
+                ],
+                explanation: "For the diagram, R₁ is in series with the parallel combination of R₂ and R₃.\nFirst, calculate R₂||R₃:\nR₂||R₃ = (50 × 100) / (50 + 100) = 5000 / 150 ≈ 33.33 Ω.\nTotal resistance:\nR_total = R₁ + (R₂||R₃) = 50 + 33.33 ≈ 83.33 Ω.\nTotal current:\nI_total = E / R_total = 20 / 83.33 ≈ 0.24 A.\nSince R₁ is in series, the current flowing through R₁ is the same as the total current, which is approximately 0.24 A."
+            },
+            {
+                diagram: '2s1p.png',
+                question: "Refer to the circuit diagram. If R₁ = 120 Ω, R₂ = 180 Ω, R₃ = 60 Ω, and the emf (E) is 24 V, what is the potential difference across R₂?",
+                correctAnswer: "16 V",
+                options: [
+                    "8 V",
+                    "12 V",
+                    "16 V",
+                    "24 V"
+                ],
+                explanation: "R₂ and R₃ are in a branch directly connected to the battery. Therefore, the sum of their potential differences is the emf. \nThe p.d. across each resistor is proportional to its resistance. \n Potential difference across R₂:\nV₂ = E × R₂/(R₂ + R₃) = 24 × 180/(180+60) = 16 V."
+            }
+        ];
+
+        // Shuffle the problems to randomize the order each time
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        shuffle(problems);
+
+        function displayProblem() {
+            if (currentProblemIndex >= problems.length) {
+                const summaryMessage = `🎉 Congratulations! You have completed all problems. Your final score is ${score} out of ${attempts}.`;
+                document.getElementById('problem').innerHTML = `<p>${summaryMessage}</p>`;
+                document.getElementById('submit').style.display = 'none';
+                document.getElementById('previous').style.display = 'none';
+                document.getElementById('next').style.display = 'none';
+                document.getElementById('feedback').innerText = '';
+
+                // **Set Progress Bar to 100%**
+                const progressBar = document.getElementById('progress-bar');
+                progressBar.style.width = `100%`;
+                progressBar.innerText = `100% Completed`;
+
+                return;
+            }
+
+            const problem = problems[currentProblemIndex];
+            document.getElementById('problem').innerHTML = `
+                <img src="${problem.diagram}" alt="Circuit Diagram"><br>
+                <p>${problem.question}</p>
+                ${problem.options.map(option => `
+                    <label>
+                        <input type="radio" name="answer" value="${option}"> ${option}
+                    </label><br>
+                `).join('')}
+            `;
+            document.getElementById('feedback').innerText = '';
+
+            if (attemptedProblems[currentProblemIndex]) {
+                const { userAnswer, feedback, isCorrect } = attemptedProblems[currentProblemIndex];
+                document.querySelector(`input[name="answer"][value="${userAnswer}"]`).checked = true;
+                document.querySelectorAll('input[name="answer"]').forEach(radio => radio.disabled = true);
+                document.getElementById('submit').disabled = true;
+                document.getElementById('submit').classList.add('disabled');
+                document.getElementById('feedback').innerText = feedback;
+                if (isCorrect) {
+                    document.getElementById('feedback').classList.add('correct');
+                    document.getElementById('feedback').classList.remove('incorrect');
+                } else {
+                    document.getElementById('feedback').classList.add('incorrect');
+                    document.getElementById('feedback').classList.remove('correct');
+                }
+            } else {
+                document.getElementById('submit').disabled = false;
+                document.getElementById('submit').classList.remove('disabled');
+                document.getElementById('feedback').classList.remove('correct', 'incorrect');
+            }
+            
+            updateProgressBar();
+        }
+        
+
+        function updateScore() {
+            document.getElementById('score').innerText = `Score: ${score}/${attempts}`;
+        }
+
+        function checkAnswer() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (!selectedOption) {
+                alert("⚠️ Please select an answer before submitting.");
+                return;
+            }
+            const userAnswer = selectedOption.value;
+            const correctAnswer = problems[currentProblemIndex].correctAnswer;
+
+            attempts++;
+            let feedback = '';
+            let isCorrect = false;
+            if (userAnswer === correctAnswer) {
+                score++;
+                feedback = '✅ Correct!';
+                isCorrect = true;
+                document.getElementById('feedback').classList.add('correct');
+                document.getElementById('feedback').classList.remove('incorrect');
+            } else {
+                feedback = `❌ Incorrect. ${problems[currentProblemIndex].explanation}`;
+                document.getElementById('feedback').classList.add('incorrect');
+                document.getElementById('feedback').classList.remove('correct');
+            }
+
+            updateScore();
+            attemptedProblems[currentProblemIndex] = { userAnswer, feedback, isCorrect };
+
+            // Disable all radio buttons
+            const radios = document.querySelectorAll('input[name="answer"]');
+            radios.forEach(radio => radio.disabled = true);
+            // Disable the submit button
+            document.getElementById('submit').disabled = true;
+            document.getElementById('submit').classList.add('disabled');
+            // Show feedback
+            document.getElementById('feedback').innerText = feedback;
+        }
+
+        function nextProblem() {
+            if (currentProblemIndex < problems.length - 1) {
+                currentProblemIndex++;
+                displayProblem();
+            } else if (currentProblemIndex === problems.length - 1) {
+                currentProblemIndex++;
+                displayProblem();
+            }
+        }
+
+        function previousProblem() {
+            if (currentProblemIndex > 0) {
+                currentProblemIndex--;
+                displayProblem();
+            }
+        }
+
+        // Initialize the first problem
+        displayProblem();
+    </script>
+</body>
+</html>
