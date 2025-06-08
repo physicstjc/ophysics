@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Interactive Transformer Model</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+    }
+    .slider-group {
+      margin: 10px auto;
+      width: 300px;
+      text-align: left;
+    }
+    .core {
+      display: inline-block;
+      width: 200px;
+      height: 150px;
+      background: #ccc;
+      margin-top: 30px;
+      position: relative;
+    }
+    .coil {
+      position: absolute;
+      width: 20px;
+      height: 4px;
+      background: currentColor;
+    }
+    .primary {
+      left: 10px;
+      color: #007bff;
+    }
+    .secondary {
+      right: 10px;
+      color: #e91e63;
+    }
+    .label {
+      margin: 8px 0;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Transformer Simulation</h2>
+
+<div class="slider-group">
+  <label>Peak \( V_P \) = <span id="vpVal">120</span> V</label><br>
+  <input type="range" id="vpSlider" min="10" max="240" value="120">
+</div>
+
+<div class="slider-group">
+  <label>\( N_P \) = <span id="npVal">16</span></label><br>
+  <input type="range" id="npSlider" min="1" max="30" value="16">
+</div>
+
+<div class="slider-group">
+  <label>\( N_S \) = <span id="nsVal">32</span></label><br>
+  <input type="range" id="nsSlider" min="1" max="60" value="32">
+</div>
+
+<div class="core" id="coreVisual"></div>
+
+<p class="label">
+  \( V_S = \) <span id="vsVal">240</span> V
+</p>
+
+<script>
+  const vpSlider = document.getElementById('vpSlider');
+  const npSlider = document.getElementById('npSlider');
+  const nsSlider = document.getElementById('nsSlider');
+
+  const vpVal = document.getElementById('vpVal');
+  const npVal = document.getElementById('npVal');
+  const nsVal = document.getElementById('nsVal');
+  const vsVal = document.getElementById('vsVal');
+
+  const coreVisual = document.getElementById('coreVisual');
+
+  function updateSimulation() {
+    const Vp = parseFloat(vpSlider.value);
+    const Np = parseInt(npSlider.value);
+    const Ns = parseInt(nsSlider.value);
+
+    const Vs = (Vp * Ns / Np).toFixed(1);
+
+    vpVal.textContent = Vp;
+    npVal.textContent = Np;
+    nsVal.textContent = Ns;
+    vsVal.textContent = Vs;
+
+    drawCoils(Np, Ns);
+  }
+
+  function drawCoils(Np, Ns) {
+    coreVisual.innerHTML = ''; // Clear existing coils
+
+    // Draw primary
+    for (let i = 0; i < Np; i++) {
+      const div = document.createElement('div');
+      div.className = 'coil primary';
+      div.style.top = `${20 + i * 4}px`;
+      coreVisual.appendChild(div);
+    }
+
+    // Draw secondary
+    for (let i = 0; i < Ns; i++) {
+      const div = document.createElement('div');
+      div.className = 'coil secondary';
+      div.style.top = `${20 + i * 4}px`;
+      coreVisual.appendChild(div);
+    }
+  }
+
+  vpSlider.addEventListener('input', updateSimulation);
+  npSlider.addEventListener('input', updateSimulation);
+  nsSlider.addEventListener('input', updateSimulation);
+
+  updateSimulation();
+</script>
+
+</body>
+</html>

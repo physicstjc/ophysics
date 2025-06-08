@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Faraday's Law Simulation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f8f8f8;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      background: #ffffff;
+    }
+    #slider {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Faraday's Law of Electromagnetic Induction</h2>
+  <canvas id="simCanvas" width="600" height="300"></canvas>
+  <br />
+  <label for="magnetPos">Move Magnet:</label>
+  <input type="range" id="magnetPos" min="40" max="500" value="100" />
+
+  <script>
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+    const slider = document.getElementById('magnetPos');
+
+    let prevPosition = parseInt(slider.value);
+    let induced = 0;
+    let inducedDirection = 1;
+    let isMoving = false;
+    let animationFrameId;
+    function drawMagnet(x) {
+      ctx.fillStyle = 'red';
+      ctx.fillRect(x, 120, 40, 40);
+      ctx.fillStyle = 'white';
+      ctx.fillText('N', x + 15, 145);
+
+      ctx.fillStyle = 'blue';
+      ctx.fillRect(x + 40, 120, 40, 40);
+      ctx.fillStyle = 'white';
+      ctx.fillText('S', x + 55, 145);
+    }
+
+    function drawCoil() {
+      const xStart = 300;
+      const yTop = 120;
+      const yBottom = 160;
+
+      // Rectangular base for the solenoid
+      ctx.fillStyle = '#ccc';
+      ctx.fillRect(xStart - 10, yTop, 110, yBottom - yTop);    
+
+        
+          // Draw arcs to represent the coil above the grey rectangle
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 2;
+      for (let i = 0; i <5; i++) {
+        ctx.beginPath();
+        const centerX = xStart + i * 20;
+        const centerY = yTop + 20;
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.scale(0.5, 1.5); // Narrow and tall ellipse
+        ctx.beginPath();
+        ctx.arc(5, 0, 15, -0.7 * Math.PI, 0.7 * Math.PI, false);
+        ctx.restore();
+        ctx.stroke();
+      }
+    }
+
+    function drawGalvanometer(velocity) {
+      const cx = 350;
+      const cy = 250;
+      const radius = 20;
+
+      // Draw meter box
+      ctx.strokeStyle = 'black';
+      ctx.strokeRect(320, 220, 60, 60);
+
+      // Draw circular dial
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+      ctx.strokeStyle = '#888';
+      ctx.stroke();
+
+      // Constrain velocity to a range for angle mapping
+      const maxVelocity = 1000;
+      const clampedVelocity = Math.max(Math.min(velocity, maxVelocity), -maxVelocity);
+      const angle = Math.PI / 2 - (clampedVelocity / maxVelocity) * Math.PI / 2;
+
+      const needleLength = 18;
+      const needleX = cx - needleLength * Math.cos(angle);
+      const needleY = cy - needleLength * Math.sin(angle);
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(needleX, needleY);
+      ctx.strokeStyle = 'red';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = 'black';
+      ctx.font = '12px Arial';
+      ctx.fillText('Galvanometer', 390, 270);
+    }
+
+
+    let prevTime = performance.now();
+    let smoothedVelocity = 0;
+      
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const position = parseInt(slider.value);
+
+      drawMagnet(position);
+      drawCoil();
+
+      const currentTime = performance.now();
+      const dt = (currentTime - prevTime) / 1000; // seconds
+     const rawVelocity = dt > 0 ? (position - prevPosition) / dt : 0;
+
+      // Smooth velocity using exponential moving average
+      const alpha = 0.2;
+      smoothedVelocity = alpha * rawVelocity + (1 - alpha) * smoothedVelocity;
+
+      prevPosition = position;
+      prevTime = currentTime;
+
+      drawGalvanometer(smoothedVelocity);
+        if (!isMoving) {
+        smoothedVelocity *= 0.9;
+        if (Math.abs(smoothedVelocity) < 0.01) smoothedVelocity = 0;
+        drawGalvanometer(smoothedVelocity);
+      }
+
+      animationFrameId = requestAnimationFrame(draw);
+    }
+
+    slider.addEventListener('input', () => {
+      isMoving = true;
+    });
+
+    slider.addEventListener('change', () => {
+      isMoving = false;
+    });
+
+    requestAnimationFrame(draw);  
+    draw();
+  </script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AC Generator Simulation (2D)</title>
+  
+</head>
+<body>
+    
+    <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+    #controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    #controls label {
+      margin-right: 5px;
+    }
+
+    #canvasContainer {
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+          gap: 20px;
+          flex-wrap: wrap;
+          padding: 10px;
+        }
+
+        canvas {
+          width: 100%;
+          height: auto;
+          max-width: 400px;
+          border: 1px solid #aaa;
+          background: #f9f9f9;
+        }
+
+        @media (min-width: 700px) {
+          #canvasContainer {
+            flex-direction: row;
+          }
+        }
+
+        @media (max-width: 699px) {
+          #canvasContainer {
+            flex-direction: column;
+            align-items: center;
+          }
+
+          canvas {
+            max-width: 90%;
+          }
+        }
+
+
+  </style>
+<div id="controls">
+  <label>Angular speed (ω): </label>
+  <input type="range" id="omegaSlider" min="0" max="5" value="2" style="width: 100px;">
+  <span id="omegaValue">2</span> rad/s
+
+  <br>
+
+  <label>Magnetic flux density (B): </label>
+  <input type="range" id="bSlider" min="1" max="2" step="0.2" value="1" style="width: 100px;">
+  <span id="bValue">1.0</span> T
+
+  <br>
+
+  <button id="toggleBtn">Pause</button>
+</div>
+
+<div id="canvasContainer">
+  <canvas id="generatorCanvas"></canvas>
+  <canvas id="oscilloscope" class="oscilloscope"></canvas>
+</div>
+<script>
+  const canvas = document.getElementById("generatorCanvas");
+  const ctx = canvas.getContext("2d");
+  let omega = 2;
+  let t = 0;
+  const dt = 0.02;
+  let running = true;
+  let B = 1.0;
+
+  function drawGenerator(theta, emf) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+
+    // Magnetic field lines (side view)
+    ctx.strokeStyle = "blue";
+    ctx.lineWidth = 1;
+    for (let y = -100; y <= 120; y += 20 * 1/B) {
+      ctx.beginPath();
+      ctx.moveTo(-canvas.width /4, y);
+      ctx.lineTo(canvas.width /4, y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(canvas.width /4, y);
+      ctx.lineTo(canvas.width /4 - canvas.width /100, y - 5);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(canvas.width /4, y);
+      ctx.lineTo(canvas.width /4 - canvas.width /100, y + 5);
+      ctx.stroke();
+    }
+
+    // Rotating coil (trapezoid projection)
+    const w = canvas.width /4;
+    const h = 100;
+    const angle = theta;
+    const x1 = -w / 3 * Math.sin(angle);
+    const y1 = -40 + h / 4 * Math.cos(angle);
+    const x2 = w / 3 * Math.sin(angle);
+    const y2 = -40 -h / 4 * Math.cos(angle);
+    const x3 = w / 1.2 * Math.sin(angle);
+    const y3 = 40 - h / 2 * Math.cos(angle);
+    const x4 = - w / 1.2 * Math.sin(angle);
+    const y4 = 40 + h / 2 * Math.cos(angle);
+
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x3, y3);
+    ctx.lineTo(x4, y4);
+    ctx.closePath();
+    ctx.stroke();
+
+    // EMF direction indicator arrows (top and bottom sides)
+    ctx.strokeStyle = "red";
+    ctx.lineWidth = 2;
+    const arrowSize = canvas.width /100;
+    const arrowDir = Math.sign(emf);
+
+      
+    ctx.beginPath();
+    ctx.moveTo((x1 + x4) / 2,(y1 + y4) / 2 );
+    ctx.lineTo((x1 + x4) / 2 + arrowDir * arrowSize,(y1 + y4) / 2 + arrowDir * arrowSize);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo((x1 + x4) / 2,(y1 + y4) / 2 );
+    ctx.lineTo((x1 + x4) / 2 - arrowDir * arrowSize,(y1 + y4) / 2 + arrowDir * arrowSize);
+    ctx.stroke();
+
+
+      
+    ctx.beginPath();
+    ctx.moveTo((x2 + x3) / 2,(y2 + y3) / 2 );
+    ctx.lineTo((x2 + x3) / 2 + arrowDir * arrowSize,(y2 + y3) / 2 - arrowDir * arrowSize);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo((x2 + x3) / 2,(y2 + y3) / 2 );
+    ctx.lineTo((x2 + x3) / 2 - arrowDir * arrowSize,(y2 + y3) / 2 - arrowDir * arrowSize);
+    ctx.stroke();
+  
+      
+    ctx.restore();
+  }
+
+  const oscCanvas = document.getElementById("oscilloscope");
+  const oscCtx = oscCanvas.getContext("2d");
+  const emfArray = [];
+
+  function drawOscilloscope(emf) {
+    emfArray.push(emf);
+    if (emfArray.length > oscCanvas.width) emfArray.shift();
+
+    oscCtx.fillStyle = "#f0f0f0";
+    oscCtx.fillRect(0, 0, oscCanvas.width, oscCanvas.height);
+
+    oscCtx.strokeStyle = "#999";
+    oscCtx.beginPath();
+    oscCtx.moveTo(0, oscCanvas.height / 2);
+    oscCtx.lineTo(oscCanvas.width, oscCanvas.height / 2);
+    oscCtx.stroke();
+
+    oscCtx.fillStyle = "black";
+    oscCtx.font = "11px sans-serif";
+    const ticks = [-1, -0.5, 0, 0.5, 1];
+    ticks.forEach(v => {
+      const y = oscCanvas.height / 2 - v * (oscCanvas.height / 2);
+      oscCtx.beginPath();
+      oscCtx.moveTo(0, y);
+      oscCtx.lineTo(10, y);
+      oscCtx.stroke();
+      oscCtx.fillText((v * 100).toFixed(0) + " V", 10, y + 3);
+    });
+    oscCtx.fillText("Time →", oscCanvas.width - 55, oscCanvas.height - 5);
+
+    oscCtx.strokeStyle = "green";
+    oscCtx.beginPath();
+    for (let i = 0; i < emfArray.length; i++) {
+      const x = i;
+      const y = oscCanvas.height / 2 - (emfArray[i] * oscCanvas.height / 10);
+      if (i === 0) oscCtx.moveTo(x, y);
+      else oscCtx.lineTo(x, y);
+    }
+    oscCtx.stroke();
+  }
+
+  const omegaSlider = document.getElementById('omegaSlider');
+  const omegaValue = document.getElementById('omegaValue');
+  omegaSlider.addEventListener('input', () => {
+    omega = parseFloat(omegaSlider.value);
+    omegaValue.textContent = omega;
+  });
+
+    const bSlider = document.getElementById('bSlider');
+    const bValue = document.getElementById('bValue');
+    bSlider.addEventListener('input', () => {
+      B = parseFloat(bSlider.value);
+      bValue.textContent = B.toFixed(1);
+    });
+
+  document.getElementById("toggleBtn").addEventListener("click", () => {
+    running = !running;
+    document.getElementById("toggleBtn").textContent = running ? "Pause" : "Resume";
+  });
+
+  function animate() {
+    requestAnimationFrame(animate);
+    if (running) {
+      t += dt;
+      const theta = omega * t;
+      const flux = Math.cos(theta);
+      const emf = omega * B * Math.sin(theta);
+      drawGenerator(theta, emf);
+      drawOscilloscope(emf);
+    }
+  }
+
+  animate();
+    function resizeCanvas(canvas, widthRatio = 1, heightRatio = 1) {
+  const width = window.innerWidth * widthRatio;
+  const height = window.innerHeight * heightRatio;
+  canvas.width = width;
+  canvas.height = height;
+  canvas.style.width = width + 'px';
+  canvas.style.height = height + 'px';
+}
+
+// Resize both canvases proportionally
+
+</script>
+</body>
+</html>

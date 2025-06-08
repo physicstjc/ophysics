@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformer</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+    </head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+    <h2>Transformer</h2>
+    
+        <h3>How It Works</h3>
+        <p>A transformer is an essential electrical device used to change the voltage of alternating current (AC) in power systems. It works on the principle of electromagnetic induction and requires AC to operate, as it relies on a changing magnetic field to induce voltage. The key components of a transformer include a primary coil, a secondary coil, and a soft iron core. When AC flows through the primary coil, it generates a changing magnetic flux in the iron core. This changing flux then induces an electromotive force (emf) in the secondary coil according to Faraday’s Law of Induction.</p>
+    
+        <p>Transformers can either step up or step down voltages depending on the number of turns in the primary and secondary coils. In a step-up transformer, the secondary coil has more turns than the primary, resulting in a higher output voltage. Conversely, in a step-down transformer, the secondary coil has fewer turns, yielding a lower output voltage. The voltage ratio is proportional to the turns ratio, while the power ideally remains constant (ignoring losses), meaning that increasing voltage decreases current and vice versa.</p>
+    
+        <p>The ratio of the number of turns is equal to the ratio of the voltages as shown:</p>
+
+        $$\dfrac{V_s}{V_p} = \dfrac{N_s}{N_p}$$
+
+        <p>This equation can be rearranged to find any unknown value, such as the secondary voltage or number of turns, if the others are known. In an ideal transformer, the power input is equal to the power output:</p>
+
+        $$V_p I_p = V_s I_s$$
+
+        <p>This implies that when voltage increases, current must decrease to conserve power, and vice versa. The ratio of currents is therefore inversely proportional to the ratio of the number of turns:</p>
+
+        $$\dfrac{I_s}{I_p} = \dfrac{N_p}{N_s}$$
+
+        <ul>
+          <li>$V_P$: Voltage across the primary coil</li>
+          <li>$V_S$: Voltage across the secondary coil</li>
+          <li>$N_P$: Number of turns in the primary coil</li>
+          <li>$N_S$: Number of turns in the secondary coil</li>
+          <li>$I_P$: Current in the primary coil</li>
+          <li>$I_S$: Current in the secondary coil</li>
+        </ul>
+
+        <iframe scrolling="no" title="AC Transformer" src="https://www.geogebra.org/material/iframe/id/tc7mxwgs/width/641/height/480/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/true/ctl/false" width="641px" height="480px" style="border:0px;" allowfullscreen> </iframe>
+    
+        <h3>Power Transmission</h3>
+
+        <p>
+        Transformers play a vital role in the efficient transmission of electrical power over long distances. At the power station, electricity is generated at a relatively low voltage. To reduce energy losses during transmission, a <strong>step-up transformer</strong> is used to increase the voltage while reducing the current. This is crucial because power lost as heat in transmission wires is given by the equation <em>P<sub>loss</sub> = I<sup>2</sup>R</em>, where <em>I</em> is the current and <em>R</em> is the resistance of the wires. Lowering the current significantly reduces these losses.
+        </p>
+        <img src="power-transmission.png">
+        <p>
+        After the high-voltage electricity travels long distances through transmission lines, it reaches substations near towns or cities. Here, a <strong>step-down transformer</strong> is used to decrease the voltage to safer levels for domestic and industrial use. Without transformers, it would be inefficient and impractical to deliver electricity reliably and affordably over large distances. Transformers thus serve as a cornerstone of modern power distribution networks, ensuring minimal energy waste and safe voltage levels for end users.
+        </p>
+        <p>
+        Assuming the power transmission system is transmitting a constant amount of electrical power (ignoring losses)
+        </p>
+
+        <p>
+        This equation shows that when the voltage is increased using a step-up transformer, the current must decrease proportionally to maintain the same power:
+        </p>
+
+        $$
+        I = \frac{P}{V}
+        $$
+
+        <p>
+        This relationship is essential in reducing power loss during long-distance transmission, because:
+        </p>
+
+        $$
+        P_{\text{loss}} = I^2 R
+        $$
+
+        <p>
+        By increasing the voltage and thus reducing the current, the value of \( I^2 \) becomes much smaller, which significantly minimizes the power lost as heat in the transmission wires.
+        </p>
+
+        <p>Note that we do not use $P_{\text{loss}} = \dfrac{V^2}{R} $ to calculate the power loss through the transmission wires as $V$ here should refer to the potential difference across the transmission wire alone (which is unknown), not the emf of the source.</p>
+    
+         <h3>Imperfection in a Transformer</h3>
+
+        <p>
+        In real-world applications, transformers are not perfectly efficient. While ideal transformers assume 100% energy transfer from the primary to the secondary coil, practical transformers experience energy losses due to several factors:
+        </p>
+
+        <ul>
+          <li>
+            <em>Joule heating:</em> These occur due to the resistance in the windings. As current flows through the coils, some energy is lost as heat.
+          </li>
+            <li><em>Eddy current losses</em>, caused by circulating currents in the iron core, which generate heat. These are minimized by using laminated cores.</li>
+            <li><em>Hysteresis losses</em>: Hysteresis losses occur in the transformer’s iron core due to the repeated magnetization and demagnetization as the alternating current (AC) changes direction. Each time the magnetic field reverses, the core material resists the change slightly, resulting in energy being dissipated as heat.</li>
+          <li>
+            <em>Magnetic flux leakage:</em> Not all magnetic field lines generated by the primary coil link to the secondary coil. Some flux escapes, reducing the induced voltage and efficiency.
+          </li>
+
+        </ul>
+
+        <p>
+        Due to these imperfections, the efficiency \( \eta \) of a transformer is less than 100% and is calculated as:
+        </p>
+
+        $$
+        \eta = \frac{P_{\text{output}}}{P_{\text{input}}} \times 100\%
+        $$
+
+        <p>
+        Modern power transformers are still highly efficient, often reaching efficiencies above 95%, but these losses must be accounted for in precision applications or large-scale power systems.
+        </p>
+
+        
+        
+    </body>
+</html>
+

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A. C. Generator</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+    </head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+    <h2>AC Generator</h2>
+    
+        <h3>Working Principle</h3>
+
+            <p>An AC generator, or alternator, is a device that converts mechanical energy into electrical energy by means of electromagnetic induction. At its core, the generator consists of a coil of wire that is made to rotate within a magnetic field. This magnetic field is usually produced by permanent magnets or electromagnets positioned so that their field lines pass through the area enclosed by the coil.</p>
+
+            <p>As the coil rotates, it cuts through the magnetic field lines. This motion causes the magnetic flux linkage through the coil to change over time. According to Faraday’s Law of Electromagnetic Induction, whenever there is a change in magnetic flux linkage through a circuit, an electromotive force (emf) is induced in the circuit. The faster the coil rotates or the stronger the magnetic field, the greater the rate of change of flux, and thus, the greater the induced emf.</p>
+
+            <p>The rotation causes the magnetic flux to vary in a sinusoidal manner, leading to an emf that also varies sinusoidally. This means the direction of the induced current reverses every half-turn, producing an alternating current (AC).</p>
+
+
+        
+            <iframe scrolling="no" title="AC Generator 3D" src="https://www.geogebra.org/material/iframe/id/ctrbkhnz/width/700/height/480/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/true/ctl/false" width="700px" height="480px" style="border:0;" allowfullscreen> </iframe>
+    
+    
+            <p>To extract the current from the spinning coil without tangling wires, slip rings are connected to the ends of the coil. These rotate with the coil and maintain contact with carbon brushes, which allow the generated current to flow into an external circuit.</p>
+
+            <p>In essence, an AC generator works by continually rotating a coil within a magnetic field, causing a periodic change in magnetic flux that induces an alternating voltage. This principle is the foundation of electricity generation in power stations around the world.</p>
+    
+    <h3>Magnitude of Induced EMF </h3>
+    
+            <p>The magnitude for the induced emf is typically dependent on:</p> 
+
+             <ol><li>the number of turns in the coil</li> 
+                 <li>the magnetic flux density</li>
+                 <li>the area of the coil</li>
+                 <li>the angular velocity of rotation</li></ol>
+    
+            <p>Using the simulation below, notice how changing the angular velocity of rotation affects both the freqency of the alternating current as well as the peak emf.</p>
+    
+            <div id="controls">
+              <label>Angular velocity (ω): </label>
+              <input type="range" id="omegaSlider" min="0" max="5" value="2" style="width: 100px;">
+              <span id="omegaValue">2</span> rad/s
+
+              <br>
+
+              <label>Magnetic flux density (B): </label>
+              <input type="range" id="bSlider" min="1" max="2" step="0.2" value="1" style="width: 100px;">
+              <span id="bValue">1.0</span> T
+
+              <br>
+
+              <button id="toggleBtn">Pause</button>
+            </div>
+
+            <div id="canvasContainer">
+              <canvas id="generatorCanvas"></canvas>
+              <canvas id="oscilloscope" class="oscilloscope"></canvas>
+            </div>
+            <script>
+              const canvas = document.getElementById("generatorCanvas");
+              const ctx = canvas.getContext("2d");
+              let omega = 2;
+              let t = 0;
+              const dt = 0.02;
+              let running = true;
+              let B = 1.0;
+
+              function drawGenerator(theta, emf) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.save();
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+
+                // Magnetic field lines (side view)
+                ctx.strokeStyle = "blue";
+                ctx.lineWidth = 1;
+                for (let y = -100; y <= 120; y += 20 * 1/B) {
+                  ctx.beginPath();
+                  ctx.moveTo(-canvas.width /4, y);
+                  ctx.lineTo(canvas.width /4, y);
+                  ctx.stroke();
+                  ctx.beginPath();
+                  ctx.moveTo(canvas.width /4, y);
+                  ctx.lineTo(canvas.width /4 - canvas.width /100, y - 5);
+                  ctx.stroke();
+                  ctx.beginPath();
+                  ctx.moveTo(canvas.width /4, y);
+                  ctx.lineTo(canvas.width /4 - canvas.width /100, y + 5);
+                  ctx.stroke();
+                }
+
+                // Rotating coil (trapezoid projection)
+                const w = canvas.width /4;
+                const h = 100;
+                const angle = theta;
+                const x1 = -w / 3 * Math.sin(angle);
+                const y1 = -40 + h / 4 * Math.cos(angle);
+                const x2 = w / 3 * Math.sin(angle);
+                const y2 = -40 -h / 4 * Math.cos(angle);
+                const x3 = w / 1.2 * Math.sin(angle);
+                const y3 = 40 - h / 2 * Math.cos(angle);
+                const x4 = - w / 1.2 * Math.sin(angle);
+                const y4 = 40 + h / 2 * Math.cos(angle);
+
+                ctx.strokeStyle = "black";
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.lineTo(x3, y3);
+                ctx.lineTo(x4, y4);
+                ctx.closePath();
+                ctx.stroke();
+
+                // EMF direction indicator arrows (top and bottom sides)
+                ctx.strokeStyle = "red";
+                ctx.lineWidth = 2;
+                const arrowSize = canvas.width /100;
+                const arrowDir = Math.sign(emf);
+
+
+                ctx.beginPath();
+                ctx.moveTo((x1 + x4) / 2,(y1 + y4) / 2 );
+                ctx.lineTo((x1 + x4) / 2 + arrowDir * arrowSize,(y1 + y4) / 2 + arrowDir * arrowSize);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo((x1 + x4) / 2,(y1 + y4) / 2 );
+                ctx.lineTo((x1 + x4) / 2 - arrowDir * arrowSize,(y1 + y4) / 2 + arrowDir * arrowSize);
+                ctx.stroke();
+
+
+
+                ctx.beginPath();
+                ctx.moveTo((x2 + x3) / 2,(y2 + y3) / 2 );
+                ctx.lineTo((x2 + x3) / 2 + arrowDir * arrowSize,(y2 + y3) / 2 - arrowDir * arrowSize);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo((x2 + x3) / 2,(y2 + y3) / 2 );
+                ctx.lineTo((x2 + x3) / 2 - arrowDir * arrowSize,(y2 + y3) / 2 - arrowDir * arrowSize);
+                ctx.stroke();
+
+
+                ctx.restore();
+              }
+
+              const oscCanvas = document.getElementById("oscilloscope");
+              const oscCtx = oscCanvas.getContext("2d");
+              const emfArray = [];
+
+              function drawOscilloscope(emf) {
+                emfArray.push(emf);
+                if (emfArray.length > oscCanvas.width) emfArray.shift();
+
+                oscCtx.fillStyle = "#f0f0f0";
+                oscCtx.fillRect(0, 0, oscCanvas.width, oscCanvas.height);
+
+                oscCtx.strokeStyle = "#999";
+                oscCtx.beginPath();
+                oscCtx.moveTo(0, oscCanvas.height / 2);
+                oscCtx.lineTo(oscCanvas.width, oscCanvas.height / 2);
+                oscCtx.stroke();
+
+                oscCtx.fillStyle = "black";
+                oscCtx.font = "11px sans-serif";
+                const ticks = [-1, -0.5, 0, 0.5, 1];
+                ticks.forEach(v => {
+                  const y = oscCanvas.height / 2 - v * (oscCanvas.height / 2);
+                  oscCtx.beginPath();
+                  oscCtx.moveTo(0, y);
+                  oscCtx.lineTo(10, y);
+                  oscCtx.stroke();
+                  oscCtx.fillText((v * 100).toFixed(0) + " V", 10, y + 3);
+                });
+                oscCtx.fillText("Time →", oscCanvas.width - 55, oscCanvas.height - 5);
+
+                oscCtx.strokeStyle = "green";
+                oscCtx.beginPath();
+                for (let i = 0; i < emfArray.length; i++) {
+                  const x = i;
+                  const y = oscCanvas.height / 2 - (emfArray[i] * oscCanvas.height / 10);
+                  if (i === 0) oscCtx.moveTo(x, y);
+                  else oscCtx.lineTo(x, y);
+                }
+                oscCtx.stroke();
+              }
+
+              const omegaSlider = document.getElementById('omegaSlider');
+              const omegaValue = document.getElementById('omegaValue');
+              omegaSlider.addEventListener('input', () => {
+                omega = parseFloat(omegaSlider.value);
+                omegaValue.textContent = omega;
+              });
+
+                const bSlider = document.getElementById('bSlider');
+                const bValue = document.getElementById('bValue');
+                bSlider.addEventListener('input', () => {
+                  B = parseFloat(bSlider.value);
+                  bValue.textContent = B.toFixed(1);
+                });
+
+              document.getElementById("toggleBtn").addEventListener("click", () => {
+                running = !running;
+                document.getElementById("toggleBtn").textContent = running ? "Pause" : "Resume";
+              });
+
+              function animate() {
+                requestAnimationFrame(animate);
+                if (running) {
+                  t += dt;
+                  const theta = omega * t;
+                  const flux = Math.cos(theta);
+                  const emf = omega * B * Math.sin(theta);
+                  drawGenerator(theta, emf);
+                  drawOscilloscope(emf);
+                }
+              }
+
+              animate();
+                function resizeCanvas(canvas, widthRatio = 1, heightRatio = 1) {
+              const width = window.innerWidth * widthRatio;
+              const height = window.innerHeight * heightRatio;
+              canvas.width = width;
+              canvas.height = height;
+              canvas.style.width = width + 'px';
+              canvas.style.height = height + 'px';
+            }
+
+            // Resize both canvases proportionally
+
+            </script>
+    </body>
+</html>
+

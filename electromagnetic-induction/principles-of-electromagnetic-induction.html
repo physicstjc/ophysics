@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principles of Electromagnetic Induction</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+    </head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+        
+    <h2>Principles of Electromagnetic Induction</h2>
+
+        <p>Electromagnetic induction is the process through which an emf is induced in a conductor due to a changing magnetic field.</p>
+    
+        <h3>Faraday's Experiment</h3>
+            <p>In Faraday's experiment, moving a magnet into or out of a coil induces an electric current, which is detected by a galvanometer. The faster the magnet moves, the greater the deflection of the needle. The direction of needle deflection depends on whether the magnet is moving toward or away from the coil—reversing as the direction of motion changes. When the magnet is stationary, the needle returns to the center, indicating no induced current.</p>
+        
+        <style>    
+            
+            canvas {
+              border: 2px solid #333;
+              border-radius: 6px;
+              box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+              border: 1px solid #ccc;
+              background: #ffffff;
+            }
+            #slider {
+              margin-top: 20px;
+            }
+            #simulation-container {
+              width: 100%;
+              max-width: 640px;
+              margin: 0 auto;
+            }
+
+            #simCanvas {
+              width: 100%;
+              height: auto;
+              display: block;
+            }
+            #simulation-container:fullscreen {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              width: 100vw;
+              height: 100vh;
+              background-color: white;
+            }
+
+            #simulation-container:fullscreen canvas {
+              width: 90vw;
+              height: 60vh;
+            }
+            #simulation-container:fullscreen input[type=range],
+            #simulation-container:fullscreen label,
+            #simulation-container:fullscreen button {
+              font-size: 1.2rem;
+              margin: 10px;
+                
+        </style>
+
+    <div id="simulation-container">
+        <canvas id="simCanvas" width="640" height="300"></canvas>
+              <br />
+              <label for="magnetPos">Move Magnet:</label>
+              <input type="range" id="magnetPos" min="40" max="550" value="100" style="width: 20vw; max-width: 600px;" />
+              <label><input type="checkbox" id="flipMagnet" /> Flip Magnet Polarity</label>
+              <button onclick="toggleFullscreen()">Fullscreen</button>
+    </div> <!-- end of simulation-container -->
+              <script>
+                function toggleFullscreen() {
+                  const container = document.getElementById('simulation-container');
+                  if (!document.fullscreenElement) {
+                    container.requestFullscreen().catch(err => {
+                      alert(`Error attempting to enable fullscreen: ${err.message}`);
+                    });
+                  } else {
+                    document.exitFullscreen();
+                  }
+                };
+                  
+                const canvas = document.getElementById('simCanvas');
+                const ctx = canvas.getContext('2d');
+                const slider = document.getElementById('magnetPos');
+
+                let prevPosition = parseInt(slider.value);
+                let induced = 0;
+                let inducedDirection = 1;
+                let isMoving = false;
+                let animationFrameId;
+                function drawMagnet(x) {
+                      if (!flipPolarity) {
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(x, 120, 40, 40);
+                        ctx.fillStyle = 'white';
+                        ctx.fillText('N', x + 15, 145);
+
+                        ctx.fillStyle = 'blue';
+                        ctx.fillRect(x + 40, 120, 40, 40);
+                        ctx.fillStyle = 'white';
+                        ctx.fillText('S', x + 55, 145);
+                      } else {
+                        ctx.fillStyle = 'blue';
+                        ctx.fillRect(x, 120, 40, 40);
+                        ctx.fillStyle = 'white';
+                        ctx.fillText('S', x + 15, 145);
+
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(x + 40, 120, 40, 40);
+                        ctx.fillStyle = 'white';
+                        ctx.fillText('N', x + 55, 145);
+                      }};
+
+                function drawCoil() {
+                  const xStart = 300;
+                  const yTop = 120;
+                  const yBottom = 160;
+
+                  // Rectangular base for the solenoid
+                  ctx.fillStyle = '#ccc';
+                  ctx.fillRect(xStart - 10, yTop, 110, yBottom - yTop);    
+
+
+                      // Draw arcs to represent the coil above the grey rectangle
+                  ctx.strokeStyle = 'black';
+                  ctx.lineWidth = 2;
+                  for (let i = 0; i <5; i++) {
+                    ctx.beginPath();
+                    const centerX = xStart + i * 20;
+                    const centerY = yTop + 20;
+                    ctx.save();
+                    ctx.translate(centerX, centerY);
+                    ctx.scale(0.5, 1.5); // Narrow and tall ellipse
+                    ctx.beginPath();
+                    ctx.arc(5, 0, 15, -0.7 * Math.PI, 0.7 * Math.PI, false);
+                    ctx.restore();
+                    ctx.stroke();
+                  }
+                }
+
+                function drawGalvanometer(velocity) {
+                  const cx = 350;
+                  const cy = 250;
+                  const radius = 20;
+
+                  // Draw meter box
+                  ctx.strokeStyle = 'black';
+                  ctx.strokeRect(320, 220, 60, 60);
+
+                  // Draw circular dial
+                  ctx.beginPath();
+                  ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+                  ctx.strokeStyle = '#888';
+                  ctx.stroke();
+
+                  // Constrain velocity to a range for angle mapping
+                  const maxVelocity = 1000;
+                  const clampedVelocity = Math.max(Math.min(velocity, maxVelocity), -maxVelocity);
+                  const angle = Math.PI / 2 - (clampedVelocity / maxVelocity) * Math.PI / 2;
+
+                  const needleLength = 18;
+                  const needleX = cx - needleLength * Math.cos(angle);
+                  const needleY = cy - needleLength * Math.sin(angle);
+
+                  ctx.beginPath();
+                  ctx.moveTo(cx, cy);
+                  ctx.lineTo(needleX, needleY);
+                  ctx.strokeStyle = 'red';
+                  ctx.lineWidth = 2;
+                  ctx.stroke();
+
+                  ctx.fillStyle = 'black';
+                  ctx.font = '12px Arial';
+                  ctx.fillText('Galvanometer', 390, 270);
+                }
+
+
+                let prevTime = performance.now();
+                let smoothedVelocity = 0;
+                let flipPolarity = false;
+                function draw() {
+                  ctx.clearRect(0, 0, canvas.width, canvas.height);
+                  const position = parseInt(slider.value);
+
+                  drawMagnet(position);
+                  drawCoil();
+
+                  const currentTime = performance.now();
+                  const dt = (currentTime - prevTime) / 1000; // seconds
+                  const rawVelocity = dt > 0 ? (position - prevPosition) / dt : 0;
+                  const adjustedVelocity = flipPolarity ? -rawVelocity : rawVelocity;
+                  // Smooth velocity using exponential moving average
+                  const alpha = 0.2;
+                  smoothedVelocity = alpha * adjustedVelocity + (1 - alpha) * smoothedVelocity;
+
+                  prevPosition = position;
+                  prevTime = currentTime;
+
+                  drawGalvanometer(smoothedVelocity);
+                    if (!isMoving) {
+                    smoothedVelocity *= 0.9;
+                    if (Math.abs(smoothedVelocity) < 0.01) smoothedVelocity = 0;
+                    drawGalvanometer(smoothedVelocity);
+                  }
+
+                  animationFrameId = requestAnimationFrame(draw);
+                }
+
+                slider.addEventListener('input', () => {
+                  isMoving = true;
+                });
+
+                slider.addEventListener('change', () => {
+                  isMoving = false;
+                });
+
+                requestAnimationFrame(draw);  
+                draw();
+                
+                document.getElementById('flipMagnet').addEventListener('change', (e) => {
+                  flipPolarity = e.target.checked;
+                });
+                </script>
+    
+    
+        <p>Based on the observations in Faraday's experiment, we can demonstrate the two laws of electromagnetic induction:</p>
+    
+            <div class="callout">
+            <span role="img" aria-label="📖" class="emoji">📖</span>
+            <span class="callout-text">Faraday's law of electromagnetic induction states that the magnitude of the induced e.m.f. is directly proportional to the rate of change of magnetic flux linkage.</span></div>
+    
+            <p>Magnetic flux, $\Phi$, is the magnetic field in a given area. It depends on the strength of the magnetic field ($B$), the area of the loop, and the angle between the field and the area.</p>
+
+            <p>Magnetic flux linkage is the total magnetic flux linked with a coil, taking into account all the turns in the coil. If $N$ is the number of turns in a coil, then flux linkage is  $N \times \Phi$,</p>
+    
+            <div class="callout">
+            <span role="img" aria-label="📖" class="emoji">📖</span>
+            <span class="callout-text">Lenz's law states that the direction of the induced e.m.f., and hence the induced current in a closed circuit, is always such that its magnetic effect opposes the motion or change producing it.</span></div>
+    
+            <p>Lenz’s Law is a direct consequence of the law of conservation of energy. When a magnet is pushed into a coil, an electric current is induced in the coil. This current generates a magnetic field that opposes the motion of the magnet, in accordance with Lenz’s Law. As a result, you must exert a force to overcome this resistance, doing mechanical work in the process. This mechanical work is not lost; it is transformed into electrical energy within the coil. In this way, energy is conserved — no energy is created out of nothing, but simply converted from one form/store to another.</p>
+    
+        <p>The following are examples in which the effects of Lenz's law are demonstrated.</p>
+    
+            <table style="width:100%; border-collapse: collapse; text-align: left;">
+              <thead>
+                <tr style="background-color: #f0f0f0;">
+                  <th style="border: 1px solid #ccc; padding: 8px;">Example</th>
+                  <th style="border: 1px solid #ccc; padding: 8px;">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="border: 1px solid #ccc; padding: 8px;">Dropping a magnet through a copper tube</td>
+                  <td style="border: 1px solid #ccc; padding: 8px;">Induced eddy currents in the tube oppose the motion of the magnet, causing it to fall slowly.</td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid #ccc; padding: 8px;">Magnetic braking in roller coasters or trains</td>
+                  <td style="border: 1px solid #ccc; padding: 8px;">Moving conductors induce currents that produce opposing magnetic forces, slowing motion without contact.</td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid #ccc; padding: 8px;">Jumping ring on an electromagnet</td>
+                  <td style="border: 1px solid #ccc; padding: 8px;">Switching on the electromagnet induces a current in the ring that creates a repelling force, causing it to jump.</td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid #ccc; padding: 8px;">Induction cooktops</td>
+                  <td style="border: 1px solid #ccc; padding: 8px;">Rapidly changing magnetic fields induce currents in metal cookware, heating it through resistance.</td>
+                </tr>
+              </tbody>
+            </table>
+        <p>Here is an interesting video on how the changing magnetic fields create induced current opposing the changes and hence, levitating an aluminum plate.</p>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/txmKr69jGBk?si=M32BpXGbBSQ76kN1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+        <h3>Scaffold for Explaining Electromagnetic Induction (C-F-I-L-E)</h3>
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+          <thead>
+            <tr style="background-color: #f0f0f0;">
+              <th style="border: 1px solid #ccc; padding: 8px; width: 50px;">Letter</th>
+              <th style="border: 1px solid #ccc; padding: 8px;">Explanation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="border: 1px solid #ccc; padding: 8px;"><strong>C</strong></td>
+              <td style="border: 1px solid #ccc; padding: 8px;">Cutting of magnetic field lines occurs when a magnet or coil moves relative to one another. Change in magnetic flux linkage occurs when any of the following changes: strength of the magnetic field, the area of the loop, and the angle between the field and the area.</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ccc; padding: 8px;"><strong>F</strong></td>
+              <td style="border: 1px solid #ccc; padding: 8px;">According to Faraday’s Law, this change induces an electromotive force (emf) in the coil. The greater the rate of change, the larger the emf induced.</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ccc; padding: 8px;"><strong>I</strong></td>
+              <td style="border: 1px solid #ccc; padding: 8px;">If the circuit is closed, the induced emf causes an electric current to flow—this is the induced current.</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ccc; padding: 8px;"><strong>L</strong></td>
+              <td style="border: 1px solid #ccc; padding: 8px;">Lenz’s Law states that the direction of the induced current is such that it produces a magnetic effect that opposes the original change that caused it.</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #ccc; padding: 8px;"><strong>E</strong></td>
+              <td style="border: 1px solid #ccc; padding: 8px;">The effect of the induced current could be a deflection in a galvanometer, deceleration of a magnet near a conducting plate, or heating due to resistance.</td>
+            </tr>
+          </tbody>
+        </table>
+
+    </body>
+</html>
+
