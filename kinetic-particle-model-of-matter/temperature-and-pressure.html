@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>States of Matter</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+    </head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+    <section>
+            <h3>Temperature and Kinetic Energy</h3>
+            <p>Temperature is a measure of the average kinetic energy of particles in a substance. When a body is heated:</p>
+            <ul>
+              <li>The particles gain energy and move faster.</li>
+              <li>This increase in motion corresponds to an increase in average kinetic energy.</li>
+              <li>Therefore, a rise in temperature means the particles in the body are moving more vigorously.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Gas Pressure and Particle Motion</h3>
+            <p>Gas pressure is caused by the continuous and random collisions of gas particles with the walls of a container.</p>
+            <ul>
+              <li>Each collision exerts a tiny force on the wall.</li>
+              <li>The total pressure is the result of countless such collisions happening rapidly.</li>
+              <li>If the temperature increases, particles move faster and collide more forcefully and frequently, leading to higher pressure.</li>
+            </ul>
+          </section>
+
+    <section>
+        <p>Use the following simulation of an ideal gas to observe how a change in temperature affects the frequency of collisions and hence, the pressure of the gas. The particle turns red momentarily when colliding against the wall of the container.</p>
+    <style>
+      #layout {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-start;
+        margin: 10px;
+      }
+
+      canvas {
+        border: 2px solid black;
+        background-color: #f0f0f0;
+        margin: 5px;
+        max-width: 100%;
+        height: auto;
+      }
+
+      #gaugeCanvas {
+        background: #fff;
+        border: 1px solid #333;
+      }
+
+      .controls {
+        margin-top: 10px;
+        padding: 10px;
+      }
+
+      @media (max-width: 600px) {
+        #layout {
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+  </style>
+    
+    <div id="layout">
+    <canvas id="container" width="500" height="500"></canvas>
+    <canvas id="gaugeCanvas" width="200" height="200"></canvas>
+  </div>
+  <div class="controls">
+    <label for="tempSlider">Temperature (K):</label>
+    <input type="range" id="tempSlider" min="0" max="1000" step="10" value="500">
+    <span id="tempValue">500</span> K
+    <br>
+    <label>Pressure: <span id="pressureValue">5000</span> Pa</label>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("container");
+    const ctx = canvas.getContext("2d");
+
+    const gaugeCanvas = document.getElementById("gaugeCanvas");
+    const gtx = gaugeCanvas.getContext("2d");
+
+    const tempSlider = document.getElementById("tempSlider");
+    const tempValue = document.getElementById("tempValue");
+    const pressureValue = document.getElementById("pressureValue");
+
+    const PARTICLE_COUNT = 100;
+    const RADIUS = 5;
+    const WIDTH = canvas.width;
+    const HEIGHT = canvas.height;
+    const GAUGE_HEIGHT = gaugeCanvas.height;
+    let temperature = parseFloat(tempSlider.value);
+
+    class Particle {
+      constructor(x = WIDTH / 2, y = HEIGHT / 2) {
+        this.x = x;
+        this.y = y;
+        this.setVelocity();
+        this.isRed = false;
+        this.wallContactFrames = 0;
+      }
+
+      setVelocity() {
+        const speed = Math.sqrt(temperature) * 0.1;
+        const angle = Math.random() * 2 * Math.PI;
+        this.vx = speed * Math.cos(angle);
+        this.vy = speed * Math.sin(angle);
+      }
+
+      update(index) {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        let hitWall = false;
+        if (this.x - RADIUS <= 0 || this.x + RADIUS >= WIDTH) {
+          this.vx *= -1;
+          hitWall = true;
+        }
+        if (this.y - RADIUS <= 0 || this.y + RADIUS >= HEIGHT) {
+          this.vy *= -1;
+          hitWall = true;
+        }
+
+        if (hitWall) {
+          this.setRed();
+          this.wallContactFrames++;
+        } else {
+          this.wallContactFrames = 0;
+        }
+
+        if (this.wallContactFrames > 30) {
+          particles[index] = new Particle(); // Reset particle
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, RADIUS, 0, 2 * Math.PI);
+        ctx.fillStyle = this.isRed ? 'red' : 'grey';
+        ctx.fill();
+      }
+
+      setRed() {
+        this.isRed = true;
+        clearTimeout(this.resetTimeout);
+        this.resetTimeout = setTimeout(() => this.isRed = false, 100);
+      }
+    }
+
+    const particles = Array.from({ length: PARTICLE_COUNT }, () => new Particle());
+
+    function handleCollisions() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const p1 = particles[i];
+          const p2 = particles[j];
+          const dx = p2.x - p1.x;
+          const dy = p2.y - p1.y;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist < 2 * RADIUS) {
+            const overlap = 2 * RADIUS - dist;
+            const nx = dx / dist;
+            const ny = dy / dist;
+
+            // Separate particles
+            p1.x -= nx * overlap / 2;
+            p1.y -= ny * overlap / 2;
+            p2.x += nx * overlap / 2;
+            p2.y += ny * overlap / 2;
+
+            const dvx = p1.vx - p2.vx;
+            const dvy = p1.vy - p2.vy;
+            const dot = dvx * nx + dvy * ny;
+
+            if (dot < 0) {
+              const impulse = dot;
+              p1.vx -= impulse * nx;
+              p1.vy -= impulse * ny;
+              p2.vx += impulse * nx;
+              p2.vy += impulse * ny;
+            }
+          }
+        }
+      }
+    }
+
+    function drawGauge(pressure) {
+      const ctx = gtx;
+      const cx = gaugeCanvas.width / 2;
+      const cy = gaugeCanvas.height / 2;
+      const radius = 80;
+      const maxPressureKPa = 10; // corresponds to 10,000 Pa
+      const pressureKPa = pressure / 1000;
+
+      ctx.clearRect(0, 0, gaugeCanvas.width, gaugeCanvas.height);
+
+      // Draw outer circle
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+      ctx.strokeStyle = "#333";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Draw horizontal diameter line
+      ctx.beginPath();
+      ctx.moveTo(cx - radius, cy);
+      ctx.lineTo(cx + radius, cy);
+      ctx.strokeStyle = "#aaa";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Draw scale: top half only (from 135° to 45°)
+      ctx.font = "12px sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      for (let k = 0; k <= maxPressureKPa; k += 2) {
+        const angle = map(k, 0, maxPressureKPa, -Math.PI * 0.9, -Math.PI * 0.1);
+        const x1 = cx + (radius - 10) * Math.cos(angle);
+        const y1 = cy + (radius - 10) * Math.sin(angle);
+        const x2 = cx + radius * Math.cos(angle);
+        const y2 = cy + radius * Math.sin(angle);
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        const lx = cx + (radius - 25) * Math.cos(angle);
+        const ly = cy + (radius - 25) * Math.sin(angle);
+        ctx.fillText(k, lx, ly);
+      }
+
+      // Draw needle
+      const needleAngle = map(pressureKPa, 0, maxPressureKPa, -Math.PI * 0.9, -Math.PI * 0.1);
+      const nx = cx + (radius - 30) * Math.cos(needleAngle);
+      const ny = cy + (radius - 30) * Math.sin(needleAngle);
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(nx, ny);
+      ctx.strokeStyle = "red";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Center dot
+      ctx.beginPath();
+      ctx.arc(cx, cy, 4, 0, 2 * Math.PI);
+      ctx.fillStyle = "#000";
+      ctx.fill();
+
+      // Label
+      ctx.font = "14px sans-serif";
+      ctx.fillStyle = "#000";
+      ctx.fillText("Pressure (kPa)", cx, cy + radius - 40);
+    }
+
+    // Utility function
+    function map(value, in_min, in_max, out_min, out_max) {
+      return (value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    }
+
+
+// Utility: map value from one range to another
+function map(value, in_min, in_max, out_min, out_max) {
+  return (value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+
+    function updatePressureAndGauge() {
+      const pressure = temperature * 10;
+      pressureValue.textContent = pressure.toFixed(0);
+      drawGauge(pressure);
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, WIDTH, HEIGHT);
+      particles.forEach((p, i) => p.update(i));
+      handleCollisions();
+      particles.forEach(p => p.draw());
+      updatePressureAndGauge();
+      requestAnimationFrame(animate);
+    }
+
+    tempSlider.addEventListener("input", () => {
+      temperature = parseFloat(tempSlider.value);
+      tempValue.textContent = temperature;
+      particles.forEach(p => p.setVelocity());
+    });
+
+    animate();
+  </script></section>
+
+        
+    </body>
+</html>
+

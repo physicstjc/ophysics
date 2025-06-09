@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kinetic Particle Model</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+    </head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+    <h2>Kinetic Particle Model</h2>
+    
+        
+        <section>
+            <h3>States of Matter Using the Kinetic Particle Model</h3>
+            <p>The kinetic particle model explains the physical properties of solids, liquids, and gases based on:</p>
+            <ul>
+              <li><strong>Arrangement:</strong> Particles in solids are tightly packed in a fixed, regular pattern; in liquids, they are close but randomly arranged; in gases, they are far apart and randomly arranged.</li>
+              <li><strong>Motion:</strong> Particles in solids vibrate about fixed positions; in liquids, they slide past each other; in gases, they move rapidly in all directions.</li>
+              <li><strong>Forces and Distances:</strong> Strong forces and short distances in solids; weaker forces and slightly greater distances in liquids; negligible forces and large distances in gases.</li>
+            </ul>
+          </section>
+    
+        <h3>Comparison of Physical Properties</h3>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Solid</th>
+                <th>Liquid</th>
+                <th>Gas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Shape</td>
+                <td>Fixed</td>
+                <td>Takes shape of container</td>
+                <td>No fixed shape</td>
+              </tr>
+              <tr>
+                <td>Volume</td>
+                <td>Fixed</td>
+                <td>Fixed</td>
+                <td>Fills container</td>
+              </tr>
+              <tr>
+                <td>Compressibility</td>
+                <td>Negligible</td>
+                <td>Slight</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td>Particle Arrangement</td>
+                <td>Regular and closely packed</td>
+                <td>Close but irregular</td>
+                <td>Far apart and random</td>
+              </tr>
+              <tr>
+                <td>Flow</td>
+                <td>Does not flow</td>
+                <td>Flows easily</td>
+                <td>Flows freely</td>
+              </tr>
+              <tr>
+                <td>Density</td>
+                <td>High</td>
+                <td>Medium</td>
+                <td>Low</td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <section>
+            <h3>Brownian Motion and Molecular Movement</h3>
+            <p>Brownian motion refers to the erratic, random movement of tiny particles (like smoke or pollen) suspended in a fluid. This is observed under a microscope.</p>
+            <p>It provides evidence for:</p>
+            <ul>
+              <li>The existence of tiny, invisible molecules in a liquid or gas.</li>
+              <li>The random and constant movement of these molecules that collide with the suspended particles, causing them to move unpredictably.</li>
+            </ul>
+          </section>
+
+        <section><canvas id="brownianCanvas" width="600" height="400"></canvas>
+    <br>
+    <label for="showParticles">Show Grey Particles:</label>
+    <input type="checkbox" id="showParticles" checked>
+
+
+
+    <script>
+        const canvas = document.getElementById('brownianCanvas');
+        const ctx = canvas.getContext('2d');
+        const speedSlider = 2;
+        const speedValue = document.getElementById('speedValue');
+        const showParticlesCheckbox = document.getElementById('showParticles');
+
+        const redParticle = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            radius: 15,
+            mass: 20,
+            color: 'red',
+            velocity: { x: 0, y: 0 },
+        };
+
+        const redPath = [];
+        const greyParticles = [];
+        const numGreyParticles = 500;
+
+        for (let i = 0; i < numGreyParticles; i++) {
+            greyParticles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: 5,
+                mass: 1,
+                color: 'white',
+                velocity: { x: (Math.random() - 0.5) * 2, y: (Math.random() - 0.5) * 2 },
+            });
+        }
+
+        function update() {
+            // Update grey particles only if the checkbox is not checked
+            if (!showParticlesCheckbox.unchecked) {
+                for (const particle of greyParticles) {
+                    updateParticle(particle);
+                }
+            }
+
+            // Update red particle
+            updateParticle(redParticle);
+
+            // Check for collisions
+            checkCollisions();
+
+            // Draw particles
+            drawParticles();
+
+            // Request animation frame
+            requestAnimationFrame(update);
+        }
+
+        function updateParticle(particle) {
+            // Update position based on velocity
+            particle.x += particle.velocity.x;
+            particle.y += particle.velocity.y;
+
+            // Bounce off walls
+            if (particle.x - particle.radius < 0 || particle.x + particle.radius > canvas.width) {
+                particle.velocity.x *= -1;
+            }
+
+            if (particle.y - particle.radius < 0 || particle.y + particle.radius > canvas.height) {
+                particle.velocity.y *= -1;
+            }
+        }
+
+        function checkCollisions() {
+            for (const greyParticle of greyParticles) {
+                // Check collision with red particle
+                if (checkParticleCollision(redParticle, greyParticle)) {
+                    handleParticleCollision(redParticle, greyParticle);
+                }
+            }
+        }
+
+        function checkParticleCollision(particleA, particleB) {
+            const dx = particleB.x - particleA.x;
+            const dy = particleB.y - particleA.y;
+            const distance = Math.sqrt(dx**2 + dy**2);
+
+            return distance < particleA.radius + particleB.radius;
+        }
+
+        function handleParticleCollision(particleA, particleB) {
+            const dx = particleB.x - particleA.x;
+            const dy = particleB.y - particleA.y;
+            const collisionAngle = Math.atan2(dy, dx);
+
+            const relativeVelocity = {
+                x: particleB.velocity.x - particleA.velocity.x,
+                y: particleB.velocity.y - particleA.velocity.y,
+            };
+
+            const distance = Math.sqrt(dx**2 + dy**2);
+            const normalX = dx / distance;
+            const normalY = dy / distance;
+
+            const relativeSpeed = relativeVelocity.x * normalX + relativeVelocity.y * normalY;
+
+            const impulse = (2 * relativeSpeed) / (particleA.mass + particleB.mass);
+
+            const impulseAx = impulse * particleB.mass * normalX;
+            const impulseAy = impulse * particleB.mass * normalY;
+            const impulseBx = -impulse * particleA.mass * normalX;
+            const impulseBy = -impulse * particleA.mass * normalY;
+
+            // Update velocities
+            particleA.velocity.x += impulseAx;
+            particleA.velocity.y += impulseAy;
+            particleB.velocity.x += impulseBx;
+            particleB.velocity.y += impulseBy;
+        }
+
+            function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw grey particles
+            for (const particle of greyParticles) {
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                ctx.fillStyle = showParticlesCheckbox.checked ? 'grey' : particle.color;
+                ctx.fill();
+                ctx.closePath();
+            }
+
+            // Store red particle path
+            redPath.push({ x: redParticle.x, y: redParticle.y });
+            if (redPath.length > 3000) redPath.shift(); // optional: limit path length
+
+            // Draw red particle
+            ctx.beginPath();
+            ctx.arc(redParticle.x, redParticle.y, redParticle.radius, 0, Math.PI * 2);
+            ctx.fillStyle = redParticle.color;
+            ctx.fill();
+            ctx.closePath();
+
+            // Draw red path AFTER all particles
+            ctx.beginPath();
+            ctx.moveTo(redPath[0].x, redPath[0].y);
+            for (let i = 1; i < redPath.length; i++) {
+                ctx.lineTo(redPath[i].x, redPath[i].y);
+            }
+            ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.closePath();
+        }
+
+
+        // Start the simulation
+        update();
+    </script></section>
+        
+    </body>
+</html>
+
