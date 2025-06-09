@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Induced Magnetism Simulator</title>
+</head>
+<body>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; }
+  .container { position: relative; display: inline-block; }
+  #canvas { background: #f9f9f9; border: 1px solid #ccc; }
+  #magnet, #solenoid, #solenoidN, #solenoidS {
+  display: none;
+    }
+  #magnet, #solenoid {
+    position: absolute;
+    width: 120px;
+    height: 30px;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    font-weight: bold;
+    font-family: sans-serif;
+  }
+  #north {
+    background: red;
+    width: 60px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #south {
+    background: blue;
+    width: 60px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #solenoid {
+    display: none;
+    background: repeating-linear-gradient(90deg, gray, gray 2px, white 2px, white 10px);
+    position: absolute;
+    color: grey;
+    font-weight: bold;
+    font-family: sans-serif;
+  }
+  .solenoid-label {
+    position: absolute;
+    top: 5px;
+    font-size: 14px;
+  }
+  .controls { margin: 10px; }
+</style>
+
+  <div class="container">
+    <div id="magnet" style="left:50px; top:20px;">
+      <div id="north">N</div>
+      <div id="south">S</div>
+    </div>
+    <div id="solenoid" style="left:50px; top:20px;">
+      <!-- solenoid background only -->
+    </div>
+    <div class="solenoid-label" id="solenoidN" style="left:50px;">N</div>
+    <div class="solenoid-label" id="solenoidS" style="left:170px;">S</div>
+    <canvas id="canvas" width="500" height="300"></canvas>
+  </div>
+  <div class="controls">
+    <button onclick="showSolenoid()">Use Solenoid</button>
+    <button onclick="showMagnet()">Use Permanent Magnet</button>
+    <button onclick="removeField()">Remove Magnetic Field</button>
+  </div>
+<script>
+  const canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
+  const magnet = document.getElementById('magnet');
+  const solenoid = document.getElementById('solenoid');
+  const solenoidN = document.getElementById('solenoidN');
+  const solenoidS = document.getElementById('solenoidS');
+  let mode = 'none';
+  const rows = 6, cols = 6;
+  const domains = Array(rows * cols).fill().map(() => ({ angle: Math.random() * 2 * Math.PI }));
+
+  function showSolenoid() {
+    magnet.style.display = 'none';
+    solenoid.style.display = 'flex';
+    solenoidN.style.display = 'block';
+    solenoidS.style.display = 'block';
+    mode = 'solenoid';
+  }
+
+  function showMagnet() {
+    magnet.style.display = 'flex';
+    solenoid.style.display = 'none';
+    solenoidN.style.display = 'none';
+    solenoidS.style.display = 'none';
+    mode = 'bar';
+  }
+
+  function removeField() {
+    magnet.style.display = 'none';
+    solenoid.style.display = 'none';
+    solenoidN.style.display = 'none';
+    solenoidS.style.display = 'none';
+    mode = 'none';
+    domains.forEach(d => d.angle = Math.random() * 2 * Math.PI);
+  }
+
+  [magnet, solenoid].forEach(elem => {
+    elem.addEventListener('mousedown', e => {
+      e.preventDefault();
+      const sx = e.clientX, sy = e.clientY;
+      const ox = elem.offsetLeft, oy = elem.offsetTop;
+      const nLabel = (elem === solenoid) ? solenoidN : null;
+      const sLabel = (elem === solenoid) ? solenoidS : null;
+
+        function move(e2) {
+          const container = canvas.parentElement;
+          const containerRect = container.getBoundingClientRect();
+
+          const newLeft = ox + (e2.clientX - sx);
+          const newTop = oy + (e2.clientY - sy);
+
+          const elemWidth = elem.offsetWidth;
+          const elemHeight = elem.offsetHeight;
+
+          const maxLeft = canvas.offsetLeft + canvas.width - elemWidth;
+          const maxTop = canvas.offsetTop + canvas.height - elemHeight;
+
+          const clampedLeft = Math.min(Math.max(newLeft, canvas.offsetLeft), maxLeft);
+          const clampedTop = Math.min(Math.max(newTop, canvas.offsetTop), maxTop);
+
+          elem.style.left = clampedLeft + 'px';
+          elem.style.top = clampedTop + 'px';
+
+          // Move solenoid labels too
+          if (nLabel && sLabel) {
+            nLabel.style.left = clampedLeft + 'px';
+            sLabel.style.left = clampedLeft + elemWidth - 15 + 'px';
+            nLabel.style.top = clampedTop + 'px';
+            sLabel.style.top = clampedTop + 'px';
+          }
+
+          mode = (elem === magnet) ? 'bar' : 'solenoid';
+        }
+
+      function up() {
+        window.removeEventListener('mousemove', move);
+        window.removeEventListener('mouseup', up);
+      }
+      window.addEventListener('mousemove', move);
+      window.addEventListener('mouseup', up);
+    });
+  });
+
+  function drawArrow(x, y, angle, len = 15) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.beginPath();
+    ctx.moveTo(-len/2, 0);
+    ctx.lineTo(len/2, 0);
+    ctx.moveTo(len/2, 0);
+    ctx.lineTo(len/2 - 5, -5);
+    ctx.moveTo(len/2, 0);
+    ctx.lineTo(len/2 - 5, 5);
+    ctx.strokeStyle = '#444';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawCellSymbol(x, y) {
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(x - 3, y - 10); ctx.lineTo(x - 3, y + 10); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x + 3, y - 5); ctx.lineTo(x + 3, y + 5); ctx.stroke();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#ddd';
+    ctx.fillRect(160, 75, 160, 150);
+
+    const mRect = magnet.getBoundingClientRect();
+    const sRect = solenoid.getBoundingClientRect();
+    const cRect = canvas.getBoundingClientRect();
+
+    const using = (mode === 'bar' && magnet.style.display !== 'none') ? mRect :
+                  (mode === 'solenoid' && solenoid.style.display !== 'none') ? sRect : null;
+
+    const northCenter = using ? {
+      x: using.left + 30 - cRect.left,
+      y: using.top + 15 - cRect.top
+    } : null;
+    const southCenter = using ? {
+      x: using.left + 90 - cRect.left,
+      y: using.top + 15 - cRect.top
+    } : null;
+
+    if (mode === 'solenoid' && northCenter && southCenter) {
+      ctx.strokeStyle = '#555';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(northCenter.x - 30, northCenter.y);
+      ctx.lineTo(northCenter.x - 30, northCenter.y + 60);
+      ctx.lineTo(southCenter.x + 20, northCenter.y + 60);
+      ctx.lineTo(southCenter.x + 20, southCenter.y);
+      ctx.stroke();
+      drawCellSymbol((northCenter.x + southCenter.x) / 2, northCenter.y + 60);
+    }
+
+    domains.forEach((d, i) => {
+      const r = Math.floor(i / cols), c = i % cols;
+      const x = 180 + c * (120 / (cols - 1));
+      const y = 90 + r * (120 / (rows - 1));
+      let target = null;
+
+      if ((mode === 'bar' || mode === 'solenoid') && northCenter && southCenter) {
+        const dxN = x - northCenter.x;
+        const dyN = y - northCenter.y;
+        const rN2 = dxN * dxN + dyN * dyN;
+        const dxS = x - southCenter.x;
+        const dyS = y - southCenter.y;
+        const rS2 = dxS * dxS + dyS * dyS;
+        const fieldX = (dxN / rN2) - (dxS / rS2);
+        const fieldY = (dyN / rN2) - (dyS / rS2);
+        target = Math.atan2(fieldY, fieldX);
+      }
+
+      if (target !== null) {
+        const diff = ((target - d.angle + Math.PI) % (2 * Math.PI)) - Math.PI;
+        d.angle += diff * 0.1;
+      } else {
+        d.angle += (Math.random() - 0.5) * 0.1;
+      }
+
+      drawArrow(x, y, d.angle);
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+</script>
+</body>
+</html>
