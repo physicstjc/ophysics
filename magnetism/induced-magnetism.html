@@ -162,16 +162,15 @@
     }
 
     [magnet, solenoid].forEach(elem => {
-      elem.addEventListener('mousedown', e => {
-        e.preventDefault();
-        const sx = e.clientX, sy = e.clientY;
-        const ox = elem.offsetLeft, oy = elem.offsetTop;
+      const startDrag = (x0, y0) => {
+        const ox = elem.offsetLeft;
+        const oy = elem.offsetTop;
         const nLabel = (elem === solenoid) ? solenoidN : null;
         const sLabel = (elem === solenoid) ? solenoidS : null;
 
-        function move(e2) {
-          const newLeft = ox + (e2.clientX - sx);
-          const newTop = oy + (e2.clientY - sy);
+        const move = (x, y) => {
+          const newLeft = ox + (x - x0);
+          const newTop = oy + (y - y0);
           const elemWidth = elem.offsetWidth;
           const elemHeight = elem.offsetHeight;
           const maxLeft = canvas.offsetLeft + canvas.width - elemWidth;
@@ -190,17 +189,42 @@
           }
 
           mode = (elem === magnet) ? 'bar' : 'solenoid';
-        }
+        };
 
-        function up() {
-          window.removeEventListener('mousemove', move);
-          window.removeEventListener('mouseup', up);
-        }
+        const onMouseMove = e => move(e.clientX, e.clientY);
+        const onTouchMove = e => {
+          if (e.touches.length === 1) {
+            const t = e.touches[0];
+            move(t.clientX, t.clientY);
+          }
+        };
 
-        window.addEventListener('mousemove', move);
-        window.addEventListener('mouseup', up);
+        const end = () => {
+          window.removeEventListener('mousemove', onMouseMove);
+          window.removeEventListener('mouseup', end);
+          window.removeEventListener('touchmove', onTouchMove);
+          window.removeEventListener('touchend', end);
+        };
+
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mouseup', end);
+        window.addEventListener('touchmove', onTouchMove);
+        window.addEventListener('touchend', end);
+      };
+
+      elem.addEventListener('mousedown', e => {
+        e.preventDefault();
+        startDrag(e.clientX, e.clientY);
+      });
+
+      elem.addEventListener('touchstart', e => {
+        if (e.touches.length === 1) {
+          const t = e.touches[0];
+          startDrag(t.clientX, t.clientY);
+        }
       });
     });
+
 
     function drawArrow(x, y, angle, len = 15) {
       ctx.save();
