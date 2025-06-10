@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Force on a Current-Carrying Conductor</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+    </head>
+    
+    
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+        
+    <h2>Force on a Current-Carrying Conductor</h2>
+
+
+    <h3>Motor Effect</h3>
+    <p>Place a straight wire horizontally between the poles of a strong magnet so that it lies at 90° to the magnetic field. Connect the wire to a DC power supply through a switch. When the current flows, the wire will experience a force and move.</p>
+
+    <div class="diagram">
+      <a title="MikeRun, CC BY-SA 4.0 &lt;https://creativecommons.org/licenses/by-sa/4.0&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Magnetic-force-on-wire.svg"><img width="256" alt="Magnetic-force-on-wire" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Magnetic-force-on-wire.svg/256px-Magnetic-force-on-wire.svg.png?20200530094715"></a>
+    </div>
+
+    <p>This demonstrates the motor effect and the force which moves the object is known as the Lorentz force. Reversing the current or magnetic field reverses the direction of the force:</p>
+    <ol type="i">
+      <li>If the <strong>current is reversed</strong>, the force changes direction.</li>
+      <li>If the <strong>magnetic field is reversed</strong>, the force also changes direction.</li>
+    </ol>
+    
+    <div style="text-align: center;">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/VD6Rll514Rc?si=zgbx-L1U4uPOnGsv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+    
+    <p>There are two mnemonics that help us determine the relative directions of current, magnetic field and the force: the Right-Hand Palm Rule, which was used in the video above, and Fleming's Left-Hand Rule.</p> 
+
+    
+    <h3>Right-Hand Palm Rule</h3>
+        <img src="right-hand-palm-rule.jpg">
+    
+    <p>The Right-Hand Palm Rule is a helpful mnemonic used to determine the direction of the force acting on a current when it travels through a magnetic field. Use your right hand with the palm and fingers straightened:</p>
+    <ul>
+      <li><strong>Thumb</strong> – Points in the direction of the conventional current flowing from + to - terminals of the battery.</li>
+      <li><strong>Fingers</strong> – Point in the direction of the magnetic field (from North to South)</li>
+      <li><strong>Palm</strong> – Faces in the direction of the force acting on the positive charge</li>
+    </ul>
+
+    
+    <h3>Fleming’s Left-Hand Rule</h3>
+    
+            <img src="flemings-left-hand-rule.jpg">
+    <p>Fleming’s Left-Hand Rule helps determine the direction of the force acting on a current-carrying conductor placed at right angles to a magnetic field. Use your left hand:</p>
+    <ul>
+      <li><strong>Thumb</strong> – Direction of Force ($F$)</li>
+      <li><strong>Index finger</strong> – Magnetic Field ($B$), pointing from the North pole to South pole</li>
+      <li><strong>Middle finger</strong> – Current ($I$), conventional current flowing from + to - terminals of the battery</li>
+    </ul>
+
+    <p>By aligning any two of these quantities at right angles, you can determine the third.</p>
+
+     <p>Note: as we are dealing with vectors in 3-dimensions, we need to introduce two symbols for when the vectors cannot be represented on a plane surface such as the screen of the device you are using right now, or the piece of paper on which these vectors are drawn. A cross represents a vector with direction into the plane while a circle with a dot represents a vector with direction coming out of the plane.</p>
+    
+    <a title="First version Created by bdesham with Inkscape.Second version hand-drawn by Krishnavedala, Public domain, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Notation_for_vectors_in_or_out_of_a_plane.svg"><img width="240" alt="Notation for vectors in or out of a plane" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Notation_for_vectors_in_or_out_of_a_plane.svg/512px-Notation_for_vectors_in_or_out_of_a_plane.svg.png?20180304040037"></a>
+    <p align="center">Vector going away (image on left) and vector coming towards you (image on right)</p>
+    
+    <table width="100%">
+  <tr>
+    <td>
+      <p>A straight wire carrying current is placed horizontally between the poles of a magnet, with the magnetic field directed into the page. The current flows from left to right. </p>
+    <img src="wire-in-magnetic-field.jpg" width="250px">      
+          
+    <p>In which direction will the wire move?</p>
+      <p>A. Upwards<br>
+         B. Downwards<br>
+         C. Into the page<br>
+         D. Out of the page</p>
+
+      <button id="btn2" data-div="ans3" onclick="reveal(this)">Reveal Answer</button>
+      <div id="ans3" style="display:none">
+        <p>A. Upwards</p>
+        <p>Use <strong>Fleming’s Left-Hand Rule</strong>:</p>
+
+        <p>Point your <strong>index finger into the page/screen</strong> and your <strong>middle finger to the right</strong>. Your <strong>thumb will point upwards along the plane of the page/screen</strong>. Therefore, the wire experiences a force upwards.</p>
+      </div>
+    </td>
+  </tr>
+</table>
+    
+    <h3>Force on a Beam of Charged Particles</h3>
+    <p>When a beam of charged particles, such as electrons or protons, travels through a magnetic field, each individual particle experiences a magnetic force. This force arises due to the motion of the charged particles being perpendicular to the magnetic field, and it acts in a direction that is at right angles to both the velocity of the particle and the direction of the magnetic field.</p>
+
+    <p>This force does not change the speed of the particle, but continuously changes its direction, causing the particle to follow a circular or helical path. The radius of the path depends on the particle’s mass, speed, charge, and the strength of the magnetic field.</p>
+    
+    <p>Using the simulation below, change the charge of the particle or the strength of the magnitude field and observe how the deflection of the charged particle changes.</p>
+<iframe scrolling="no" title="Charged Particles in a Magnetic Field" src="https://www.geogebra.org/material/iframe/id/czc8qdny/width/640/height/480/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width="640px" height="480px" style="border:0px;" allowfullscreen> </iframe>
+
+
+        
+    </body>
+</html>
+
