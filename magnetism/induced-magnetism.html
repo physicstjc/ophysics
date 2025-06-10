@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <title>Induced Magnetism Simulator</title>
+    
+    </head>
+<body>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -72,8 +75,7 @@
       }
     }
   </style>
-</head>
-<body>
+
   <div class="container">
     <div id="magnet">
       <div id="north">N</div>
@@ -162,21 +164,31 @@
     }
 
     [magnet, solenoid].forEach(elem => {
-      const startDrag = (x0, y0) => {
-        const ox = elem.offsetLeft;
-        const oy = elem.offsetTop;
+      function startDrag(x0, y0, isTouch) {
+        const rect = elem.getBoundingClientRect();
+        const canvasRect = canvas.getBoundingClientRect();
+        const offsetLeft = rect.left - canvasRect.left;
+        const offsetTop = rect.top - canvasRect.top;
         const nLabel = (elem === solenoid) ? solenoidN : null;
         const sLabel = (elem === solenoid) ? solenoidS : null;
 
-        const move = (x, y) => {
-          const newLeft = ox + (x - x0);
-          const newTop = oy + (y - y0);
+        function moveHandler(e) {
+          const x = isTouch ? e.touches[0].clientX : e.clientX;
+          const y = isTouch ? e.touches[0].clientY : e.clientY;
+
+          const dx = x - x0;
+          const dy = y - y0;
+
+          const newLeft = offsetLeft + dx;
+          const newTop = offsetTop + dy;
+
           const elemWidth = elem.offsetWidth;
           const elemHeight = elem.offsetHeight;
-          const maxLeft = canvas.offsetLeft + canvas.width - elemWidth;
-          const maxTop = canvas.offsetTop + canvas.height - elemHeight;
-          const clampedLeft = Math.min(Math.max(newLeft, canvas.offsetLeft), maxLeft);
-          const clampedTop = Math.min(Math.max(newTop, canvas.offsetTop), maxTop);
+          const maxLeft = canvas.width - elemWidth;
+          const maxTop = canvas.height - elemHeight;
+
+          const clampedLeft = Math.min(Math.max(newLeft, 0), maxLeft);
+          const clampedTop = Math.min(Math.max(newTop, 0), maxTop);
 
           elem.style.left = clampedLeft + 'px';
           elem.style.top = clampedTop + 'px';
@@ -189,41 +201,29 @@
           }
 
           mode = (elem === magnet) ? 'bar' : 'solenoid';
-        };
+        }
 
-        const onMouseMove = e => move(e.clientX, e.clientY);
-        const onTouchMove = e => {
-          if (e.touches.length === 1) {
-            const t = e.touches[0];
-            move(t.clientX, t.clientY);
-          }
-        };
+        function stopDrag() {
+          window.removeEventListener(isTouch ? 'touchmove' : 'mousemove', moveHandler);
+          window.removeEventListener(isTouch ? 'touchend' : 'mouseup', stopDrag);
+        }
 
-        const end = () => {
-          window.removeEventListener('mousemove', onMouseMove);
-          window.removeEventListener('mouseup', end);
-          window.removeEventListener('touchmove', onTouchMove);
-          window.removeEventListener('touchend', end);
-        };
-
-        window.addEventListener('mousemove', onMouseMove);
-        window.addEventListener('mouseup', end);
-        window.addEventListener('touchmove', onTouchMove);
-        window.addEventListener('touchend', end);
-      };
+        window.addEventListener(isTouch ? 'touchmove' : 'mousemove', moveHandler);
+        window.addEventListener(isTouch ? 'touchend' : 'mouseup', stopDrag);
+      }
 
       elem.addEventListener('mousedown', e => {
         e.preventDefault();
-        startDrag(e.clientX, e.clientY);
+        startDrag(e.clientX, e.clientY, false);
       });
 
       elem.addEventListener('touchstart', e => {
         if (e.touches.length === 1) {
-          const t = e.touches[0];
-          startDrag(t.clientX, t.clientY);
+          startDrag(e.touches[0].clientX, e.touches[0].clientY, true);
         }
       });
     });
+
 
 
     function drawArrow(x, y, angle, len = 15) {
