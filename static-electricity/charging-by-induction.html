@@ -121,11 +121,22 @@
     }
 
     function drawCan() {
-      ctx.fillStyle = "#aaa";
-      ctx.fillRect(can.x, can.y, can.width, can.height);
-      ctx.fillStyle = "#000";
-      ctx.fillText("Metal Can", can.x + 5, can.y + can.height + 20);
-    }
+  // Draw the metal can
+  ctx.fillStyle = "#aaa";
+  ctx.fillRect(can.x, can.y, can.width, can.height);
+  ctx.fillStyle = "#000";
+  ctx.fillText("Metal Can", can.x + 5, can.y - 20);
+
+  // Draw the insulating stand
+  const standWidth = can.width + 10;
+  const standHeight = 20;
+  const standX = can.x - 5;
+  const standY = can.y + can.height;
+
+  ctx.fillStyle = "#964B00"; // brown for the stand
+  ctx.fillRect(standX, standY, standWidth, standHeight);
+  ctx.fillText("Insulating Stand", standX, standY + standHeight + 20);
+}
 
     function drawGroundWire() {
       ctx.strokeStyle = "#006600";
