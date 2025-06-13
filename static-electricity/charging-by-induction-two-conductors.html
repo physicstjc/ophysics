@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Charging by Induction: Two Conducting Cans</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin: 0; padding: 10px; }
+    canvas { border: 1px solid #ccc; background: #f9f9f9; display: block; margin: 10px auto; max-width: 100%; height: auto; }
+    .controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px; }
+    button { padding: 10px 15px; font-size: 1rem; flex: 1 0 120px; max-width: 200px; }
+    @media (max-width: 500px) { button { font-size: .9rem; padding: 8px 12px; } }
+  </style>
+</head>
+<body>
+<canvas id="simCanvas" width="700" height="400"></canvas>
+<div class="controls">
+  <button onclick="toggleRod()">Toggle Rod</button>
+  <button onclick="toggleSeparation()">Toggle Separation</button>
+  <button onclick="reset()">Reset</button>
+</div>
+
+<script>
+const canvas = document.getElementById("simCanvas");
+const ctx = canvas.getContext("2d");
+
+let rodNear = false;
+let separated = false;
+let shouldRedistribute = false;
+let inductionOccurred = false;
+
+let electrons = [];
+let positiveCharges = [];
+
+const canW = 80, canH = 120;
+const canY = 100;
+const initCan1X = 280;
+const initCan2X = 360;
+const sepOffset = 80;
+let can1X = initCan1X, can2X = initCan2X;
+let targetCan1X = initCan1X, targetCan2X = initCan2X;
+
+function initElectrons() {
+  electrons = [];
+  positiveCharges = [];
+  const spacing = 30;
+
+  for (let i = 0; i < 6; i++) {
+    const leftSide = i < 3;
+    const baseX = leftSide ? can1X : can2X;
+    const row = i % 3;
+    const x = baseX + 40;
+    const y = canY + 30 + row * spacing;
+
+    electrons.push({
+      x, y,
+      originalX: x,
+      originalY: y,
+      canX: baseX,
+      home: leftSide ? "left" : "right",
+      charge: "−",
+      movedToCan2: false,
+      locked: false,
+      localOffsetX: 0
+    });
+
+    positiveCharges.push({
+      x: x - 15,
+      y,
+      canX: baseX,
+      charge: "+",
+      visible: true
+    });
+  }
+}
+
+function updateCanPositions() {
+  const speed = 0.08;
+  can1X += (targetCan1X - can1X) * speed;
+  can2X += (targetCan2X - can2X) * speed;
+
+  electrons.forEach(e => {
+    const base = (e.home === "left") ? can1X : can2X;
+    const offset = e.x - e.canX;
+    e.x = base + offset;
+    e.canX = base;
+  });
+
+  positiveCharges.forEach(p => {
+    const base = (p.x < (can1X + canW)) ? can1X : can2X;
+    const offset = p.x - p.canX;
+    p.x = base + offset;
+    p.canX = base;
+  });
+}
+
+function updateElectrons() {
+  if (rodNear && !separated) {
+    electrons.forEach(e => {
+      if (e.home === "left" && e.x < can2X + 40) {
+        e.x += 1.5;
+        e.y += 0.2;
+        e.movedToCan2 = true;
+        inductionOccurred = true;
+      }
+    });
+  }
+
+  if (!rodNear && !separated && inductionOccurred) {
+    neutralizeSystem();
+  }
+
+  if (!rodNear && separated && shouldRedistribute) {
+    distributeChargesInCan2();
+    shouldRedistribute = false;
+  }
+
+  // New: Subtle deflection when rod is near and cans are neutral & separated
+  if (separated && rodNear && !inductionOccurred) {
+    electrons.forEach(e => {
+      if (e.home === "left") {
+        e.localOffsetX += (5 - e.localOffsetX) * 0.1;
+      } else {
+        e.localOffsetX += (0 - e.localOffsetX) * 0.1;
+      }
+    });
+  } else {
+    electrons.forEach(e => {
+      e.localOffsetX += (0 - e.localOffsetX) * 0.1;
+    });
+  }
+}
+
+function distributeChargesInCan2() {
+  const grid = [ [0,0], [1,0], [0,1], [1,1], [0,2], [1,2] ];
+  const startX = can2X + 25, startY = canY + 30;
+  const spacing = 25;
+  let eIndex = 0;
+  let pIndex = 0;
+
+  electrons.forEach(e => {
+    if (e.home === "right") {
+      const [gx, gy] = grid[eIndex++];
+      e.x = startX + gx * spacing;
+      e.y = startY + gy * spacing;
+    }
+  });
+
+  positiveCharges.forEach(p => {
+    if (p.canX === can2X) {
+      const gx = 0.5;
+      const gy = pIndex++;
+      p.x = startX + gx * spacing;
+      p.y = startY + gy * spacing;
+      p.visible = true;
+    }
+  });
+}
+
+function neutralizeSystem() {
+  const spacing = 30;
+  for (let i = 0; i < electrons.length; i++) {
+    const left = i < 3;
+    const row = i % 3;
+    electrons[i].home = left ? "left" : "right";
+    electrons[i].canX = left ? can1X : can2X;
+    electrons[i].x = (left ? can1X : can2X) + 40;
+    electrons[i].y = canY + 30 + row * spacing;
+    electrons[i].locked = false;
+    electrons[i].movedToCan2 = false;
+    electrons[i].localOffsetX = 0;
+  }
+  for (let i = 0; i < positiveCharges.length; i++) {
+    const left = i < 3;
+    const row = i % 3;
+    positiveCharges[i].canX = left ? can1X : can2X;
+    positiveCharges[i].x = (left ? can1X : can2X) + 25;
+    positiveCharges[i].y = canY + 30 + row * spacing;
+    positiveCharges[i].locked = false;
+    positiveCharges[i].visible = true;
+  }
+  inductionOccurred = false;
+}
+
+function stampElectronOwnership() {
+  const c1Center = can1X + canW / 2;
+  const c2Center = can2X + canW / 2;
+
+  electrons.forEach(e => {
+    const d1 = Math.abs(e.x - c1Center);
+    const d2 = Math.abs(e.x - c2Center);
+    if (d2 < d1) { e.home = "right"; e.canX = can2X; }
+    else { e.home = "left"; e.canX = can1X; }
+  });
+}
+
+function drawCan(x, label, color) {
+  ctx.fillStyle = color;
+  ctx.fillRect(x, canY, canW, canH);
+
+  const standW = 40, standX = x + (canW - standW) / 2, standY = canY + canH;
+  ctx.fillStyle = "#6f4e37";
+  ctx.fillRect(standX, standY, standW, 20);
+}
+
+function drawRod() {
+  ctx.fillStyle = "#33ddff";
+  ctx.fillRect(150, 100, 20, 140);
+  ctx.fillStyle = "#000";
+  for (let i = 0; i < 5; i++) ctx.fillText("−", 155, 115 + i * 20);
+}
+
+function drawCharges() {
+  ctx.font = "16px sans-serif";
+  positiveCharges.forEach(p => {
+    if (p.visible) {
+      ctx.fillStyle = "blue";
+      ctx.fillText(p.charge, p.x, p.y);
+    }
+  });
+  electrons.forEach(e => {
+    ctx.fillStyle = "red";
+    ctx.fillText(e.charge, e.x + e.localOffsetX, e.y);
+  });
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  updateCanPositions();
+  drawCan(can1X, "", "#ddddee");
+  drawCan(can2X, "", "#ffe0cc");
+  if (rodNear) drawRod();
+  drawCharges();
+  updateElectrons();
+  requestAnimationFrame(draw);
+}
+
+function toggleRod() {
+  rodNear = !rodNear;
+
+  if (!rodNear && separated && !inductionOccurred) {
+    resetChargePositionsOnly();
+  }
+  if (!rodNear && separated && inductionOccurred) {
+    shouldRedistribute = true;
+  }
+}
+
+function toggleSeparation() {
+  separated = !separated;
+  if (separated) {
+    targetCan1X = initCan1X - sepOffset;
+    targetCan2X = initCan2X + sepOffset;
+    stampElectronOwnership();
+  } else {
+    targetCan1X = initCan1X;
+    targetCan2X = initCan2X;
+  }
+}
+
+function resetChargePositionsOnly() {
+  const spacing = 30;
+  for (let i = 0; i < electrons.length; i++) {
+    const left = i < 3;
+    const row = i % 3;
+    electrons[i].x = (left ? can1X : can2X) + 40;
+    electrons[i].y = canY + 30 + row * spacing;
+    electrons[i].localOffsetX = 0;
+  }
+  for (let i = 0; i < positiveCharges.length; i++) {
+    const left = i < 3;
+    const row = i % 3;
+    positiveCharges[i].x = (left ? can1X : can2X) + 25;
+    positiveCharges[i].y = canY + 30 + row * spacing;
+  }
+}
+
+function reset() {
+  rodNear = false;
+  separated = false;
+  shouldRedistribute = false;
+  inductionOccurred = false;
+  can1X = targetCan1X = initCan1X;
+  can2X = targetCan2X = initCan2X;
+  initElectrons();
+}
+
+initElectrons();
+draw();
+</script>
+</body>
+</html>
