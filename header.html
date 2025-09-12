@@ -1,17 +1,28 @@
-<header>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
-<div class="top-menu">
-    <span class="menu-icon" onclick="toggleMenu()">☰ Menu</span>
-    <ul>
-        <li><a href="../index.html">Home</a></li>
-        <li><a href="https://physicslens.com" target="_blank">Blog</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="">Contact</a></li>
-    </ul>
-</div>
-    
-    
-    
-
-</header>
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="top-menu">
+            <a href="/">Home</a>
+            <a href="#">Blog</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+            <!-- Authentication section -->
+            <div class="auth-section">
+                <div id="user-info" style="display: none;"></div>
+                <button id="auth-button" class="auth-btn">Sign In with Google</button>
+            </div>
+            <div class="menu-icon" onclick="toggleMenu()">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </header>
+</body>
+</html>
