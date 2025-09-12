@@ -1,64 +1,8 @@
-// Add at the top of the file
-let firebaseInitialized = false;
-
-// Firebase initialization function
-async function initializeFirebase() {
-    if (firebaseInitialized) return;
-    
-    try {
-        const firebaseConfig = {
-            apiKey: "AIzaSyAw7lB80VMS6O-4A7qoXD03BVEHRNpnFXY",
-            authDomain: "ophysics-82e70.firebaseapp.com",
-            projectId: "ophysics-82e70",
-            storageBucket: "ophysics-82e70.appspot.com",
-            messagingSenderId: "369961557546",
-            appId: "ophysics-82e70"
-        };
-
-        const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
-        const { getAuth, GoogleAuthProvider } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js');
-        const { getFirestore } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
-
-        const app = initializeApp(firebaseConfig);
-        window.auth = getAuth(app);
-        window.db = getFirestore(app);
-        window.googleProvider = new GoogleAuthProvider();
-        
-        firebaseInitialized = true;
-        console.log('Firebase initialized successfully');
-    } catch (error) {
-        console.error('Error initializing Firebase:', error);
-    }
-}
-
-// Make toggleMenu function globally accessible
-function toggleMenu() {
-    const menu = document.querySelector('.top-menu');
-    if (menu) {
-        menu.classList.toggle('active');
-    }
-}
-
-// Make it globally accessible
-window.toggleMenu = toggleMenu;
-
-// Add this import at the top
-import { initAuthListener } from './auth.js';
-
 document.addEventListener("DOMContentLoaded", function() {
-    // Initialize Firebase first
-    initializeFirebase();
-    
     fetch('../header.html')
         .then(response => response.text())
         .then(data => {
             document.getElementById('header-placeholder').innerHTML = data;
-            
-            // After header is loaded, set up the menu toggle event listener
-            const menuIcon = document.querySelector('.menu-icon');
-            if (menuIcon) {
-                menuIcon.addEventListener('click', toggleMenu);
-            }
         })
         .catch(error => console.error('Error loading header:', error));
     
@@ -69,9 +13,6 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('footer-placeholder').innerHTML = data;
         })
         .catch(error => console.error('Error loading footer:', error));
-    
-    // Initialize authentication listener
-    initAuthListener();
 });
 
 function reveal(thispass) {
