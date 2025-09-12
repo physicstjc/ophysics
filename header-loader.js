@@ -31,6 +31,17 @@ async function initializeFirebase() {
     }
 }
 
+// Make toggleMenu function globally accessible
+function toggleMenu() {
+    const menu = document.querySelector('.top-menu');
+    if (menu) {
+        menu.classList.toggle('active');
+    }
+}
+
+// Make it globally accessible
+window.toggleMenu = toggleMenu;
+
 // Add this import at the top
 import { initAuthListener } from './auth.js';
 
@@ -42,6 +53,12 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.text())
         .then(data => {
             document.getElementById('header-placeholder').innerHTML = data;
+            
+            // After header is loaded, set up the menu toggle event listener
+            const menuIcon = document.querySelector('.menu-icon');
+            if (menuIcon) {
+                menuIcon.addEventListener('click', toggleMenu);
+            }
         })
         .catch(error => console.error('Error loading header:', error));
     
