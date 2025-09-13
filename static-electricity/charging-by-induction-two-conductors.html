@@ -6,9 +6,60 @@
   <style>
     body { font-family: sans-serif; text-align: center; margin: 0; padding: 10px; }
     canvas { border: 1px solid #ccc; background: #f9f9f9; display: block; margin: 10px auto; max-width: 100%; height: auto; }
-    .controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px; }
-    button { padding: 10px 15px; font-size: 1rem; flex: 1 0 120px; max-width: 200px; }
-    @media (max-width: 500px) { button { font-size: .9rem; padding: 8px 12px; } }
+    
+    .controls { 
+      display: flex; 
+      flex-wrap: wrap; 
+      justify-content: center; 
+      gap: clamp(3px, 1.5vw, 10px); 
+      margin-top: clamp(5px, 2vw, 10px);
+      padding: 0 clamp(5px, 2vw, 10px);
+    }
+    
+    button { 
+      padding: clamp(4px, 1.5vw, 10px) clamp(6px, 2.5vw, 15px);
+      font-size: clamp(0.6rem, 2.2vw, 1rem);
+      flex: 1 0 clamp(70px, 18vw, 120px);
+      max-width: clamp(120px, 30vw, 200px);
+      min-width: clamp(60px, 15vw, 90px);
+      white-space: nowrap;
+      border: 1px solid #ccc;
+      border-radius: clamp(2px, 0.5vw, 4px);
+      background: #f0f0f0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    button:hover {
+      background: #e0e0e0;
+    }
+    
+    button:active {
+      transform: scale(0.98);
+    }
+    
+    @media (max-width: 400px) {
+      .controls {
+        gap: clamp(2px, 1vw, 5px);
+        margin-top: clamp(3px, 1.5vw, 8px);
+      }
+      
+      button {
+        font-size: clamp(0.55rem, 3.2vw, 0.7rem);
+        padding: clamp(3px, 1vw, 6px) clamp(4px, 1.5vw, 8px);
+        flex: 1 0 clamp(55px, 16vw, 80px);
+        min-width: clamp(50px, 14vw, 70px);
+      }
+    }
+    
+    @media (max-width: 300px) {
+      button {
+        font-size: clamp(0.5rem, 3.5vw, 0.65rem);
+        padding: clamp(2px, 0.8vw, 5px) clamp(3px, 1.2vw, 6px);
+        flex: 1 0 clamp(45px, 15vw, 65px);
+        min-width: clamp(40px, 12vw, 60px);
+      }
+    }
   </style>
 </head>
 <body>

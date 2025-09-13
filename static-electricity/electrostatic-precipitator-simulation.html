@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Electrostatic Precipitator Simulation</title>
+  <style>
+    :root { color-scheme: light; }
+    body {
+      font-family: 'Roboto', 'Segoe UI', Tahoma, sans-serif;
+      margin: 0; padding: 8px; background: #f5f5f5; color: #212121;
+      display: flex; justify-content: center; align-items: center; min-height: 100vh;
+    }
+    .container {
+      width: min(100%, 800px);
+      /* height is auto; the canvas controls the visual height via aspect-ratio */
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.08);
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: 1fr auto;
+    }
+    .simulation-area { padding: 12px; display: grid; grid-template-rows: auto auto; gap: 8px; }
+    canvas {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 776 / 320; /* keep proportions while scaling */
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      background: linear-gradient(to right, #e8f4f8 0%, #d1e7dd 50%, #f8f9fa 100%);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+      display: block;
+    }
+    .controls-panel {
+      background: #fafafa;
+      padding: 12px;
+      border-top: 1px solid #e0e0e0;
+      display: grid; gap: 8px;
+    }
+    .controls-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    button {
+      padding: 6px 16px; font-size: 12px; font-weight: 500; border: none; border-radius: 4px;
+      cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px;
+      transition: transform .15s ease, box-shadow .15s ease, background-color .2s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.16); min-width: 60px;
+    }
+    .btn-on { background-color: #4caf50; color: #fff; }
+    .btn-off { background-color: #f44336; color: #fff; }
+    .btn-reset { background-color: #ff9800; color: #fff; }
+    button:hover { transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.24); }
+    .status-card {
+      background: #fff; border: 1px solid #e0e0e0; border-radius: 4px;
+      padding: 8px 12px; font-size: 13px; font-weight: 500; text-align: center;
+    }
+    .status-on { background: #e8f5e8; border-color: #4caf50; color: #2e7d32; }
+    .status-off { background: #ffebee; border-color: #f44336; color: #c62828; }
+    .info-row { display: flex; justify-content: space-between; font-size: 11px; color: #666; }
+    .legend { display: flex; gap: 12px; font-size: 10px; color: #666; justify-content: center; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.04); padding: 2px 6px; border-radius: 12px; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="simulation-area">
+      <canvas id="canvas"></canvas>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#2196f3;"></div><span>Clean Air</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#795548;"></div><span>Dust/Smoke</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ffb300;"></div><span>Charged (−)</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#424242;"></div><span>Negative Plates</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f44336;"></div><span>Positive Plates</span></div>
+      </div>
+    </div>
+
+    <div class="controls-panel">
+      <div class="controls-row">
+        <button class="btn-on" onclick="turnOn()">On</button>
+        <button class="btn-off" onclick="turnOff()">Off</button>
+        <button class="btn-reset" onclick="resetSystem()">Reset</button>
+      </div>
+      <div id="status" class="status-card status-off">System Offline - No Electric Field</div>
+      <div class="info-row">
+        <div id="stats">Particles: 0 | Collected: 0</div>
+        <div id="voltage" style="opacity:0;">High Voltage Active</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const statusDiv = document.getElementById('status');
+    const statsDiv = document.getElementById('stats');
+    const voltageDiv = document.getElementById('voltage');
+
+    let isOn = false;
+    let particles = [];
+    let airParticles = [];
+    let collectedParticles = [];
+    let animationId;
+
+    // Geometry (computed responsively)
+    let HOUSING, INLET, OUTLET, NEG_X, POS_X, PLATE_W, PLATE_H, PLATE_COUNT = 7;
+    let negativePlates = [], positivePlates = [];
+
+    // HiDPI + responsive sizing
+    function fitCanvasToCSS() {
+      const r = canvas.getBoundingClientRect();
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      canvas.width = Math.round(r.width * dpr);
+      canvas.height = Math.round(r.height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    // Recompute layout based on current canvas size
+    function layout() {
+      const cw = canvas.clientWidth;
+      const ch = canvas.clientHeight;
+
+      const padX = 20 / 776 * cw;
+      const padY = 20 / 320 * ch;
+
+      HOUSING = { x: padX, y: padY, width: cw - 2*padX, height: ch - 2*padY };
+
+      const inletW = 10 / 776 * cw;
+      const inletH = 40 / 320 * ch;
+
+      INLET = { x: HOUSING.x - (5 / 776 * cw), y: HOUSING.y + (HOUSING.height/2 - inletH/2), width: inletW, height: inletH };
+      OUTLET = { x: HOUSING.x + HOUSING.width + (5 / 776 * cw), y: INLET.y, width: inletW, height: inletH };
+
+      // Plate positions as fractions of HOUSING width/height
+      NEG_X   = HOUSING.x + 0.163 * HOUSING.width; // ~120/736
+      POS_X   = HOUSING.x + 0.747 * HOUSING.width; // ~550/736
+      PLATE_W = 0.102 * HOUSING.width;             // ~75/736
+      PLATE_H = 0.025 * HOUSING.height;            // ~6/240
+
+      negativePlates = makeEvenVerticalPlates(NEG_X, PLATE_W, PLATE_H, PLATE_COUNT);
+      positivePlates = makeEvenVerticalPlates(POS_X, PLATE_W, PLATE_H, PLATE_COUNT);
+    }
+
+    function makeEvenVerticalPlates(x, plateWidth, plateHeight, count) {
+      const totalPlateH = count * plateHeight;
+      const gaps = count + 1;
+      const gap = (HOUSING.height - totalPlateH) / gaps; // equal top, between, bottom
+      const plates = [];
+      for (let i = 0; i < count; i++) {
+        const y = HOUSING.y + gap + i * (plateHeight + gap);
+        plates.push({ x, y, width: plateWidth, height: plateHeight });
+      }
+      return plates;
+    }
+
+    class DustParticle {
+      constructor() {
+        this.x = HOUSING.x - 0.02*canvas.clientWidth + Math.random() * (0.08*canvas.clientWidth);
+        this.y = HOUSING.y + 0.15*HOUSING.height + Math.random() * (0.70*HOUSING.height);
+        this.vx = 1.8 + Math.random() * 1.2;
+        this.vy = (Math.random() - 0.5) * 0.6;
+        this.radius = 1.5 + Math.random() * 2;
+        this.charged = false;
+        this.collected = false;
+        this.opacity = 0.9;
+        this.mass = this.radius * 0.5;
+      }
+      update() {
+        if (this.collected) return;
+
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Charge in region of negative plates
+        if (isOn && !this.charged && this.x > NEG_X && this.x < NEG_X + PLATE_W) {
+          this.charged = true;
+        }
+
+        // Attraction to positive plates
+        if (isOn && this.charged && this.x > POS_X - 0.08*HOUSING.width) {
+          let nearest = null, minDist = Infinity;
+          for (let plate of positivePlates) {
+            const center = plate.y + plate.height / 2;
+            const d = Math.abs(this.y - center);
+            if (d < minDist && this.x > plate.x - 0.04*HOUSING.width && this.x < plate.x + plate.width + 0.04*HOUSING.width) {
+              minDist = d; nearest = plate;
+            }
+          }
+          if (nearest && minDist < 0.17*HOUSING.height) {
+            const f = 0.12 / this.mass;
+            const center = nearest.y + nearest.height / 2;
+            const dy = center - this.y;
+            this.vy += dy * f * 0.04;
+            // Collection on plate
+            if (Math.abs(dy) < (0.025*HOUSING.height) && this.x > nearest.x && this.x < nearest.x + nearest.width) {
+              this.collected = true;
+              this.y = center;
+              collectedParticles.push(this);
+            }
+          }
+        }
+
+        // Vertical bounds
+        if (this.y < HOUSING.y + 0.04*HOUSING.height) this.vy = Math.abs(this.vy) * 0.8;
+        if (this.y > HOUSING.y + HOUSING.height - 0.04*HOUSING.height) this.vy = -Math.abs(this.vy) * 0.8;
+
+        // Exit fade
+        if (this.x > canvas.clientWidth + 10) this.opacity = 0;
+      }
+      draw() {
+        if (this.opacity <= 0) return;
+        ctx.globalAlpha = this.opacity;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        if (this.collected) {
+          ctx.fillStyle = '#424242';
+        } else if (this.charged) {
+          ctx.fillStyle = '#ffb300';     // dark yellow
+          ctx.shadowColor = '#ffb300';
+          ctx.shadowBlur = 4;
+        } else {
+          ctx.fillStyle = '#795548';
+          ctx.shadowBlur = 0;
+        }
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    class AirParticle {
+      constructor() {
+        this.x = HOUSING.x - 0.02*canvas.clientWidth + Math.random() * (0.06*canvas.clientWidth);
+        this.y = HOUSING.y + 0.1*HOUSING.height + Math.random() * (0.8*HOUSING.height);
+        this.vx = 2.2 + Math.random() * 0.8;
+        this.vy = (Math.random() - 0.5) * 0.4;
+        this.radius = 0.5 + Math.random() * 1;
+        this.opacity = 0.4 + Math.random() * 0.3;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.y < HOUSING.y + 0.07*HOUSING.height) this.vy = Math.abs(this.vy);
+        if (this.y > HOUSING.y + HOUSING.height - 0.07*HOUSING.height) this.vy = -Math.abs(this.vy);
+        if (this.x > canvas.clientWidth + 10) this.opacity = 0;
+      }
+      draw() {
+        if (this.opacity <= 0) return;
+        ctx.globalAlpha = this.opacity;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = '#2196f3';
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    function generateParticles() {
+      if (Math.random() < 0.7) particles.push(new DustParticle());
+      if (Math.random() < 0.9) airParticles.push(new AirParticle());
+    }
+
+    function drawSystem() {
+      // Housing
+      ctx.strokeStyle = '#bdbdbd';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(HOUSING.x, HOUSING.y, HOUSING.width, HOUSING.height);
+
+      // Inlet/Outlet
+      ctx.fillStyle = '#757575';
+      ctx.fillRect(INLET.x, INLET.y, INLET.width, INLET.height);
+      ctx.fillRect(OUTLET.x, OUTLET.y, OUTLET.width, OUTLET.height);
+
+      // Flow arrows (4 lanes across housing)
+      ctx.strokeStyle = 'rgba(33,150,243,0.5)';
+      ctx.lineWidth = 2;
+      for (let i = 0; i < 4; i++) {
+        const y = HOUSING.y + 0.15*HOUSING.height + i * (0.2*HOUSING.height);
+        // Entry
+        ctx.beginPath();
+        ctx.moveTo(HOUSING.x - 0.08*HOUSING.width, y);
+        ctx.lineTo(HOUSING.x - 0.05*HOUSING.width, y);
+        ctx.moveTo(HOUSING.x - 0.05*HOUSING.width, y); ctx.lineTo(HOUSING.x - 0.055*HOUSING.width, y - 3);
+        ctx.moveTo(HOUSING.x - 0.05*HOUSING.width, y); ctx.lineTo(HOUSING.x - 0.055*HOUSING.width, y + 3);
+        ctx.stroke();
+        // Exit
+        ctx.beginPath();
+        ctx.moveTo(HOUSING.x + HOUSING.width - 0.02*HOUSING.width, y);
+        ctx.lineTo(HOUSING.x + HOUSING.width + 0.02*HOUSING.width, y);
+        ctx.moveTo(HOUSING.x + HOUSING.width + 0.02*HOUSING.width, y); ctx.lineTo(HOUSING.x + HOUSING.width + 0.015*HOUSING.width, y - 3);
+        ctx.moveTo(HOUSING.x + HOUSING.width + 0.02*HOUSING.width, y); ctx.lineTo(HOUSING.x + HOUSING.width + 0.015*HOUSING.width, y + 3);
+        ctx.stroke();
+      }
+
+      // Negative plates (dark grey)
+      ctx.fillStyle = isOn ? '#424242' : '#e0e0e0';
+      for (let plate of negativePlates) ctx.fillRect(plate.x, plate.y, plate.width, plate.height);
+
+      // Positive plates (red)
+      ctx.fillStyle = isOn ? '#f44336' : '#e0e0e0';
+      for (let plate of positivePlates) ctx.fillRect(plate.x, plate.y, plate.width, plate.height);
+
+      // Labels
+      if (isOn) {
+        ctx.fillStyle = '#424242';
+        ctx.font = 'bold 12px system-ui, -apple-system, Segoe UI, Roboto, sans-serif';
+        ctx.fillText('-40kV', NEG_X + 0.03*HOUSING.width, HOUSING.y - 6);
+
+        ctx.fillStyle = '#f44336';
+        ctx.fillText('+20kV', POS_X + 0.03*HOUSING.width, HOUSING.y - 6);
+      }
+    }
+
+    function updateDisplay() {
+      const active = particles.filter(p => !p.collected).length;
+      statsDiv.textContent = `Particles: ${active} | Collected: ${collectedParticles.length}`;
+      voltageDiv.style.opacity = isOn ? '1' : '0';
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      generateParticles();
+      drawSystem();
+
+      airParticles = airParticles.filter(p => { p.update(); p.draw(); return p.opacity > 0; });
+      particles = particles.filter(p => { p.update(); p.draw(); return p.opacity > 0; });
+      collectedParticles.forEach(p => p.draw());
+
+      updateDisplay();
+      animationId = requestAnimationFrame(animate);
+    }
+
+    // Controls
+    function turnOn() {
+      isOn = true;
+      statusDiv.textContent = 'System Online - Electric Field Active';
+      statusDiv.className = 'status-card status-on';
+    }
+    function turnOff() {
+      isOn = false;
+      statusDiv.textContent = 'System Offline - No Electric Field';
+      statusDiv.className = 'status-card status-off';
+      particles.forEach(p => p.charged = false);
+    }
+    function resetSystem() {
+      isOn = false;
+      particles = [];
+      airParticles = [];
+      collectedParticles = [];
+      statusDiv.textContent = 'System Reset - Particles Cleared';
+      statusDiv.className = 'status-card status-off';
+      voltageDiv.style.opacity = '0';
+    }
+    // Expose for buttons
+    window.turnOn = turnOn;
+    window.turnOff = turnOff;
+    window.resetSystem = resetSystem;
+
+    // Initial sizing + responsive observers
+    const ro = new ResizeObserver(() => { fitCanvasToCSS(); layout(); });
+    ro.observe(canvas);
+    window.addEventListener('resize', () => { fitCanvasToCSS(); layout(); }, { passive: true });
+
+    // Kick off
+    fitCanvasToCSS();
+    layout();
+    animate();
+  </script>
+</body>
+</html>
