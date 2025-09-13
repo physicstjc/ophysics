@@ -55,7 +55,16 @@
     }
     .status-on { background: #e8f5e8; border-color: #4caf50; color: #2e7d32; }
     .status-off { background: #ffebee; border-color: #f44336; color: #c62828; }
-    .info-row { display: flex; justify-content: space-between; font-size: 11px; color: #666; }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;          /* allow wrap on small widths */
+      font-size: 11px;
+      color: #666;
+    }
+
     .legend { display: flex; gap: 12px; font-size: 10px; color: #666; justify-content: center; flex-wrap: wrap; }
     .legend-item { display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.04); padding: 2px 6px; border-radius: 12px; }
     .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
@@ -299,15 +308,37 @@
       ctx.fillStyle = isOn ? '#f44336' : '#e0e0e0';
       for (let plate of positivePlates) ctx.fillRect(plate.x, plate.y, plate.width, plate.height);
 
-      // Labels
-      if (isOn) {
-        ctx.fillStyle = '#424242';
-        ctx.font = 'bold 12px system-ui, -apple-system, Segoe UI, Roboto, sans-serif';
-        ctx.fillText('-40kV', NEG_X + 0.03*HOUSING.width, HOUSING.y - 6);
+        // Labels (responsive & clamped inside the housing so they never get cut off)
+        if (isOn) {
+          // Responsive font size based on housing height (clamped 10–14 px)
+          const fs = Math.max(10, Math.min(14, Math.round(0.045 * HOUSING.height)));
+          ctx.font = `bold ${fs}px system-ui, -apple-system, Segoe UI, Roboto, sans-serif`;
+          const padX = 0.02 * HOUSING.width;   // small left padding from each plate group
+          const padY = 4;                       // small top padding
+          const y = HOUSING.y + fs + padY;      // draw INSIDE the housing
 
-        ctx.fillStyle = '#f44336';
-        ctx.fillText('+20kV', POS_X + 0.03*HOUSING.width, HOUSING.y - 6);
-      }
+          // Helper: clamp x so text stays inside housing
+          function clampTextX(baseX, text) {
+            const m = ctx.measureText(text);
+            const textW = m.width;
+            const minX = HOUSING.x + 4;
+            const maxX = HOUSING.x + HOUSING.width - textW - 4;
+            return Math.max(minX, Math.min(baseX, maxX));
+          }
+
+          // NEG label
+          const negText = '-40kV';
+          ctx.fillStyle = '#424242';
+          const negX = clampTextX(NEG_X + padX, negText);
+          ctx.fillText(negText, negX, y);
+
+          // POS label
+          const posText = '+20kV';
+          ctx.fillStyle = '#f44336';
+          const posX = clampTextX(POS_X + padX, posText);
+          ctx.fillText(posText, posX, y);
+        }
+
     }
 
     function updateDisplay() {

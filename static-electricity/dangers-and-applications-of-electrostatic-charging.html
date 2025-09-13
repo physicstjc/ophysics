@@ -21,16 +21,444 @@
         
     <h2>Dangers and Applications of Electrostatic Charging</h2>
     
-        <h3>Section</h3>
+        <h3>Situations Where Electrostatic Charging is a Hazard</h3>
         
-            <div class="callout">
-            <span role="img" aria-label="📖" class="emoji">📖</span>
-            <span class="callout-text"></span></div>
+            <p>Electrostatic charging can be dangerous in certain real-world contexts because sparks from discharge may ignite flammable materials or damage sensitive components. Examples include:</p>
+        
+            <ul><li>
+                <strong>Fuel tankers and aircraft refuelling</strong>: As fuel flows, friction causes charge to build up. A spark could ignite fuel vapour, so grounding chains are used to safely discharge the charge.</li>
+                <li><strong>Operating theatres</strong>: Surgeons and staff may generate static on synthetic clothing or flooring. A discharge could ignite anaesthetic gases.
+                </li>
+                <li><strong>Electronic components</strong>: Microchips and integrated circuits are extremely sensitive. A small discharge from a charged human body can destroy them.
+                </li>
+            </ul>
+    
+        <h3>Use of Electrostatic Charging in an Electrostatic Precipitator</h3>
+        
+            <p>Electrostatic precipitators are used in factories and power stations to reduce air pollution. Their working principle:</p>
+        
+            <ul><li><strong>Charging the particles</strong>: Smoke and dust particles in flue gases are passed through a region of negatively charged wires. The particles pick up negative charges.
+                <li><strong>Collecting the particles</strong>: These charged particles are then attracted to large positively charged plates.
+                </li>
+                <li><strong>Removal</strong>: The plates are periodically shaken or tapped so that the collected dust falls into hoppers for disposal.
+                </li>
+            </ul>        
 
-            <p></p>
-        
-        
-        
+    <section id="esp-sim" aria-label="Electrostatic Precipitator Simulation">
+  <style>
+    /* Scoped to #esp-sim */
+    #esp-sim{margin:1rem 0;display:grid;gap:.5rem}
+    #esp-sim .esp-container{
+      width:min(100%,800px);
+      margin-inline:auto;
+      background:#fff;border:1px solid #eaeaea;border-radius:8px;
+      box-shadow:0 4px 8px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.08);
+      display:grid;grid-template-rows:auto 1fr auto;overflow:hidden
+    }
+    #esp-sim .esp-title{padding:.75rem 1rem;font-weight:600}
+    #esp-sim .esp-sim-area{padding:12px;display:grid;grid-template-rows:1fr auto;gap:.5rem}
+    #esp-sim canvas{
+      /* Responsive canvas: width follows container; height from aspect-ratio */
+      width:100%;
+      height:auto;
+      aspect-ratio: 776 / 320; /* keeps visuals consistent */
+      border:1px solid #e0e0e0;border-radius:4px;
+      background:linear-gradient(to right,#e8f4f8 0%,#d1e7dd 50%,#f8f9fa 100%);
+      box-shadow:inset 0 2px 4px rgba(0,0,0,.06)
+    }
+    #esp-sim .esp-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;font-size:12px;color:#666}
+    #esp-sim .esp-legend-item{display:inline-flex;align-items:center;gap:.4rem;background:rgba(0,0,0,.04);padding:2px 8px;border-radius:12px}
+    #esp-sim .esp-dot{width:8px;height:8px;border-radius:50%}
+    #esp-sim .esp-controls{background:#fafafa;border-top:1px solid #e0e0e0;padding:10px;display:grid;gap:.5rem}
+    #esp-sim .esp-row{display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap}
+    #esp-sim button{
+      padding:6px 14px;font-size:12px;font-weight:600;border:0;border-radius:6px;
+      box-shadow:0 2px 4px rgba(0,0,0,.16);cursor:pointer;letter-spacing:.3px;text-transform:uppercase;
+      transition:transform .15s ease,box-shadow .15s ease,background-color .2s ease
+    }
+    #esp-sim .on{background:#4caf50;color:#fff}
+    #esp-sim .off{background:#f44336;color:#fff}
+    #esp-sim .reset{background:#ff9800;color:#fff}
+    #esp-sim button:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(0,0,0,.2)}
+    #esp-sim .esp-status{text-align:center;font-weight:600;padding:6px 10px;border-radius:6px;border:1px solid #e0e0e0;background:#ffebee;color:#c62828}
+    #esp-sim .esp-status.on{background:#e8f5e8;color:#2e7d32;border-color:#4caf50}
+    #esp-sim .esp-info{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:.4rem;
+  flex-wrap: wrap;         /* allow wrapping on small widths */
+  font-size:12px;
+  color:#666;
+  padding:0 4px
+}
+
+  </style>
+
+  <div class="esp-container">
+    <div class="esp-title">Electrostatic Precipitator (Interactive)</div>
+
+    <div class="esp-sim-area">
+      <canvas id="esp-canvas"></canvas>
+      <div class="esp-legend">
+        <span class="esp-legend-item"><span class="esp-dot" style="background:#2196f3"></span>Clean Air</span>
+        <span class="esp-legend-item"><span class="esp-dot" style="background:#795548"></span>Dust/Smoke</span>
+        <span class="esp-legend-item"><span class="esp-dot" style="background:#ffb300"></span>Charged (−)</span>
+        <span class="esp-legend-item"><span class="esp-dot" style="background:#424242"></span>Negative Plates</span>
+        <span class="esp-legend-item"><span class="esp-dot" style="background:#f44336"></span>Positive Plates</span>
+      </div>
+    </div>
+
+    <div class="esp-controls">
+      <div class="esp-row">
+        <button class="on"  id="esp-btn-on">On</button>
+        <button class="off" id="esp-btn-off">Off</button>
+        <button class="reset" id="esp-btn-reset">Reset</button>
+      </div>
+      <div class="esp-row">
+        <div id="esp-status" class="esp-status">System Offline — No Electric Field</div>
+      </div>
+      <div class="esp-info">
+        <div id="esp-stats">Particles: 0 | Collected: 0</div>
+        <div id="esp-voltage" style="opacity:0">High Voltage Active</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (() => {
+    const root = document.getElementById('esp-sim');
+    const canvas = root.querySelector('#esp-canvas');
+    const ctx = canvas.getContext('2d');
+
+    const statusDiv = root.querySelector('#esp-status');
+    const statsDiv = root.querySelector('#esp-stats');
+    const voltageDiv = root.querySelector('#esp-voltage');
+
+    const btnOn = root.querySelector('#esp-btn-on');
+    const btnOff = root.querySelector('#esp-btn-off');
+    const btnReset = root.querySelector('#esp-btn-reset');
+
+    // Simulation state
+    let isOn = false;
+    let particles = [];
+    let airParticles = [];
+    let collectedParticles = [];
+    let animationId;
+
+    // Geometry (computed per layout())
+    let HOUSING, INLET, OUTLET, NEG_X, POS_X, PLATE_W, PLATE_H, PLATE_COUNT = 7;
+    let negativePlates = [], positivePlates = [];
+
+    // ---- Responsive canvas & layout ----
+    function fitCanvasToCSS() {
+      const r = canvas.getBoundingClientRect();
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      canvas.width  = Math.round(r.width  * dpr);
+      canvas.height = Math.round(r.height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    // Make geometry proportional to current canvas size
+    function layout() {
+      const cw = canvas.clientWidth;
+      const ch = canvas.clientHeight;
+
+      // Padding as fractions of size (from original 20px on 776×320)
+      const padX = 20 / 776 * cw;
+      const padY = 20 / 320 * ch;
+
+      HOUSING = { x: padX, y: padY, width: cw - 2*padX, height: ch - 2*padY };
+
+      // Inlet/Outlet sizes proportional
+      const inletW = 10 / 776 * cw;
+      const inletH = 40 / 320 * ch;
+
+      INLET = {
+        x: HOUSING.x - (5 / 776 * cw),
+        y: HOUSING.y + (HOUSING.height/2 - inletH/2),
+        width: inletW, height: inletH
+      };
+      OUTLET = {
+        x: HOUSING.x + HOUSING.width + (5 / 776 * cw),
+        y: INLET.y,
+        width: inletW, height: inletH
+      };
+
+      // Plate positions as fractions of housing width
+      NEG_X   = HOUSING.x + 0.163 * HOUSING.width; // 120/736
+      POS_X   = HOUSING.x + 0.747 * HOUSING.width; // 550/736
+      PLATE_W = 0.102 * HOUSING.width;             // 75/736
+      PLATE_H = 0.025 * HOUSING.height;            // 6/240
+
+      negativePlates = makeEvenVerticalPlates(NEG_X, PLATE_W, PLATE_H, PLATE_COUNT);
+      positivePlates = makeEvenVerticalPlates(POS_X, PLATE_W, PLATE_H, PLATE_COUNT);
+    }
+
+    function makeEvenVerticalPlates(x, plateWidth, plateHeight, count) {
+      const totalPlateH = count * plateHeight;
+      const gaps = count + 1;
+      const gap = (HOUSING.height - totalPlateH) / gaps;
+      const plates = [];
+      for (let i = 0; i < count; i++) {
+        const y = HOUSING.y + gap + i * (plateHeight + gap);
+        plates.push({ x, y, width: plateWidth, height: plateHeight });
+      }
+      return plates;
+    }
+
+    // Recompute canvas pixels and layout on resize
+    function handleResize() {
+      fitCanvasToCSS();
+      layout();
+    }
+    new ResizeObserver(handleResize).observe(canvas);
+    window.addEventListener('resize', handleResize, { passive: true });
+
+    // ---- Particles ----
+    class DustParticle {
+      constructor() {
+        // Spawn near left side, within flow height
+        this.x = HOUSING.x - 0.02*canvas.clientWidth + Math.random() * (0.08*canvas.clientWidth);
+        this.y = HOUSING.y + 0.15*HOUSING.height + Math.random() * (0.70*HOUSING.height);
+        this.vx = 1.8 + Math.random() * 1.2;
+        this.vy = (Math.random() - 0.5) * 0.6;
+        this.radius = 1.5 + Math.random() * 2;
+        this.charged = false;
+        this.collected = false;
+        this.opacity = 0.9;
+        this.mass = this.radius * 0.5;
+      }
+      update() {
+        if (this.collected) return;
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Charge in the region of negative plates (no visible wires)
+        if (isOn && !this.charged && this.x > NEG_X && this.x < NEG_X + PLATE_W) {
+          this.charged = true;
+        }
+
+        // Drift to nearest positive plate
+        if (isOn && this.charged && this.x > POS_X - 0.08*HOUSING.width) {
+          let nearest = null, minDist = Infinity;
+          for (let plate of positivePlates) {
+            const center = plate.y + plate.height / 2;
+            const d = Math.abs(this.y - center);
+            if (d < minDist && this.x > plate.x - 0.04*HOUSING.width && this.x < plate.x + plate.width + 0.04*HOUSING.width) {
+              minDist = d; nearest = plate;
+            }
+          }
+          if (nearest && minDist < 0.17*HOUSING.height) {
+            const f = 0.12 / this.mass;
+            const center = nearest.y + nearest.height / 2;
+            const dy = center - this.y;
+            this.vy += dy * f * 0.04;
+            if (Math.abs(dy) < (0.025*HOUSING.height) && this.x > nearest.x && this.x < nearest.x + nearest.width) {
+              this.collected = true;
+              this.y = center;
+              collectedParticles.push(this);
+            }
+          }
+        }
+
+        // Vertical bounds within housing
+        if (this.y < HOUSING.y + 0.04*HOUSING.height) this.vy = Math.abs(this.vy) * 0.8;
+        if (this.y > HOUSING.y + HOUSING.height - 0.04*HOUSING.height) this.vy = -Math.abs(this.vy) * 0.8;
+
+        // Fade when exiting right
+        if (this.x > canvas.clientWidth + 10) this.opacity = 0;
+      }
+      draw() {
+        if (this.opacity <= 0) return;
+        ctx.globalAlpha = this.opacity;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        if (this.collected) {
+          ctx.fillStyle = '#424242';
+        } else if (this.charged) {
+          ctx.fillStyle = '#ffb300'; // dark yellow
+          ctx.shadowColor = '#ffb300';
+          ctx.shadowBlur = 4;
+        } else {
+          ctx.fillStyle = '#795548';
+          ctx.shadowBlur = 0;
+        }
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    class AirParticle {
+      constructor() {
+        this.x = HOUSING.x - 0.02*canvas.clientWidth + Math.random() * (0.06*canvas.clientWidth);
+        this.y = HOUSING.y + 0.1*HOUSING.height + Math.random() * (0.8*HOUSING.height);
+        this.vx = 2.2 + Math.random() * 0.8;
+        this.vy = (Math.random() - 0.5) * 0.4;
+        this.radius = 0.5 + Math.random() * 1;
+        this.opacity = 0.4 + Math.random() * 0.3;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.y < HOUSING.y + 0.07*HOUSING.height) this.vy = Math.abs(this.vy);
+        if (this.y > HOUSING.y + HOUSING.height - 0.07*HOUSING.height) this.vy = -Math.abs(this.vy);
+        if (this.x > canvas.clientWidth + 10) this.opacity = 0;
+      }
+      draw() {
+        if (this.opacity <= 0) return;
+        ctx.globalAlpha = this.opacity;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = '#2196f3';
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    function generateParticles() {
+      if (Math.random() < 0.7) particles.push(new DustParticle());
+      if (Math.random() < 0.9) airParticles.push(new AirParticle());
+    }
+
+    // ---- Drawing ----
+    function drawSystem() {
+      // Housing
+      ctx.strokeStyle = '#bdbdbd';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(HOUSING.x, HOUSING.y, HOUSING.width, HOUSING.height);
+
+      // Inlet/Outlet
+      ctx.fillStyle = '#757575';
+      ctx.fillRect(INLET.x, INLET.y, INLET.width, INLET.height);
+      ctx.fillRect(OUTLET.x, OUTLET.y, OUTLET.width, OUTLET.height);
+
+      // Flow arrows (4 lanes across housing)
+      ctx.strokeStyle = 'rgba(33,150,243,0.5)';
+      ctx.lineWidth = 2;
+      for (let i = 0; i < 4; i++) {
+        const y = HOUSING.y + 0.15*HOUSING.height + i * (0.2*HOUSING.height);
+        // Entry
+        ctx.beginPath();
+        ctx.moveTo(HOUSING.x - 0.08*HOUSING.width, y);
+        ctx.lineTo(HOUSING.x - 0.05*HOUSING.width, y);
+        ctx.moveTo(HOUSING.x - 0.05*HOUSING.width, y);
+        ctx.lineTo(HOUSING.x - 0.055*HOUSING.width, y - 3);
+        ctx.moveTo(HOUSING.x - 0.05*HOUSING.width, y);
+        ctx.lineTo(HOUSING.x - 0.055*HOUSING.width, y + 3);
+        ctx.stroke();
+        // Exit
+        ctx.beginPath();
+        ctx.moveTo(HOUSING.x + HOUSING.width - 0.02*HOUSING.width, y);
+        ctx.lineTo(HOUSING.x + HOUSING.width + 0.02*HOUSING.width, y);
+        ctx.moveTo(HOUSING.x + HOUSING.width + 0.02*HOUSING.width, y);
+        ctx.lineTo(HOUSING.x + HOUSING.width + 0.015*HOUSING.width, y - 3);
+        ctx.moveTo(HOUSING.x + HOUSING.width + 0.02*HOUSING.width, y);
+        ctx.lineTo(HOUSING.x + HOUSING.width + 0.015*HOUSING.width, y + 3);
+        ctx.stroke();
+      }
+
+      // Negative plates (dark grey)
+      ctx.fillStyle = isOn ? '#424242' : '#e0e0e0';
+      for (let plate of negativePlates) ctx.fillRect(plate.x, plate.y, plate.width, plate.height);
+
+      // Positive plates (red)
+      ctx.fillStyle = isOn ? '#f44336' : '#e0e0e0';
+      for (let plate of positivePlates) ctx.fillRect(plate.x, plate.y, plate.width, plate.height);
+
+
+    // Labels (responsive & clamped inside the housing so they never get cut off)
+    if (isOn) {
+      // Responsive font size based on housing height (clamped 10–14 px)
+      const fs = Math.max(10, Math.min(14, Math.round(0.045 * HOUSING.height)));
+      ctx.font = `bold ${fs}px system-ui, -apple-system, Segoe UI, Roboto, sans-serif`;
+      ctx.textBaseline = 'alphabetic';
+
+      const padX = 0.02 * HOUSING.width;  // small padding from plate group
+      const padY = 4;                      // padding from top of housing
+      const y = HOUSING.y + fs + padY;     // draw INSIDE the housing
+
+      // Helper: clamp x so measured text stays inside housing
+      function clampTextX(baseX, text) {
+        const w = ctx.measureText(text).width;
+        const minX = HOUSING.x + 4;
+        const maxX = HOUSING.x + HOUSING.width - w - 4;
+        return Math.max(minX, Math.min(baseX, maxX));
+      }
+
+      // NEG label
+      const negText = '-40kV';
+      ctx.fillStyle = '#424242';
+      const negX = clampTextX(NEG_X + padX, negText);
+      ctx.fillText(negText, negX, y);
+
+      // POS label
+      const posText = '+20kV';
+      ctx.fillStyle = '#f44336';
+      const posX = clampTextX(POS_X + padX, posText);
+      ctx.fillText(posText, posX, y);
+    }
+
+    }
+
+    function updateDisplay() {
+      const active = particles.filter(p => !p.collected).length;
+      statsDiv.textContent = `Particles: ${active} | Collected: ${collectedParticles.length}`;
+      voltageDiv.style.opacity = isOn ? '1' : '0';
+    }
+
+    function frame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      generateParticles();
+      drawSystem();
+
+      airParticles = airParticles.filter(p => { p.update(); p.draw(); return p.opacity > 0; });
+      particles = particles.filter(p => { p.update(); p.draw(); return p.opacity > 0; });
+      collectedParticles.forEach(p => p.draw());
+
+      updateDisplay();
+      animationId = requestAnimationFrame(frame);
+    }
+
+    // Controls
+    btnOn.addEventListener('click', () => {
+      isOn = true;
+      statusDiv.textContent = 'System Online — Electric Field Active';
+      statusDiv.classList.add('on');
+    });
+    btnOff.addEventListener('click', () => {
+      isOn = false;
+      statusDiv.textContent = 'System Offline — No Electric Field';
+      statusDiv.classList.remove('on');
+      particles.forEach(p => p.charged = false);
+    });
+    btnReset.addEventListener('click', () => {
+      isOn = false;
+      particles = [];
+      airParticles = [];
+      collectedParticles = [];
+      statusDiv.textContent = 'System Reset — Particles Cleared';
+      statusDiv.classList.remove('on');
+      voltageDiv.style.opacity = '0';
+    });
+
+    // Initial sizing + run
+    handleResize();
+    frame();
+  })();
+  </script>
+</section>
+
+ 
+    
+    
+        <h3>Applying Electrostatic Charging to New Situations</h3>        
+            <p>Electrostatic charging principles can be applied in other contexts:</p>
+            <ul>
+                <li><strong>Photocopiers and laser printers</strong>- A drum is given an electrostatic charge. Light or a laser removes the charge in certain areas, and toner particles (which are charged) stick only to the charged regions, forming the image.</li>
+                <li><strong>Paint spraying (electrostatic painting)</strong>– The object to be painted is given one charge (e.g. negative), and paint droplets are given the opposite charge. This makes the paint spread evenly, reducing waste and giving a smooth coat even on irregular surfaces.</li>
+            </ul>
     </body>
 </html>
 
