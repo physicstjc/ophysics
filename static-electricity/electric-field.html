@@ -11,26 +11,465 @@
     <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
     <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
     <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
-    </head>
+
     
+
+  <style>
+    :root{
+      --ink:#1f2937;
+      --muted:#6b7280;
+      --accent:#2563eb;   /* + charge */
+      --danger:#ef4444;   /* − charge */
+      --bg:#f8fafc;
+      --card:#ffffff;
+    }
     
+    .grid{
+      display:grid; gap:1rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      align-items: stretch;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid #e5e7eb;
+      border-radius:14px;
+      box-shadow:0 .5rem 1.25rem rgba(0,0,0,.06);
+      overflow:hidden; display:flex; flex-direction:column;
+    }
+    figure{ margin:0; }
+    .canvas-holder{
+      aspect-ratio: 4/3; min-height:260px; width:100%;
+      display:grid; place-items:center;
+      background: radial-gradient(ellipse at center, #ffffff 0%, #f5f7fb 100%);
+    }
+    .meta{ padding:.9rem 1rem 1rem; border-top:1px solid #eef2f7; }
+    .meta p{ margin:.35rem 0; color:var(--muted); line-height:1.45; }
+    .legend{ display:flex; gap:.8rem; align-items:center; flex-wrap:wrap; margin-top:.5rem; color:var(--muted); font-size:.95rem; }
+    .dot{ width:.8rem; height:.8rem; border-radius:50%; display:inline-block; }
+    .dot.pos{ background:var(--accent); }
+    .dot.neg{ background:var(--danger); }
+    .caption{ font-size:.9rem; color:var(--muted); margin:.5rem 1rem .8rem; }
+
+    .controls{ margin-top:.6rem; display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; }
+    .btn{
+      appearance:none; border:1px solid #cbd5e1; background:#fff; color:#1f2937;
+      padding:.35rem .6rem; border-radius:10px; cursor:pointer; font-size:.9rem;
+    }
+    .btn:hover{ background:#f3f4f6; }
+    .state{ color:var(--muted); font-size:.9rem; }
+  </style>
+</head>
 <body>
+
 <div id="header-placeholder"></div>
 <div id="breadcrumb"></div>
 <div id="header"></div>
         
+  <div class="wrap">
     <h2>Electric Field</h2>
-    
-        <h3>Section</h3>
-        
-            <div class="callout">
-            <span role="img" aria-label="📖" class="emoji">📖</span>
-            <span class="callout-text"></span></div>
+    <p>
+      Arrows indicate the direction of the <em>electric field</em>. A <strong>positive test charge accelerates</strong>
+      in the field direction (tangent to the arrows), while a <strong>negative test charge accelerates opposite</strong>
+      the field direction. Lines start on + charges and end on − charges; line density qualitatively reflects field strength.
+    </p>
 
-            <p></p>
-        
-        
-        
-    </body>
+    <section class="grid">
+      <!-- Single -->
+      <article class="card">
+        <figure>
+          <div class="canvas-holder">
+            <svg class="ef-svg" id="svg-single" data-scenario="single" data-polarity="normal" aria-label="Single charge"></svg>
+          </div>
+          <figcaption class="caption">Isolated charge: outward for +, inward for −.</figcaption>
+        </figure>
+        <div class="meta">
+          <h3>Isolated Point Charge</h3>
+          <p>A positive test charge accelerates outward from +; toward −.</p>
+          <div class="legend"><span class="dot pos"></span> positive <span class="dot neg"></span> negative</div>
+          <div class="controls">
+            <button class="btn flip" data-target="svg-single">Flip polarity</button>
+            <span class="state" id="state-single">polarity: +</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Like -->
+      <article class="card">
+        <figure>
+          <div class="canvas-holder">
+            <svg class="ef-svg" id="svg-like" data-scenario="like" data-polarity="normal" aria-label="Two like charges"></svg>
+          </div>
+          <figcaption class="caption">Two like charges: ++ repels; −− draws lines inward toward both.</figcaption>
+        </figure>
+        <div class="meta">
+          <h3>Two Like Charges</h3>
+          <p>Flip to switch ++ ↔ −−. Horizontal pair suppressed to reduce clutter.</p>
+          <div class="legend"><span class="dot pos"></span> positive <span class="dot neg"></span> negative</div>
+          <div class="controls">
+            <button class="btn flip" data-target="svg-like">Flip polarity</button>
+            <span class="state" id="state-like">polarity: ++</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Unlike -->
+      <article class="card">
+        <figure>
+          <div class="canvas-holder">
+            <svg class="ef-svg" id="svg-unlike" data-scenario="unlike" data-polarity="normal" aria-label="Two opposite charges"></svg>
+          </div>
+          <figcaption class="caption">Opposite charges: +− (flip to −+). Exterior fans are mirror-symmetric.</figcaption>
+        </figure>
+        <div class="meta">
+          <h3>Two Unlike Charges</h3>
+          <div class="legend"><span class="dot pos"></span> positive <span class="dot neg"></span> negative</div>
+          <div class="controls">
+            <button class="btn flip" data-target="svg-unlike">Flip polarity</button>
+            <span class="state" id="state-unlike">polarity: +−</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Plates -->
+      <article class="card">
+        <figure>
+          <div class="canvas-holder">
+            <svg class="ef-svg" id="svg-plates" data-scenario="plates" data-polarity="normal" aria-label="Parallel plates"></svg>
+          </div>
+        <figcaption class="caption">Uniform field: top + / bottom − (flip to top − / bottom +). Mid-line markers are just arrowheads.</figcaption>
+        </figure>
+        <div class="meta">
+          <h3>Parallel Plates (Opposite Charges)</h3>
+          <div class="legend"><span class="dot pos"></span> + plate <span class="dot neg"></span> − plate</div>
+          <div class="controls">
+            <button class="btn flip" data-target="svg-plates">Flip polarity</button>
+            <span class="state" id="state-plates">polarity: top + / bottom −</span>
+          </div>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <script>
+      
+    // --- SVG helpers ---
+    const NS='http://www.w3.org/2000/svg';
+    const create=(n,a)=>{const e=document.createElementNS(NS,n); if(a) for(const k in a) e.setAttribute(k,a[k]); return e;};
+    const normalize=a=>Math.atan2(Math.sin(a),Math.cos(a));
+    const shortest=(a,b)=>Math.atan2(Math.sin(a-b),Math.cos(a-b));
+
+    // Flip buttons + draw on load
+window.addEventListener('DOMContentLoaded', () => {
+  function flipById(id){
+    const svg = document.getElementById(id);
+    const stateEl = document.getElementById('state-' + id.split('-')[1]);
+    svg.dataset.polarity = (svg.dataset.polarity === 'normal') ? 'flipped' : 'normal';
+    drawOne(svg);
+    stateEl.textContent = labelFor(svg.dataset.scenario, svg.dataset.polarity);
+  }
+
+  // wire up buttons
+  document.querySelectorAll('.btn.flip').forEach(btn=>{
+    btn.addEventListener('click', ()=> flipById(btn.dataset.target));
+  });
+
+  // initial draw
+  drawAll();
+
+  // then flip twice per diagram
+  ['svg-single','svg-like','svg-unlike','svg-plates'].forEach(id=>{
+    flipById(id);
+    flipById(id);
+  });
+});
+
+    function labelFor(scenario, polarity){
+      const flip = polarity==='flipped';
+      if(scenario==='single') return 'polarity: ' + (flip ? '−' : '+');
+      if(scenario==='like')   return 'polarity: ' + (flip ? '−−' : '++');
+      if(scenario==='unlike') return 'polarity: ' + (flip ? '−+' : '+−');
+      if(scenario==='plates') return 'polarity: ' + (flip ? 'top − / bottom +' : 'top + / bottom −');
+      return '';
+    }
+
+    function drawAll(){
+      document.querySelectorAll('.ef-svg').forEach(drawOne);
+      document.getElementById('state-single').textContent  = labelFor('single',  document.getElementById('svg-single').dataset.polarity);
+      document.getElementById('state-like').textContent    = labelFor('like',    document.getElementById('svg-like').dataset.polarity);
+      document.getElementById('state-unlike').textContent  = labelFor('unlike',  document.getElementById('svg-unlike').dataset.polarity);
+      document.getElementById('state-plates').textContent  = labelFor('plates',  document.getElementById('svg-plates').dataset.polarity);
+    }
+
+    document.querySelectorAll('.btn.flip').forEach(b=>{ b.click(); b.click(); });
+  
+    function drawOne(svg){
+      const scenario = svg.dataset.scenario;
+      const pol = svg.dataset.polarity || 'normal';
+
+      // Size
+      const w = svg.clientWidth || svg.parentElement.clientWidth || 600;
+      const h = svg.clientHeight || svg.parentElement.clientHeight || 450;
+      svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+      svg.setAttribute('width','100%'); svg.setAttribute('height','100%');
+      while(svg.firstChild) svg.removeChild(svg.firstChild);
+
+      // Colors
+      const colPos = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#2563eb';
+      const colNeg = getComputedStyle(document.documentElement).getPropertyValue('--danger').trim() || '#ef4444';
+      const strokeField = '#374151', strokeWeak = '#9ca3af';
+
+      // Markers
+      const defs = create('defs');
+      const marker = create('marker',{id:'arrow',viewBox:'0 0 10 10',refX:7.5,refY:5,markerWidth:6,markerHeight:6,orient:'auto-start-reverse'});
+      marker.appendChild(create('path',{d:'M0,0 L10,5 L0,10 Z',fill:strokeField}));
+      defs.appendChild(marker);
+      const markerThin = create('marker',{id:'arrowThin',viewBox:'0 0 10 10',refX:7.5,refY:5,markerWidth:5,markerHeight:5,orient:'auto-start-reverse'});
+      markerThin.appendChild(create('path',{d:'M0,0 L10,5 L0,10 Z',fill:strokeField}));
+      defs.appendChild(markerThin);
+      svg.appendChild(defs);
+
+      // Group
+      const group = create('g',{'fill':'none','stroke':strokeField,'stroke-width':1.4,'stroke-linecap':'round'});
+      svg.appendChild(group);
+
+      // ---- Helpers for mid-arrow drawing (now: just arrowheads) ----
+function addMidArrow(pathEl, markerId = 'arrow', minPx = 3){
+  const L = pathEl.getTotalLength();
+  if (!(L > 1)) return;
+
+  // total stub length = max(minPx, 3 px). Change minPx if you want.
+  const span = Math.max(minPx, 3) / 2;  // half-length
+
+  const s0 = Math.max(0, L/2 - span);
+  const s1 = Math.min(L, L/2 + span);
+
+  const p0 = pathEl.getPointAtLength(s0);
+  const p1 = pathEl.getPointAtLength(s1);
+
+  const color = pathEl.getAttribute('stroke') || '#374151';
+  const width = pathEl.getAttribute('stroke-width') || 1.4;
+
+  const midSeg = create('path',{
+    d: `M ${p0.x},${p0.y} L ${p1.x},${p1.y}`,
+    'marker-end': `url(#${markerId})`,
+    stroke: color,
+    'stroke-width': width
+  });
+  pathEl.parentNode.appendChild(midSeg);
+}
+
+      function drawPath(pts, { reverse=false, marker='arrow' } = {}){
+        if(!pts || pts.length<3) return;
+        const seg = reverse ? [...pts].reverse() : pts;
+        const last = seg[seg.length-1];
+        const outside = (last[0]<0||last[0]>w||last[1]<0||last[1]>h);
+        const d = 'M ' + seg.map(p=>p[0].toFixed(2)+','+p[1].toFixed(2)).join(' L ');
+        const main = create('path',{ d, stroke: outside?strokeWeak:strokeField });
+        group.appendChild(main);
+        addMidArrow(main, marker); // arrowhead at midpoint
+      }
+
+      // ================== PARALLEL PLATES (with locked pixel gap) ==================
+      if(scenario==='plates'){
+        const xL = w*0.18, xR = w*0.82;
+        const topIsPositive = (pol==='normal');
+
+        const lockGapPx = 220;      // inner-face separation
+        const lockThicknessPx = 14; // plate thickness
+        const edgePaddingPx = 24;
+
+        let plateW = lockThicknessPx;
+        let halfGap = lockGapPx / 2;
+        const halfAvailable = h/2 - edgePaddingPx;
+        const need = halfGap + plateW;
+        if (need > halfAvailable && halfAvailable > 0){
+          const s = halfAvailable / need;
+          plateW *= s;
+          halfGap *= s;
+        }
+
+        const cy = h * 0.5;
+        const innerTopY = cy - halfGap;
+        const innerBotY = cy + halfGap;
+        const yTop = innerTopY - plateW;
+        const yBot = innerBotY + plateW;
+
+        const topFill = topIsPositive ? colPos : colNeg;
+        const botFill = topIsPositive ? colNeg : colPos;
+
+        const topPlate = create('rect',{x:xL, y:yTop, width:xR-xL, height:plateW, rx:6, fill:topFill, stroke:'#fff', 'stroke-width':1.2});
+        const botPlate = create('rect',{x:xL, y:yBot-plateW, width:xR-xL, height:plateW, rx:6, fill:botFill, stroke:'#fff', 'stroke-width':1.2});
+        svg.appendChild(topPlate); svg.appendChild(botPlate);
+
+        const N=8;
+        for(let i=0;i<N;i++){
+          const t = (i+1)/(N+1);
+          const x = xL + t*(xR-xL);
+          const y1 = topIsPositive ? (yTop+plateW+4) : (yBot-plateW-4);
+          const y2 = topIsPositive ? (yBot-plateW-4) : (yTop+plateW+4);
+          const p = create('path',{ d:`M ${x},${y1} L ${x},${y2}` });
+          group.appendChild(p);
+          addMidArrow(p,'arrowThin');
+        }
+        return;
+      }
+      // ================== END PLATES ==================
+
+      // ---------- Point-charge cases ----------
+      // Charges per scenario & polarity
+      let charges=[];
+      if(scenario==='single'){
+        const q = (pol==='normal') ? +1 : -1;
+        charges = [{x:w*0.5, y:h*0.5, q}];
+      }else if(scenario==='like'){
+        const q = (pol==='normal') ? +1 : -1;
+        charges = [{x:w*0.38, y:h*0.5, q},{x:w*0.62, y:h*0.5, q}];
+      }else{ // unlike
+        const qL = (pol==='normal') ? +1 : -1;
+        const qR = (pol==='normal') ? -1 : +1;
+        charges = [{x:w*0.38, y:h*0.5, q:qL},{x:w*0.62, y:h*0.5, q:qR}];
+      }
+
+      // Draw charges
+      charges.forEach(c=>{
+        const r = Math.max(6, Math.min(w,h)*0.015);
+        const g=create('g');
+        g.appendChild(create('circle',{cx:c.x,cy:c.y,r,fill:c.q>0?colPos:colNeg,stroke:'#fff','stroke-width':2}));
+        const t=create('text',{x:c.x,y:c.y+4,'text-anchor':'middle','font-size':Math.max(10,r*1.4),'font-weight':700,fill:'#fff'});
+        t.textContent = c.q>0?'+':'−'; g.appendChild(t); svg.appendChild(g);
+      });
+
+      // Field function
+      function fieldAt(x,y){
+        let Ex=0, Ey=0;
+        for(const c of charges){
+          const dx = x - c.x, dy = y - c.y;
+          const r2 = dx*dx + dy*dy;
+          const eps = 12, R2 = Math.max(r2, eps*eps);
+          const invR3 = 1/Math.pow(R2, 1.5);
+          Ex += c.q * dx * invR3; Ey += c.q * dy * invR3;
+        }
+        return [Ex, Ey];
+      }
+
+      // Integrate streamline with direction control
+      function trace(seed, { step=3.0, maxSteps=1400, dir=+1 } = {}){
+        const path = [[seed.x, seed.y]];
+        let x = seed.x, y = seed.y;
+        for(let n=0;n<maxSteps;n++){
+          const [Ex,Ey] = fieldAt(x,y), m = Math.hypot(Ex,Ey);
+          if(m<1e-10) break;
+          x += dir*(Ex/m)*step;
+          y += dir*(Ey/m)*step;
+          path.push([x,y]);
+
+          if(x<-20||x>w+20||y<-20||y>h+20) break;
+
+          for(const c of charges){
+            const d = Math.hypot(x-c.x, y-c.y);
+            const stopR = Math.max(10, Math.min(w,h)*0.02);
+            if(d < stopR){
+              return { path, hitCharge: c };
+            }
+          }
+        }
+        return { path, hitCharge: null };
+      }
+
+      const baseR = Math.max(10, Math.min(w,h)*0.03);
+
+      // ---- Single (+ or −) ----
+      if(scenario==='single'){
+        const c = charges[0], lines = 12;
+        if(c.q>0){
+          for(let i=0;i<lines;i++){
+            const ang=2*Math.PI*i/lines;
+            const res = trace({x:c.x+baseR*Math.cos(ang), y:c.y+baseR*Math.sin(ang)}, {dir:+1});
+            drawPath(res.path);
+          }
+        }else{
+          for(let i=0;i<lines;i++){
+            const ang=2*Math.PI*i/lines;
+            const res = trace({x:c.x+baseR*Math.cos(ang), y:c.y+baseR*Math.sin(ang)}, {dir:-1});
+            drawPath(res.path, {reverse:true});
+          }
+        }
+        return;
+      }
+
+      // ---- Like (both + or both −) ----
+      if(scenario==='like'){
+        const [c0,c1]=charges, lines=8;
+        [c0,c1].forEach((c,idx)=>{
+          const other=idx?c0:c1, axis=Math.atan2(other.y-c.y, other.x-c.x);
+          for(let i=0;i<lines;i++){
+            const ang=2*Math.PI*i/lines;
+            const diff=Math.atan2(Math.sin(ang-axis),Math.cos(ang-axis));
+            if(Math.abs(diff)<Math.PI/18) continue; // remove the horizontal pair
+            if(c.q>0){
+              const res = trace({x:c.x+baseR*Math.cos(ang), y:c.y+baseR*Math.sin(ang)}, {dir:+1});
+              drawPath(res.path);
+            }else{
+              const res = trace({x:c.x+baseR*Math.cos(ang), y:c.y+baseR*Math.sin(ang)}, {dir:-1});
+              drawPath(res.path, {reverse:true});
+            }
+          }
+        });
+        return;
+      }
+
+      // ---- Unlike (+− or −+) with symmetric exterior fans ----
+      const pos = charges.find(c=>c.q>0);
+      const neg = charges.find(c=>c.q<0);
+      const axisPosToNeg = Math.atan2(neg.y - pos.y, neg.x - pos.x);
+
+      const sectorHalf = Math.PI/3;  // lobe half-width
+      const Nint = 3;                // interior +→−
+      const Next = 5;                // exterior fans
+
+      function offsets(N){
+        if(N<=1) return [0];
+        const arr=[]; for(let k=0;k<N;k++){ const t=(k/(N-1))*2-1; arr.push(t*sectorHalf); }
+        return arr;
+      }
+
+      // (1) INTERIOR: start near +; ensure they reach −
+      offsets(Nint).forEach(off=>{
+        let a = axisPosToNeg + off;
+        let tries=0;
+        while(tries<8){
+          const seed = { x: pos.x + baseR*Math.cos(a), y: pos.y + baseR*Math.sin(a) };
+          const res = trace(seed, {dir:+1});
+          if(res.hitCharge === neg){ drawPath(res.path); break; }
+          a = normalize(a - 0.6*shortest(a, axisPosToNeg));
+          tries++;
+        }
+      });
+
+      // (2) EXTERIOR LEFT of + : start near + around the exterior axis; go to infinity
+      const exteriorPos = axisPosToNeg + Math.PI;
+      offsets(Next).forEach(off=>{
+        const a = exteriorPos + off;
+        const res = trace({ x: pos.x + baseR*Math.cos(a), y: pos.y + baseR*Math.sin(a) }, {dir:+1});
+        drawPath(res.path);
+      });
+
+      // (3) EXTERIOR RIGHT of − : mirror of (2), seeded near −; integrate backwards then reverse
+      const exteriorNeg = axisPosToNeg;
+      offsets(Next).forEach(off=>{
+        const a = exteriorNeg - off;
+        const seed = { x: neg.x + baseR*Math.cos(a), y: neg.y + baseR*Math.sin(a) };
+        const res = trace(seed, {dir:-1});
+        drawPath(res.path, {reverse:true});
+      });
+    }
+
+    // Keep SVG crisp on resize
+    let rt;
+    window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(drawAll,80); });
+      
+      
+      
+  </script>
+</body>
 </html>
-
