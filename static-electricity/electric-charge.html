@@ -288,6 +288,12 @@
           e.x = e.originalX;
           e.y = e.originalY;
         });
+      } else if (!rodNear1 && grounded1) {
+        electrons1.forEach(e => {
+          e.returning = true;
+          e.visible = true;
+        });
+        electronsLeaving1 = [];
       }
 
       if (grounded1 && rodNear1) {
@@ -335,7 +341,14 @@
 
     function drawFinalState1() {
       let gone = electrons1.filter(e => !e.visible).length;
-      if (!rodNear1 && !grounded1) {
+      if (!rodNear1 && grounded1) {
+        ctx1.fillStyle = "#cc0000";
+        ctx1.fillText(
+          "Can is neutral",
+          230,
+          320
+        );
+      } else if (!rodNear1 && !grounded1) {
         ctx1.fillStyle = "#cc0000";
         ctx1.fillText(
           gone >= 3 ? "Can is positively charged" : "Can is neutral",
@@ -668,4 +681,3 @@ draw2();
 </script>
     </body>
 </html>
-
