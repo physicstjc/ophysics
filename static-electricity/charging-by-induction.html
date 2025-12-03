@@ -275,7 +275,10 @@
 
     function drawFinalState() {
       let gone = electrons.filter(e => !e.visible).length;
-      if (!rodNear && !grounded) {
+      if (!rodNear && grounded) {
+        ctx.fillStyle = "#cc0000";
+        ctx.fillText("Can is neutral", 230, 320);
+      } else if (!rodNear && !grounded) {
         ctx.fillStyle = "#cc0000";
         ctx.fillText(
           gone >= 3 ? "Can is positively charged" : "Can is neutral",
