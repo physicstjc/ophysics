@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
+<!-- saved from url=(0083)https://physicstjc.github.io/ophysics/static-electricity/charging-by-induction.html -->
+<html lang="en" data-kantu="1"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
   <title>Charging by Induction Simulation</title>
   <style>
       body {
@@ -310,10 +310,16 @@
 
 
       rodNear = !rodNear;
+      if (!rodNear && grounded) {
+        initElectrons();
+      }
     }
 
     function toggleGround() {
       grounded = !grounded;
+      if (!rodNear && grounded) {
+        initElectrons();
+      }
     }
 
     function reset() {
@@ -325,5 +331,6 @@
     initElectrons();
     draw();
   </script>
-</body>
-</html>
+
+
+</body></html>
