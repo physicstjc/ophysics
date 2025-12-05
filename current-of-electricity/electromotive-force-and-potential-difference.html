@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electromotive Force and Potential Difference</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+
+<div>
+    <h1>Electromotive Force and Potential Difference</h1>
+    <h3>Definition</h3>
+    <div class="callout">
+        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
+        <span class="callout-text"><strong>Electromotive force (e.m.f.)</strong> is the work done per unit charge by a source in driving charges around a complete circuit.</span>
+    </div>
+    <p>In symbols, $$E = \dfrac{W}{Q}$$ and it is measured in volts (V), with \(1\,\mathrm{V} = 1\,\mathrm{J\,C^{-1}}\).</p>
+    <p>When several sources are connected in series and oriented in the same direction, the total e.m.f. is the sum of their individual e.m.f.s: \(E_{\text{total}} = E_1 + E_2 + \cdots\). For example, three identical cells of \(1.5\,\mathrm{V}\) in series provide \(E_{\text{total}} = 1.5 + 1.5 + 1.5 = 4.5\,\mathrm{V}\). If one source is reversed, it opposes the others and its e.m.f. subtracts; for instance, \(1.5 + 1.5 - 1.5 = 1.5\,\mathrm{V}\).</p>
+    <h3>Definition</h3>
+    <div class="callout">
+        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
+        <span class="callout-text"><strong>Potential difference (p.d.)</strong> across a component is the work done per unit charge in driving charges through that component.</span>
+    </div>
+    <p>In symbols, $$V = \dfrac{W}{Q}$$ and it is measured in volts (V), indicating energy transferred per coulomb across the component.</p>
+    <p>In analysis and problem solving, the source e.m.f. sets the energy provided per coulomb to the circuit, while the p.d. across components accounts for the energy used or transferred in those parts of the circuit. In a simple series circuit, the sum of the p.d.s across the components equals the e.m.f. of the source, reflecting energy conservation.</p>
+
+    <div class="quiz-container" style="margin-top:1.5rem;">
+        <h3>Quick Quiz</h3>
+        <div id="epq-problem"></div><br>
+        <div class="button-container">
+            <button id="epq-submit" onclick="epqCheckAnswer()">Submit</button><br><br>
+            <button id="epq-previous" onclick="epqPrevious()">Previous</button>
+            <button id="epq-next" onclick="epqNext()">Next</button>
+        </div>
+        <div class="feedback" id="epq-feedback"></div>
+        <div class="score" id="epq-score">Score: 0/0</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="epq-progress">0%</div>
+        </div>
+    </div>
+
+    <script>
+        let epqIndex = 0;
+        let epqScore = 0;
+        let epqAttempts = 0;
+        const epqAttempted = [];
+        const epqProblems = [
+            { question: "A source does 12 J of work to move 4.0 C of charge. What is the e.m.f. of the source?", correctAnswer: "3.0 V", options: ["2.0 V","3.0 V","6.0 V","12 V"], explanation: "$$E = \\dfrac{W}{Q} = \\dfrac{12}{4.0} = 3.0\\,\\mathrm{V}$$" },
+            { question: "A component transfers 20 J to 5.0 C of charge. What is the potential difference across it?", correctAnswer: "4.0 V", options: ["2.0 V","4.0 V","5.0 V","10 V"], explanation: "$$V = \\dfrac{W}{Q} = \\dfrac{20}{5.0} = 4.0\\,\\mathrm{V}$$" },
+            { question: "A charge of 2.0 C passes through a component with p.d. 9.0 V. How much work is done?", correctAnswer: "18 J", options: ["9.0 J","18 J","2.0 J","11 J"], explanation: "$$W = VQ = 9.0\\,\\mathrm{V} \\times 2.0\\,\\mathrm{C} = 18\\,\\mathrm{J}$$" },
+            { question: "Four 1.5 V cells are in series; one cell is reversed. In a series circuit, two components have p.d. 1.2 V and 0.80 V. What is the p.d. across the third component?", correctAnswer: "1.0 V", options: ["0.50 V","1.0 V","2.0 V","3.0 V"], explanation: "Total e.m.f.: $$E_{\\text{total}} = 1.5+1.5+1.5-1.5 = 3.0\\,\\mathrm{V}$$ Series p.d.s sum to the source: $$V_{3} = E_{\\text{total}} - (1.2+0.80) = 1.0\\,\\mathrm{V}$$" }
+        ];
+        function epqDisplay(){
+            if(epqIndex>=epqProblems.length){
+                document.getElementById('epq-problem').innerHTML = `<p>Completed. Final score: ${epqScore}/${epqProblems.length}.</p>`;
+                document.getElementById('epq-submit').style.display='none';
+                document.getElementById('epq-previous').style.display='none';
+                document.getElementById('epq-next').style.display='none';
+                document.getElementById('epq-feedback').innerText='';
+                const p=document.getElementById('epq-progress');
+                p.style.width='100%';
+                p.innerText='100% Completed';
+                return;
+            }
+            const problem = epqProblems[epqIndex];
+            document.getElementById('epq-problem').innerHTML = `
+                <p>${problem.question}</p>
+                ${problem.options.map(o=>`<label><input type=\"radio\" name=\"epq-answer\" value=\"${o}\"> ${o}</label><br>`).join('')}
+            `;
+            document.getElementById('epq-feedback').innerText='';
+            if(epqAttempted[epqIndex]){
+                const { userAnswer, feedback, isCorrect } = epqAttempted[epqIndex];
+                const el = document.querySelector(`input[name=\"epq-answer\"][value=\"${userAnswer}\"]`);
+                if(el) el.checked = true;
+                document.querySelectorAll('input[name="epq-answer"]').forEach(r=>r.disabled=true);
+                const s=document.getElementById('epq-submit');
+                s.disabled=true; s.classList.add('disabled');
+                document.getElementById('epq-feedback').innerHTML=feedback;
+                if (typeof renderMathInElement === 'function') { try { renderMathInElement(document.getElementById('epq-feedback')); } catch(e){} }
+                const f=document.getElementById('epq-feedback');
+                if(isCorrect){f.classList.add('correct');f.classList.remove('incorrect');}
+                else {f.classList.add('incorrect');f.classList.remove('correct');}
+            } else {
+                const s=document.getElementById('epq-submit');
+                s.disabled=false; s.classList.remove('disabled');
+                const f=document.getElementById('epq-feedback');
+                f.classList.remove('correct','incorrect');
+            }
+            epqUpdateProgress();
+        }
+        function epqUpdateScore(){document.getElementById('epq-score').innerText=`Score: ${epqScore}/${epqAttempts}`}
+        function epqCheckAnswer(){
+            const sel=document.querySelector('input[name="epq-answer"]:checked');
+            if(!sel){alert('Please select an answer before submitting.');return;}
+            const ua=sel.value; const ca=epqProblems[epqIndex].correctAnswer;
+            epqAttempts++;
+            let fb=''; let ok=false;
+            const exp = epqProblems[epqIndex].explanation;
+            if(ua===ca){epqScore++; fb=`<strong>Correct!</strong> ${exp}`; ok=true; const f=document.getElementById('epq-feedback'); f.classList.add('correct'); f.classList.remove('incorrect');}
+            else {fb=`<strong>Incorrect.</strong> ${exp}`; const f=document.getElementById('epq-feedback'); f.classList.add('incorrect'); f.classList.remove('correct');}
+            epqUpdateScore();
+            epqAttempted[epqIndex]={userAnswer:ua,feedback:fb,isCorrect:ok};
+            document.querySelectorAll('input[name="epq-answer"]').forEach(r=>r.disabled=true);
+            const s=document.getElementById('epq-submit'); s.disabled=true; s.classList.add('disabled');
+            document.getElementById('epq-feedback').innerHTML=fb;
+            if (typeof renderMathInElement === 'function') { try { renderMathInElement(document.getElementById('epq-feedback')); } catch(e){} }
+        }
+        function epqNext(){ if(epqIndex<epqProblems.length-1){epqIndex++; epqDisplay();} else if(epqIndex===epqProblems.length-1){epqIndex++; epqDisplay();} }
+        function epqPrevious(){ if(epqIndex>0){epqIndex--; epqDisplay();} }
+        function epqUpdateProgress(){
+            const pct = Math.round(((epqIndex)/(epqProblems.length))*100);
+            const p=document.getElementById('epq-progress');
+            p.style.width = `${pct}%`;
+            p.innerText = `${pct}%`;
+        }
+        epqDisplay();
+    </script>
+</div>
+
+<div id="footer-placeholder"></div>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conventional Current and Electron Flow</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+
+<div>
+    <h1>Conventional Current and Electron Flow</h1>
+    <p>Electric current is the rate of flow of electric charge through a conductor. In steady conditions, the current $I$ relates to charge $Q$ moved in time $t$ by $$I = \dfrac{Q}{t}$$ and it is measured in amperes (A), where \(1\,\mathrm{A} = 1\,\mathrm{C\,s^{-1}}\).</p>
+    <p>By convention, <em>conventional current</em> is defined to flow from the positive terminal to the negative terminal, indicating the direction positive charges would move. In metallic conductors, the actual charge carriers are electrons, which drift from the negative terminal to the positive terminal, so <em>electron flow</em> is opposite in direction to conventional current.</p>
+    <figure class="illustration" style="max-width:480px;margin:1rem auto;text-align:center;">
+        <img src="conventional-current.png" alt="Diagram showing conventional current from positive to negative and electron flow from negative to positive" style="width:100%;height:auto;" />
+        <figcaption>Conventional current flows from the positive to the negative terminal; electron flow is opposite.</figcaption>
+    </figure>
+    <p>The relationship $Q = I t$ is widely used to determine how much charge passes a point in a circuit over a time interval.</p>
+    <p>For example, a steady current of \(2.0\,\mathrm{A}\) flowing for \(30\,\mathrm{s}\) transfers \(Q = 2.0 \times 30 = 60\,\mathrm{C}\).</p>
+    
+    <div class="quiz-container" style="margin-top:1.5rem;">
+        <h3>Quick Quiz</h3>
+        <div id="ccq-problem"></div><br>
+        <div class="button-container">
+            <button id="ccq-submit" onclick="ccqCheckAnswer()">Submit</button><br><br>
+            <button id="ccq-previous" onclick="ccqPrevious()">Previous</button>
+            <button id="ccq-next" onclick="ccqNext()">Next</button>
+        </div>
+        <div class="feedback" id="ccq-feedback"></div>
+        <div class="score" id="ccq-score">Score: 0/0</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="ccq-progress">0%</div>
+        </div>
+    </div>
+
+    <script>
+        let ccqIndex = 0;
+        let ccqScore = 0;
+        let ccqAttempts = 0;
+        const ccqAttempted = [];
+        const ccqProblems = [
+            { question: "A charge of 60 C passes a point in 30 s. What is the current?", correctAnswer: "2.0 A", options: ["0.5 A","1.0 A","2.0 A","3.0 A"], explanation: "I = Q/t = 60/30 = 2.0 A" },
+            { question: "A device draws 0.75 A for 120 s. How much charge flows?", correctAnswer: "90 C", options: ["45 C","60 C","90 C","180 C"], explanation: "Q = I t = 0.75×120 = 90 C" },
+            { question: "Estimate the order of magnitude of number of electrons when a steady current of 2.0 mA flows for 1.0 s. Use e = 1.6 × 10⁻¹⁹ C.", correctAnswer: "10<sup>16</sup>", options: ["10<sup>13</sup>","10<sup>16</sup>","10<sup>19</sup>","10<sup>22</sup>"], explanation: "Q = I t = 0.002 C, N = Q/e ≈ 1.25 × 10<sup>16</sup> ≈ 10<sup>16</sup>" }
+        ];
+        function ccqDisplay(){
+            if(ccqIndex>=ccqProblems.length){
+                document.getElementById('ccq-problem').innerHTML = `<p>Completed. Final score: ${ccqScore}/${ccqProblems.length}.</p>`;
+                document.getElementById('ccq-submit').style.display='none';
+                document.getElementById('ccq-previous').style.display='none';
+                document.getElementById('ccq-next').style.display='none';
+                document.getElementById('ccq-feedback').innerText='';
+                const p=document.getElementById('ccq-progress');
+                p.style.width='100%';
+                p.innerText='100% Completed';
+                return;
+            }
+            const problem = ccqProblems[ccqIndex];
+            document.getElementById('ccq-problem').innerHTML = `
+                <p>${problem.question}</p>
+                ${problem.options.map(o=>`<label><input type=\"radio\" name=\"ccq-answer\" value=\"${o}\"> ${o}</label><br>`).join('')}
+            `;
+            document.getElementById('ccq-feedback').innerText='';
+            if(ccqAttempted[ccqIndex]){
+                const { userAnswer, feedback, isCorrect } = ccqAttempted[ccqIndex];
+                const el = document.querySelector(`input[name=\"ccq-answer\"][value=\"${userAnswer}\"]`);
+                if(el) el.checked = true;
+                document.querySelectorAll('input[name="ccq-answer"]').forEach(r=>r.disabled=true);
+                const s=document.getElementById('ccq-submit');
+                s.disabled=true; s.classList.add('disabled');
+            document.getElementById('ccq-feedback').innerHTML=feedback;
+            if (typeof renderMathInElement === 'function') { try { renderMathInElement(document.getElementById('ccq-feedback')); } catch(e){} }
+                const f=document.getElementById('ccq-feedback');
+                if(isCorrect){f.classList.add('correct');f.classList.remove('incorrect');}
+                else {f.classList.add('incorrect');f.classList.remove('correct');}
+            } else {
+                const s=document.getElementById('ccq-submit');
+                s.disabled=false; s.classList.remove('disabled');
+                const f=document.getElementById('ccq-feedback');
+                f.classList.remove('correct','incorrect');
+            }
+            ccqUpdateProgress();
+        }
+        function ccqUpdateScore(){document.getElementById('ccq-score').innerText=`Score: ${ccqScore}/${ccqAttempts}`}
+        function ccqCheckAnswer(){
+            const sel=document.querySelector('input[name="ccq-answer"]:checked');
+            if(!sel){alert('Please select an answer before submitting.');return;}
+            const ua=sel.value; const ca=ccqProblems[ccqIndex].correctAnswer;
+            ccqAttempts++;
+            let fb=''; let ok=false;
+            const exp = ccqProblems[ccqIndex].explanation;
+            if(ua===ca){ccqScore++; fb=`<strong>Correct!</strong> ${exp}`; ok=true; const f=document.getElementById('ccq-feedback'); f.classList.add('correct'); f.classList.remove('incorrect');}
+            else {fb=`<strong>Incorrect.</strong> ${exp}`; const f=document.getElementById('ccq-feedback'); f.classList.add('incorrect'); f.classList.remove('correct');}
+            ccqUpdateScore();
+            ccqAttempted[ccqIndex]={userAnswer:ua,feedback:fb,isCorrect:ok};
+            document.querySelectorAll('input[name="ccq-answer"]').forEach(r=>r.disabled=true);
+            const s=document.getElementById('ccq-submit'); s.disabled=true; s.classList.add('disabled');
+            document.getElementById('ccq-feedback').innerHTML=fb;
+            if (typeof renderMathInElement === 'function') { try { renderMathInElement(document.getElementById('ccq-feedback')); } catch(e){} }
+        }
+        function ccqNext(){ if(ccqIndex<ccqProblems.length-1){ccqIndex++; ccqDisplay();} else if(ccqIndex===ccqProblems.length-1){ccqIndex++; ccqDisplay();} }
+        function ccqPrevious(){ if(ccqIndex>0){ccqIndex--; ccqDisplay();} }
+        function ccqUpdateProgress(){
+            const pct = Math.round(((ccqIndex)/(ccqProblems.length))*100);
+            const p=document.getElementById('ccq-progress');
+            p.style.width = `${pct}%`;
+            p.innerText = `${pct}%`;
+        }
+        ccqDisplay();
+    </script>
+
+</div>
+
+<div id="footer-placeholder"></div>
+</body>
+</html>
