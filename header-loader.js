@@ -3,6 +3,13 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.text())
         .then(data => {
             document.getElementById('header-placeholder').innerHTML = data;
+            // Ensure toggleMenu function is available after header loads
+            window.toggleMenu = function() {
+                var menu = document.querySelector('.top-menu');
+                if (menu) {
+                    menu.classList.toggle('responsive');
+                }
+            };
         })
         .catch(error => console.error('Error loading header:', error));
     
@@ -74,9 +81,12 @@ document.addEventListener("DOMContentLoaded", function() {
             });
             });
 
+// Keep the original toggleMenu function as backup
 function toggleMenu() {
-        var menu = document.querySelector('.top-menu');
+    var menu = document.querySelector('.top-menu');
+    if (menu) {
         menu.classList.toggle('responsive');
+    }
 }
 
 const accordions = document.getElementsByClassName("accordion");
