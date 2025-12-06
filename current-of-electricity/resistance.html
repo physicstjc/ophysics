@@ -19,8 +19,632 @@
 <div>
     <h1>Resistance</h1>
     <p>This page introduces resistance as the ratio of potential difference to current and relates it to material properties, dimensions, and temperature.</p>
-</div>
+    <h3>Definition</h3>
+    <div class="callout">
+        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
+        <span class="callout-text"><strong>Resistance</strong> is defined as the ratio of potential difference to current. </span>
+    </div>
+    <p>In symbols, $$R = \dfrac{V}{I}$$ and it is measured in ohms (\(\Omega\)), with \(1\,\Omega = 1\,\mathrm{V\,A^{-1}}\).</p>
+    <h3>Factor Affecting Resistance</h3>
+    <p>The resistance of a uniform wire depends on its length \(L\), cross‑sectional area \(A\), and the material’s resistivity \(\rho\). For a wire of length \(L\) and cross‑sectional area \(A\), $$R = \dfrac{\rho L}{A}$$</p>
+    <p>Doubling the length doubles the resistance, while doubling the area halves it. For circular wires, \(A = \pi r^2\), so doubling the diameter significantly decreases the resistance by a factor of 4.</p>
+    <h3>Effect of Temperature</h3>
+    <p>For metallic conductors, resistivity and hence, resistance increases with temperature. As temperature rises, lattice vibrations increase and electron scattering becomes more frequent, producing a higher effective resistance (positive temperature coefficient).</p>
 
-<div id="footer-placeholder"></div>
-</body>
-</html>
+    <div class="current-sim">
+  <style>
+    /* Scoped styles – only affect elements inside .current-sim */
+    .current-sim {
+      max-width: 720px;
+      margin: 1.5rem auto;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 14px;
+      color: #111827;
+    }
+
+    .current-sim .quiz-container {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 12px 16px 16px;
+      box-sizing: border-box;
+    }
+
+    .current-sim h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.05rem;
+    }
+
+    .current-sim .button-container {
+      margin-top: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .current-sim label {
+      font-weight: 500;
+    }
+
+    .current-sim input[type="range"] {
+      flex: 0 0 180px;
+    }
+
+    .current-sim button {
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid #2563eb;
+      background: #2563eb;
+      color: #fff;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .current-sim button:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+    }
+
+    .current-sim canvas {
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      margin-top: 10px;
+      display: block;
+      max-width: 100%;
+      height: auto; /* responsive */
+    }
+
+    .current-sim .score {
+      margin-top: 8px;
+      font-size: 0.9rem;
+    }
+
+    .current-sim .sim-caption {
+      margin-top: 4px;
+      font-size: 0.85rem;
+      color: #4b5563;
+    }
+  </style>
+
+  <div class="quiz-container" id="lattice-sim">
+    <h3>Metal Lattice Simulation</h3>
+
+    <div class="button-container">
+      <label for="sim-voltage">Voltage</label>
+      <input type="range" id="sim-voltage" min="0" max="12" step="0.1" value="3">
+      <span id="sim-voltage-label">3.0 V</span>
+    </div>
+
+    <div class="button-container">
+      <label for="sim-temperature">Temperature</label>
+      <input type="range" id="sim-temperature" min="0" max="100" value="20">
+      <span id="sim-temperature-label">20 °C</span>
+    </div>
+
+    <div class="button-container" style="margin-top:10px;">
+      <button id="sim-start">Start Field</button>
+      <button id="sim-reset" type="button">Reset</button>
+    </div>
+
+    <div id="sim-stats" class="score">
+      Mean drift speed: <span id="sim-mean">0.0</span> mm/s
+    </div>
+    <div id="sim-resistance" class="score">Resistance: <span id="sim-R">∞</span> Ω</div>
+    <div id="sim-equation" class="sim-caption">
+      At low temperature, ions vibrate less, so collisions are fewer and drift speed (and current) is higher for 3.0 V.
+    </div>
+
+    <canvas id="latticeCanvas"
+            width="680"
+            height="300">
+      Your browser does not support the HTML5 canvas tag.
+    </canvas>
+  </div>
+
+  <script>
+    (function() {
+      const root = document.getElementById('lattice-sim');
+      if (!root) return;
+
+      // DOM references scoped to this block
+      const canvas = root.querySelector('#latticeCanvas');
+      const ctx = canvas.getContext('2d');
+      const vSlider = root.querySelector('#sim-voltage');
+      const tSlider = root.querySelector('#sim-temperature');
+      const vLabel = root.querySelector('#sim-voltage-label');
+      const tLabel = root.querySelector('#sim-temperature-label');
+      const meanLabel = root.querySelector('#sim-mean');
+      const RLabel = root.querySelector('#sim-R');
+      const eqDiv = root.querySelector('#sim-equation');
+      const startBtn = root.querySelector('#sim-start');
+      const resetBtn = root.querySelector('#sim-reset');
+
+      const W = canvas.width;
+      const H = canvas.height;
+
+      // Lattice setup
+      const gridCols = 14, gridRows = 6;
+      const cellW = W / (gridCols + 1);
+      const cellH = H / (gridRows + 1);
+      const lattice = [];
+
+      for (let r = 0; r < gridRows; r++) {
+        for (let c = 0; c < gridCols; c++) {
+          lattice.push({
+            x: (c + 1) * cellW,
+            y: (r + 1) * cellH,
+            phase: Math.random() * Math.PI * 2
+          });
+        }
+      }
+
+      const NUCLEUS_RADIUS = 8;
+      const yMin = cellH * 0.5;
+      const yMax = gridRows * cellH + cellH * 0.5;
+
+      // Electrons
+      const electrons = [];
+      const electronCount = 60;
+
+      function initElectrons() {
+        electrons.length = 0;
+        for (let i = 0; i < electronCount; i++) {
+          electrons.push({
+            x: Math.random() * W,
+            y: yMin + Math.random() * (yMax - yMin),
+            vx: 0,
+            vy: 0
+          });
+        }
+      }
+
+      initElectrons();
+
+      // Simulation state
+      let running = false;
+      let last = performance.now();
+      let voltage = Number(vSlider.value);   // default 3 V
+      let temperature = Number(tSlider.value); // default 20 °C
+
+      const meanHistory = [];
+      const meanWindow = 120;
+      function metalResistance() {
+        const R0 = 20;
+        const alpha = 0.004;
+        return R0 * (1 + alpha * (temperature - 20));
+      }
+      function updateResistancePreview(){
+        const tempNorm = Math.min(Math.max((temperature - 20) / 80, 0), 1);
+        const vMax = (voltage / 12) * 120 * (1 - 0.4 * tempNorm);
+        const previewMean = Math.max(0, vMax * 0.5);
+        meanLabel.textContent = previewMean.toFixed(1);
+        RLabel.textContent = metalResistance().toFixed(1);
+      }
+
+      function updateExplanation() {
+        if (!eqDiv) return;
+        const v = voltage;
+        const T = temperature;
+
+        if (T < 30) {
+          eqDiv.textContent =
+            `At low temperature, ions vibrate less, so collisions are fewer and resistance is lower—drift speed (and current) is higher for ${v.toFixed(1)} V.`;
+        } else if (T < 70) {
+          eqDiv.textContent =
+            `At moderate temperature, ion vibrations increase, so more collisions raise resistance and drift speed falls slightly for ${v.toFixed(1)} V.`;
+        } else {
+          eqDiv.textContent =
+            `At high temperature, frequent collisions make resistance large, so drift speed (and current) drops for ${v.toFixed(1)} V.`;
+        }
+      }
+
+      // Slider handlers
+      vSlider.addEventListener('input', function() {
+        voltage = Number(vSlider.value);
+        vLabel.textContent = voltage.toFixed(1) + ' V';
+        updateExplanation();
+        updateResistancePreview();
+      });
+
+      tSlider.addEventListener('input', function() {
+        temperature = Number(tSlider.value);
+        tLabel.textContent = temperature.toFixed(0) + ' °C';
+        updateExplanation();
+        updateResistancePreview();
+      });
+
+      // Buttons
+      startBtn.addEventListener('click', function() {
+        running = !running;
+        startBtn.textContent = running ? 'Pause Field' : 'Start Field';
+      });
+
+      resetBtn.addEventListener('click', function() {
+        running = false;
+        startBtn.textContent = 'Start Field';
+        initElectrons();
+        meanHistory.length = 0;
+        meanLabel.textContent = '0.0';
+        RLabel.textContent = '∞';
+        voltage = 3;
+        temperature = 20;
+        vSlider.value = '3';
+        tSlider.value = '20';
+        vLabel.textContent = '3.0 V';
+        tLabel.textContent = '20 °C';
+        updateExplanation();
+        updateResistancePreview();
+      });
+
+      function update(dt) {
+        // Normalised temperature (0 at 20 °C, 1 at 100 °C)
+        const tempNorm = Math.min(Math.max((temperature - 20) / 80, 0), 1);
+
+        // Drift component and max speed reduce with temperature (more collisions)
+        const drift = (voltage / 12) * 50 * (1 - 0.6 * tempNorm);
+        const vMax = (voltage / 12) * 120 * (1 - 0.4 * tempNorm);
+
+        // Update lattice ion positions (vibrations)
+        for (const p of lattice) {
+          const amp = 3 + tempNorm * 8;
+          const phaseSpeed = 0.03 + tempNorm * 0.12;
+          p.phase += phaseSpeed;
+          p.jx = p.x + Math.sin(p.phase) * amp;
+          p.jy = p.y + Math.cos(p.phase * 1.3) * amp;
+        }
+
+        // Update electrons
+        const nucleusRadius = NUCLEUS_RADIUS;
+        for (const e of electrons) {
+          if (running) {
+            e.vx += drift * dt;
+          } else {
+            // Gentle damping when paused
+            e.vx *= 0.95;
+            e.vy *= 0.95;
+          }
+
+          e.x += e.vx * dt;
+          e.y += e.vy * dt;
+
+          // Collisions with vibrating ions
+          for (const p of lattice) {
+            const cx = p.jx || p.x;
+            const cy = p.jy || p.y;
+            const dx = e.x - cx;
+            const dy = e.y - cy;
+            const r = nucleusRadius + 2.5;
+            const d2 = dx * dx + dy * dy;
+
+            if (d2 < r * r) {
+              const d = Math.max(1e-6, Math.sqrt(d2));
+              const nx = dx / d;
+              const ny = dy / d;
+
+              // Push electron just outside the ion
+              e.x = cx + nx * r;
+              e.y = cy + ny * r;
+
+              // Reflect with some loss
+              const vn = e.vx * nx + e.vy * ny;
+              e.vx -= 1.2 * vn * nx;
+              e.vy -= 1.2 * vn * ny;
+
+              // Random thermal "kick" stronger at higher T
+              const a = Math.random() * Math.PI * 2;
+              const s = 20 * tempNorm;
+              e.vx += Math.cos(a) * s;
+              e.vy += Math.sin(a) * s;
+
+              // Reduce speed a bit after collision, more at high T
+              const speedFactor = 0.8 - 0.3 * tempNorm;
+              e.vx *= speedFactor;
+              e.vy *= speedFactor;
+            }
+          }
+
+          // Wrap horizontally (like a long wire)
+          if (e.x < 0) e.x += W;
+          if (e.x > W) e.x -= W;
+
+          // Bounce vertically between top and bottom of lattice region
+          if (e.y < yMin) {
+            e.y = yMin;
+            e.vy *= -0.4;
+          }
+          if (e.y > yMax) {
+            e.y = yMax;
+            e.vy *= -0.4;
+          }
+
+          // Clamp maximum speed
+          const sp = Math.hypot(e.vx, e.vy);
+          if (sp > vMax && vMax > 0) {
+            const k = vMax / sp;
+            e.vx *= k;
+            e.vy *= k;
+          }
+        }
+
+        // Mean drift speed along +x
+        const instMean = electrons.reduce((s, e) => s + e.vx, 0) / electrons.length;
+        meanHistory.push(instMean);
+        if (meanHistory.length > meanWindow) meanHistory.shift();
+
+        const smoothMean = meanHistory.reduce((s, v) => s + v, 0) / (meanHistory.length || 1);
+        const displayedMean = Math.max(0, Math.min(smoothMean, vMax)); // clamp to [0, vMax]
+        meanLabel.textContent = displayedMean.toFixed(1);
+        RLabel.textContent = metalResistance().toFixed(1);
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+
+        // Draw ions (metal lattice)
+        const nucleusRadius = NUCLEUS_RADIUS;
+        ctx.lineWidth = 1;
+
+        for (const p of lattice) {
+          ctx.beginPath();
+          ctx.arc(p.jx || p.x, p.jy || p.y, nucleusRadius, 0, Math.PI * 2);
+          ctx.strokeStyle = '#9ca3af';
+          ctx.stroke();
+          ctx.fillStyle = '#d1d5db';
+          ctx.fill();
+        }
+
+        // Draw electrons
+        ctx.fillStyle = '#1e88e5';
+        for (const e of electrons) {
+          ctx.beginPath();
+          ctx.arc(e.x, e.y, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Simple voltage bar indicator (top left)
+        ctx.fillStyle = '#d32f2f';
+        const barWidth = Math.min(200, (voltage / 12) * 200);
+        ctx.fillRect(10, 12, barWidth, 6);
+      }
+
+      function loop(now) {
+        const dt = Math.min(0.05, (now - last) / 1000);
+        last = now;
+        update(dt);
+        draw();
+        window.requestAnimationFrame(loop);
+      }
+
+      // Initial explanation text
+      updateExplanation();
+      updateResistancePreview();
+      window.requestAnimationFrame(loop);
+    })();
+</script>
+</div>
+    <h3>I-V Characteristic Graphs</h3>
+  <div class="current-sim">
+    <div class="quiz-container" id="iv-ohmic-sec">
+      <h3>Ohmic Conductor I–V</h3>
+      <p class="sim-caption">An <strong>ohmic conductor</strong> obeys Ohm’s law at constant temperature: \(V \propto I\). Its I–V graph is a straight line through the origin and the resistance \(R = V/I\) (the slope) is constant.</p>
+      <canvas id="iv-ohmic" width="360" height="240"></canvas>
+      <div class="sim-caption">Straight line through the origin: constant resistance, \(V \propto I\).</div>
+    </div>
+  </div>
+
+  <div class="current-sim">
+    <div class="quiz-container" id="iv-lamp-sec">
+      <h3>Filament Lamp I–V</h3>
+      <p class="sim-caption">The filament is a metal (typically tungsten) with a positive temperature coefficient of resistivity. As current flows, the filament heats up. Higher temperature increases lattice vibrations. Electrons scatter more, their mobility drops, and resistivity rises.</p>
+      <canvas id="iv-lamp" width="360" height="240"></canvas>
+      <div class="sim-caption">Curve bends so gradient decreases: resistance rises with current (heating).</div>
+    </div>
+  </div>
+          <h3>Semiconductor Diode</h3>
+<p>A diode allows current to flow primarily in one direction: it conducts after a forward threshold and blocks in reverse (apart from a tiny leakage). Applications include rectifiers in power supplies, polarity protection, signal detection, and light emission in LEDs (special diodes that emit light under forward bias).</p>
+
+  <div class="current-sim">
+    <div class="quiz-container" id="diode-sim">
+      <h3>Diode Circuit Simulation</h3>
+      <div class="button-container">
+        <label for="ds-vin">Supply Voltage</label>
+        <input type="range" id="ds-vin" min="0" max="12" step="0.1" value="3">
+        <span id="ds-vin-label">3.0 V</span>
+      </div>
+      <div class="button-container">
+        <label>Series Resistor</label>
+        <span id="ds-R-label">1.0 kΩ</span>
+      </div>
+      <div class="button-container">
+        <label for="ds-orient">Orientation</label>
+        <select id="ds-orient">
+          <option value="forward">Forward bias</option>
+          <option value="reverse">Reverse bias</option>
+        </select>
+      </div>
+      <div class="score">I: <span id="ds-I">0.00</span> mA, emf: <span id="ds-emf">3.0</span> V</div>
+      <canvas id="ds-canvas" width="640" height="200"></canvas>
+    </div>
+    <script>
+      (function(){
+        const root = document.getElementById('diode-sim');
+        if(!root) return;
+        const vinEl = root.querySelector('#ds-vin');
+        const orientEl = root.querySelector('#ds-orient');
+        const vinLbl = root.querySelector('#ds-vin-label');
+        const rLbl = root.querySelector('#ds-R-label');
+        const ILbl = root.querySelector('#ds-I');
+        
+        const EmfSpan = root.querySelector('#ds-emf');
+        const canvas = root.querySelector('#ds-canvas');
+        const ctx = canvas.getContext('2d');
+        let Vin = Number(vinEl.value);
+        const R = 1000;
+        let orient = orientEl.value;
+        const Vth = 0.6;
+        const Ileak = 0; // no leakage at 0 V supply
+        function formatR(R){ return R>=1000 ? (R/1000).toFixed(1)+' kΩ' : R.toFixed(0)+' Ω'; }
+        function compute(){
+          let I = 0; // A
+          const k = 0.005; // A per V after threshold
+          if(orient==='forward'){
+            if (Vin > Vth) I = k * (Vin - Vth);
+          } else {
+            I = 0;
+          }
+          const Vr = I*R;
+          const Vd = Vin - Vr;
+          ILbl.textContent = (I*1000).toFixed(1);
+          
+          if (EmfSpan) EmfSpan.textContent = Vin.toFixed(1);
+          draw(I,Vd,Vr);
+        }
+        function draw(I,Vd,Vr){
+          const W = canvas.width, H = canvas.height;
+          ctx.clearRect(0,0,W,H);
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(0,0,W,H);
+          const x0 = 40, x1 = 220, x2 = 420, x3 = 600, y = 100;
+          // Source
+          ctx.strokeStyle = '#111827'; ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(x3,y); ctx.stroke();
+          ctx.fillStyle = '#111827'; ctx.font = '12px system-ui';
+          // V_in
+          ctx.save();
+          ctx.fillStyle = '#111827';
+          ctx.font = '12px system-ui';
+          ctx.fillText('ε', x0+4, y-10);
+          ctx.restore();
+          ctx.fillText(Vin.toFixed(1)+' V', x0+4, y+20);
+          // Resistor block
+          ctx.strokeStyle = '#6b7280'; ctx.lineWidth = 2;
+          const rLeft = x1; const rWidth = 90; const rRight = rLeft + rWidth;
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(rLeft+1, y-20+1, rWidth-2, 40-2);
+          ctx.strokeRect(rLeft, y-20, rWidth, 40);
+          ctx.fillStyle = '#6b7280'; ctx.fillText('R', rLeft + rWidth/2 - 6, y+4);
+          ctx.fillText(formatR(R), rLeft + 8, y+42);
+          // Diode symbol
+          const conduction = orient==='forward' && Vin>Vth;
+          ctx.strokeStyle = conduction ? '#1e88e5' : '#9ca3af';
+          ctx.lineWidth = 2;
+          // triangle
+          const dLeft = x2, dRight = x2 + 40;
+          if(orient==='forward'){
+            ctx.beginPath(); ctx.moveTo(dLeft+4,y-20); ctx.lineTo(dLeft+4,y+20); ctx.lineTo(dRight-6,y); ctx.closePath();
+            ctx.fillStyle = '#ffffff'; ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(dRight-6,y-20); ctx.lineTo(dRight-6,y+20); ctx.stroke();
+          } else {
+            ctx.beginPath(); ctx.moveTo(dRight-6,y-20); ctx.lineTo(dRight-6,y+20); ctx.lineTo(dLeft+4,y); ctx.closePath();
+            ctx.fillStyle = '#ffffff'; ctx.fill(); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(dLeft+4,y-20); ctx.lineTo(dLeft+4,y+20); ctx.stroke();
+          }
+          // wires
+          ctx.strokeStyle = '#111827'; ctx.lineWidth=2;
+          // wire already drawn beneath components
+          ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(x0,y); ctx.stroke();
+          // labels
+          ctx.fillStyle = '#111827';
+          ctx.fillText('Diode', x2-18, y-30);
+          ctx.fillStyle = conduction ? '#1e88e5' : '#374151';
+          ctx.fillText(conduction? 'ON' : (orient==='reverse'? 'Reverse leakage' : 'OFF'), x2+30, y-30);
+          // current arrow (only when I != 0)
+          if (Math.abs(I) > 1e-9) {
+            const mag = Math.min(60, Math.abs(I)*100000); // scale
+            ctx.strokeStyle = '#d32f2f';
+            ctx.beginPath(); ctx.moveTo(x1+20, y-50); ctx.lineTo(x1+20+mag, y-50); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x1+20+mag, y-50); ctx.lineTo(x1+12+mag, y-46); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x1+20+mag, y-50); ctx.lineTo(x1+12+mag, y-54); ctx.stroke();
+          }
+          ctx.fillStyle = '#d32f2f'; ctx.fillText('I = '+(I*1000).toFixed(1)+' mA', x1+20, y-65);
+        }
+        vinEl.addEventListener('input',()=>{Vin=Number(vinEl.value); vinLbl.textContent = Vin.toFixed(1)+' V'; compute();});
+        orientEl.addEventListener('change',()=>{orient=orientEl.value; compute();});
+        vinLbl.textContent = Vin.toFixed(1)+' V';
+        rLbl.textContent = formatR(R);
+        compute();
+      })();
+    </script>
+
+  <div class="current-sim">
+    <div class="quiz-container" id="iv-diode-sec">
+
+      <p class="sim-caption">A diode allows current to flow primarily in one direction: it conducts after a forward threshold and blocks in reverse (apart from a tiny leakage).</p>
+      <canvas id="iv-diode" width="360" height="240"></canvas>
+      <div class="sim-caption">Very small current until threshold; steep rise after the knee; tiny reverse leakage.</div>
+    </div>
+  </div>
+
+  <style>
+    .current-sim #iv-ohmic,
+    .current-sim #iv-lamp,
+    .current-sim #iv-diode {
+      width: 360px;
+      height: 240px;
+    }
+  </style>
+  <script>
+    (function(){
+      function axesCentered(ctx,W,H){
+        ctx.clearRect(0,0,W,H);
+        ctx.lineWidth=1; ctx.strokeStyle='#111827';
+        const ox=Math.floor(W/2), oy=Math.floor(H/2);
+        ctx.beginPath(); ctx.moveTo(10,oy); ctx.lineTo(W-10,oy); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(ox,H-10); ctx.lineTo(ox,10); ctx.stroke();
+        ctx.fillStyle='#111827'; ctx.font='12px system-ui';
+        ctx.fillText('Voltage', W-60, oy-6);
+        ctx.fillText('Current', ox+6, 18);
+        return {ox,oy};
+      }
+      function drawOhmic(){
+        const c = document.getElementById('iv-ohmic'); if(!c) return; const ctx=c.getContext('2d'); const W=c.width, H=c.height; const {ox,oy}=axesCentered(ctx,W,H);
+        ctx.strokeStyle='#e91e63'; ctx.lineWidth=2;
+        ctx.beginPath();
+        for(let v=-1; v<=1; v+=0.02){
+          const x=ox + v*((W-60)/2);
+          const i=v;
+          const y=oy - i*((H-50)/2);
+          if(v===-1) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.stroke();
+      }
+      function drawLamp(){
+        const c = document.getElementById('iv-lamp'); if(!c) return; const ctx=c.getContext('2d'); const W=c.width, H=c.height; const {ox,oy}=axesCentered(ctx,W,H);
+        ctx.strokeStyle='#d32f2f'; ctx.lineWidth=2;
+        ctx.beginPath();
+        for(let v=-1; v<=1; v+=0.02){
+          const x=ox + v*((W-60)/2);
+          const i=Math.tanh(1.6*v);
+          const y=oy - i*((H-50)/2);
+          if(v===-1) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.stroke();
+      }
+      function drawDiode(){
+        const c = document.getElementById('iv-diode'); if(!c) return; const ctx=c.getContext('2d'); const W=c.width, H=c.height; const {ox,oy}=axesCentered(ctx,W,H);
+        ctx.strokeStyle='#1e88e5'; ctx.lineWidth=2;
+        const vth=0.2;
+        ctx.beginPath();
+        for(let v=-1; v<=1; v+=0.02){
+          const x=ox + v*((W-60)/2);
+          let i;
+          if(v<0){ i = -0.02*Math.abs(v); }
+          else if(v<vth){ i = 0; }
+          else { i = Math.min(1, 0.02 + 0.98*(Math.exp((v-vth)*3)-1)/(Math.exp((1-vth)*3)-1)); }
+          const y=oy - i*((H-50)/2);
+          if(v===-1) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        }
+        ctx.stroke();
+        const xth = ox + vth*((W-60)/2);
+        ctx.strokeStyle='#111827';
+        ctx.beginPath(); ctx.moveTo(xth, oy-6); ctx.lineTo(xth, oy+6); ctx.stroke();
+        ctx.fillStyle='#111827'; ctx.font='12px system-ui';
+        ctx.fillText('Threshold Voltage', xth+6, oy+14);
+      }
+      drawOhmic(); drawLamp(); drawDiode();
+    })();
+  </script>
+
+  </div>
