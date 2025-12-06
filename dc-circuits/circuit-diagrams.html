@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circuit Diagrams</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+</head>
+
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+
+<h2>Circuit Diagrams</h2>
+
+<p>Circuit diagrams are essential tools for representing electrical circuits using standardized symbols. Understanding how to draw and interpret these diagrams is fundamental to working with electrical systems.</p>
+
+<h3>Standard Circuit Symbols</h3>
+
+<p>The following are the standard symbols used in circuit diagrams:</p>
+
+<h4>Power Sources</h4>
+<div class="component-grid">
+    <div class="component-item">
+        <div class="symbol-box">
+            <svg width="80" height="40" viewBox="0 0 80 40">
+                <line x1="10" y1="20" x2="30" y2="20" stroke="#000" stroke-width="2"/>
+                <line x1="30" y1="10" x2="30" y2="30" stroke="#000" stroke-width="2"/>
+                <line x1="30" y1="15" x2="40" y2="15" stroke="#000" stroke-width="2"/>
+                <line x1="30" y1="25" x2="40" y2="25" stroke="#000" stroke-width="2"/>
+                <line x1="40" y1="20" x2="70" y2="20" stroke="#000" stroke-width="2"/>
+                <text x="5" y="35" font-size="10" fill="#000">+</text>
+                <text x="65" y="35" font-size="10" fill="#000">-</text>
+            </svg>
+        </div>
+        <div class="component-name">Cell</div>
+    </div>
+    
+    <div class="component-item">
+        <div class="symbol-box">
+            <svg width="80" height="40" viewBox="0 0 80 40">
+                <line x1="10" y1="20" x2="30" y2="20" stroke="#000" stroke-width="2"/>
+                <line x1="30" y1="10" x2="30" y2="30" stroke="#000" stroke-width="2"/>
+                <line x1="30" y1="15" x2="40" y2="15" stroke="#000" stroke-width="2"/>
+                <line x1="30" y1="25" x2="40" y2="25" stroke="#000" stroke-width="2"/>
+                <line x1="40" y1="20" x2="50" y2="20" stroke="#000" stroke-width="2"/>
+                <line x1="50" y1="10" x2="50" y2="30" stroke="#000" stroke-width="2"/>
+                <line x1="50" y1="15" x2="60" y2="15" stroke="#000" stroke-width="2"/>
+                <line x1="50" y1="25" x2="60" y2="25" stroke="#000" stroke-width="2"/>
+                <line x1="60" y1="20" x2="70" y2="20" stroke="#000" stroke-width="2"/>
+                <text x="5" y="35" font-size="10" fill="#000">+</text>
+                <text x="65" y="35" font-size="10" fill="#000">-</text>
+            </svg>
+        </div>
+        <div class="component-name">Battery</div>
+    </div>
+</div>
+
+<h4>Control Components</h4>
+<div class="component-grid">
+    <div class="component-item">
+        <div class="symbol-box">
+            <svg width="80" height="40" viewBox="0 0 80 40">
+                <line x1="10" y1="20" x2="30" y2="20" stroke="#000" stroke-width="2"/>
+                <circle cx="35" cy="20" r="5" stroke="#000" stroke-width="2" fill="none"/>
+                <line x1="40" y1="20" x2="70" y2="20" stroke="#000" stroke-width="2"/>
+            </svg>
+        </div>
+        <div class="component-name">Switch (Open)</div>
+    </div>
+    
+    <div class="component-item">
+        <div class="symbol-box">
+            <svg width="80" height="40" viewBox="0 0 80 40">
+                <line x1="10" y1="20" x2="30" y2="20" stroke="#000" stroke-width="2"/>
+                <line x1="30" y1="20" x2="40" y2="20" stroke="#000" stroke-width="2"/>
+                <line x1="40" y1="20" x2="70" y2="20" stroke="#000" stroke-width="2"/>
+                <text x="30" y="15" font-size="8" fill="#000">dot</text>
+                <text x="40" y="15" font-size="8" fill="#000">dot</text>
+            </svg>
+        </div>
+        <div class="component-name">Switch (Closed)</div>
+    </div>
+</div>
+
+<h4>Output Components</h4>
+<div class="component-grid">
+    <div class="component-item">
+        <div class="symbol-box">
+            <svg width="80" height="40" viewBox="0 0 80 40">
+                <line x1="10" y1="20" x2="30" y2="20" stroke="#000" stroke-width="2"/>
+                <circle cx="50" cy="20" r="15" stroke="#000" stroke-width="2" fill="none"/>
+                <line x1="65" y1="20" x2="70" y2="20" stroke="#000" stroke-width="2"/>
+            </svg>
+        </div>
+        <div class="component-name">Lamp</div>
+    </div>
+    
+    <div class="component-item">
+        <div class="symbol-box">
+            <svg width="80" height="40" viewBox="0 0 80 40">
+                <line x1="10" y1="20" x2="30" y2="20" stroke="#000" stroke-width="2"/>
+                <line x1="30" y1="10" x2="30" y2="30" stroke="#000" stroke-width="2"/>
+                <line x1="30" y1="15" x2="40" y2="15" stroke="#000" stroke-width="2"/>
+                <line x1="30" y1="25" x2="40" y2="25" stroke="#000" stroke-width="2"/>
+                <line x1="40" y1="20" x2="70" y2="20" stroke="#000" stroke-width="2"/>
+                <text x="30" y="8" font-size="8" fill="#red">LED</text>
+            </svg>
+        </div>
+        <div class="component-name">LED</div>
+    </div>
+    
+    <div class="component-item">
+        <div class="symbol-box">
+            <svg width="80" height="40" viewBox="0 0 80 40">
+                <line x1="10" y1="20" x2="70" y2="20" stroke="#000" stroke-width="2"/>
+                <rect x="30" y="15" width="20" height="10" stroke="#000" stroke-width="2" fill="none"/>
+            </svg>
+        </div>
+        <div class="component-name">Bell</div>
+    </div>
+</div>
+
+<h4>Measuring Instruments</h4>
+<div class="component-grid">
+    <div class="component-item">
+        <div class="symbol-box">
+            <svg width="80" height="40" viewBox="0 0 80 40">
+                <line x1="10" y1="20" x2="30" y2="20" stroke="#000" stroke-width="2"/>
+                <circle cx="40" cy="20" r="10" stroke="#000" stroke-width="2" fill="none"/>
+                <text x="35" y="25" font-size="12" fill="#000">A</text>
+                <line x1="50" y1="20" x2="70" y2="20" stroke="#000" stroke-width="2"/>
+            </svg>
+        </div>
+        <div class="component-name">Ammeter</div>
+    </div>
+    
+    <div class="component-item">
+        <div class="symbol-box">
+            <svg width="80" height="40" viewBox="0 0 80 40">
+                <line x1="10" y1="20" x2="30" y2="20" stroke="#000" stroke-width="2"/>
+                <circle cx="40" cy="20" r="10" stroke="#000" stroke-width="2" fill="none"/>
+                <text x="35" y="25" font-size="12" fill="#000">V</text>
+                <line x1="50" y1="20" x2="70" y2="20" stroke="#000" stroke-width="2"/>
+            </svg>
+        </div>
+        <div class="component-name">Voltmeter</div>
+    </div>
+</div>
+
+<h4>Resistors</h4>
+<div class="component-grid">
+    <div class="component-item">
+        <div class="symbol-box">
+            <svg width="80" height="40" viewBox="0 0 80 40">
+                <line x1="10" y1="20" x2="25" y2="20" stroke="#000" stroke-width="2"/>
+                <rect x="25" y="15" width="30" height="10" stroke="#000" stroke-width="2" fill="none"/>
+                <line x1="55" y1="20" x2="70" y2="20" stroke="#000" stroke-width="2"/>
+            </svg>
+        </div>
+        <div class="component-name">Fixed Resistor</div>
+    </div>
+    
+    <div class="component-item">
+        <div class="symbol-box">
+            <svg width="80" height="40" viewBox="0 0 80 40">
+                <line x1="10" y1="20" x2="25" y2="20" stroke="#000" stroke-width="2"/>
+                <rect x="25" y="15" width="30" height="10" stroke="#000" stroke-width="2" fill="none"/>
+                <line x1="40" y1="10" x2="40" y2="30" stroke="#000" stroke-width="2"/>
+                <line x1="55" y1="20" x2="70" y2="20" stroke="#000" stroke-width="2"/>
+            </svg>
+        </div>
+        <div class="component-name">Variable Resistor</div>
+    </div>
+    
+    <div class="component-item">
+        <div class="symbol-box">
+            <svg width="80" height="40" viewBox="0 0 80 40">
+                <line x1="10" y1="20" x2="25" y2="20" stroke="#000" stroke-width="2"/>
+                <rect x="25" y="15" width="30" height="10" stroke="#000" stroke-width="2" fill="none"/>
+                <line x1="40" y1="10" x2="40" y2="30" stroke="#000" stroke-width="2"/>
+                <line x1="55" y1="20" x2="70" y2="20" stroke="#000" stroke-width="2"/>
+                <text x="35" y="10" font-size="8" fill="#000">arrow</text>
+            </svg>
+        </div>
+        <div class="component-name">Potentiometer</div>
+    </div>
+</div>
+
+<h4>Special Components</h4>
+<div class="component-grid">
+    <div class="component-item">
+        <div class="symbol-box">
+            <svg width="80" height="40" viewBox="0 0 80 40">
+                <line x1="10" y1="20" x2="25" y2="20" stroke="#000" stroke-width="2"/>
+                <rect x="25" y="15" width="30" height="10" stroke="#000" stroke-width="2" fill="none"/>
+                <line x1="55" y1="20" x2="70" y2="20" stroke="#000" stroke-width="2"/>
+                <text x="30" y="12" font-size="8" fill="#000">LDR</text>
+            </svg>
+        </div>
+        <div class="component-name">Light Dependent Resistor (LDR)</div>
+    </div>
+    
+    <div class="component-item">
+        <div class="symbol-box">
+            <svg width="80" height="40" viewBox="0 0 80 40">
+                <line x1="10" y1="20" x2="25" y2="20" stroke="#000" stroke-width="2"/>
+                <rect x="25" y="15" width="30" height="10" stroke="#000" stroke-width="2" fill="none"/>
+                <line x1="55" y1="20" x2="70" y2="20" stroke="#000" stroke-width="2"/>
+                <text x="30" y="12" font-size="8" fill="#000">TH</text>
+            </svg>
+        </div>
+        <div class="component-name">Thermistor</div>
+    </div>
+    
+    <div class="component-item">
+        <div class="symbol-box">
+            <svg width="80" height="40" viewBox="0 0 80 40">
+                <line x1="10" y1="20" x2="25" y2="20" stroke="#000" stroke-width="2"/>
+                <line x1="25" y1="15" x2="25" y2="25" stroke="#000" stroke-width="2"/>
+                <line x1="25" y1="20" x2="35" y2="20" stroke="#000" stroke-width="2"/>
+                <rect x="35" y="10" width="15" height="20" stroke="#000" stroke-width="2" fill="none"/>
+                <line x1="50" y1="20" x2="70" y2="20" stroke="#000" stroke-width="2"/>
+            </svg>
+        </div>
+        <div class="component-name">Fuse</div>
+    </div>
+</div>
+
+<h3>Drawing Circuit Diagrams</h3>
+
+<p>When drawing circuit diagrams, follow these guidelines:</p>
+
+<ol>
+    <li><strong>Use standard symbols:</strong> Always use the recognized symbols for each component.</li>
+    <li><strong>Draw neat lines:</strong> Connecting wires should be drawn as straight lines with right-angle bends.</li>
+    <li><strong>Label components:</strong> Add labels to identify different components when necessary.</li>
+    <li><strong>Show polarity:</strong> For cells and batteries, clearly mark the positive (+) and negative (-) terminals.</li>
+    <li><strong>Complete circuits:</strong> Ensure there is a complete path for current to flow from positive to negative terminal.</li>
+</ol>
+
+<h3>Practice Examples</h3>
+
+<div class="example-box">
+    <h4>Example 1: Simple Series Circuit</h4>
+    <p>Draw a circuit diagram showing a battery connected to a switch and lamp in series.</p>
+    <div class="solution">
+        <svg width="300" height="100" viewBox="0 0 300 100">
+            <line x1="20" y1="50" x2="50" y2="50" stroke="#000" stroke-width="2"/>
+            <line x1="50" y1="30" x2="50" y2="70" stroke="#000" stroke-width="2"/>
+            <line x1="50" y1="35" x2="70" y2="35" stroke="#000" stroke-width="2"/>
+            <line x1="50" y1="65" x2="70" y2="65" stroke="#000" stroke-width="2"/>
+            <line x1="70" y1="50" x2="100" y2="50" stroke="#000" stroke-width="2"/>
+            <circle cx="130" cy="50" r="15" stroke="#000" stroke-width="2" fill="none"/>
+            <line x1="145" y1="50" x2="180" y2="50" stroke="#000" stroke-width="2"/>
+            <line x1="180" y1="50" x2="180" y2="80" stroke="#000" stroke-width="2"/>
+            <line x1="180" y1="80" x2="20" y2="80" stroke="#000" stroke-width="2"/>
+            <line x1="20" y1="80" x2="20" y2="50" stroke="#000" stroke-width="2"/>
+            <text x="15" y="25" font-size="12" fill="#000">+</text>
+            <text x="65" y="25" font-size="12" fill="#000">-</text>
+        </svg>
+    </div>
+</div>
+
+<div class="example-box">
+    <h4>Example 2: Parallel Circuit with Measuring Instruments</h4>
+    <p>Draw a circuit with a battery, two lamps in parallel, an ammeter measuring total current, and a voltmeter measuring the battery voltage.</p>
+</div>
+
+<h3>Interactive Circuit Builder</h3>
+
+<p>Use the interactive tool below to practice building circuit diagrams:</p>
+
+<iframe scrolling="no" title="Circuit Diagram Builder" src="https://www.geogebra.org/material/iframe/id/circuit-builder/width/800/height/600/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width="100%" height="600px" style="border:0px;" allowfullscreen> </iframe>
+
+</body>
+</html>

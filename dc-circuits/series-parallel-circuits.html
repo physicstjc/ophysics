@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Series and Parallel Circuits</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+</head>
+
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+
+<h2>Series and Parallel Circuits</h2>
+
+<p>Electrical circuits can be connected in two fundamental ways: series and parallel. Understanding the behavior of current, potential difference, and resistance in these configurations is essential for analyzing electrical circuits.</p>
+
+<h3>Series Circuits</h3>
+
+<p>In a series circuit, components are connected end-to-end, forming a single path for current to flow.</p>
+
+<h4>Key Principles of Series Circuits</h4>
+
+<div class="principle-box">
+    <h4>1. Current in Series Circuits</h4>
+    <p>The current at every point in a series circuit is the same:</p>
+    <p>\[ I = I_1 = I_2 = I_3 = \dots \]</p>
+    <p>This means the current through each component is identical.</p>
+</div>
+
+
+<div class="principle-box">
+    <h4>2. Potential Difference in Series Circuits</h4>
+    <p>The sum of the potential differences across individual components equals the total potential difference across the whole circuit:</p>
+    <p>\[ V_{\text{total}} = V_1 + V_2 + V_3 + \dots \]</p>
+</div>
+
+<div class="principle-box">
+    <h4>3. Resistance in Series Circuits</h4>
+    <p>The total resistance is the sum of individual resistances:</p>
+    <p>\[ R_{\text{total}} = R_1 + R_2 + R_3 + \dots \]</p>
+</div>
+
+<div class="circuit-example" style="text-align:center">
+    <svg width="400" height="220" viewBox="0 0 400 220">
+        <defs>
+            <marker id="arrow-current" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 L 3 5 z" fill="context-stroke"/>
+            </marker>
+        </defs>
+        <text x="200" y="24" text-anchor="middle" font-size="14" font-weight="bold">Series Circuit</text>
+        <line x1="30" y1="100" x2="370" y2="100" stroke="#000" stroke-width="2"/>
+        <line x1="370" y1="100" x2="370" y2="160" stroke="#000" stroke-width="2"/>
+        <line x1="30" y1="160" x2="190" y2="160" stroke="#000" stroke-width="2"/>
+        <line x1="210" y1="160" x2="370" y2="160" stroke="#000" stroke-width="2"/>
+        <line x1="30" y1="160" x2="30" y2="100" stroke="#000" stroke-width="2"/>
+        <line x1="60" y1="100" x2="100" y2="100" stroke="#000" stroke-width="2" marker-end="url(#arrow-current)"/>
+        <rect x="120" y="92" width="60" height="16" stroke="#000" stroke-width="2" fill="#fff"/>
+        <text x="150" y="80" text-anchor="middle" font-size="10">R₁</text>
+        <rect x="220" y="92" width="60" height="16" stroke="#000" stroke-width="2" fill="#fff"/>
+        <text x="250" y="80" text-anchor="middle" font-size="10">R₂</text>
+        <line x1="190" y1="160" x2="190" y2="160" stroke="#000" stroke-width="2"/>
+        <line x1="210" y1="160" x2="210" y2="160" stroke="#000" stroke-width="2"/>
+        <line x1="195" y1="145" x2="195" y2="175" stroke="#000" stroke-width="3"/>
+        <line x1="205" y1="150" x2="205" y2="170" stroke="#000" stroke-width="3"/>
+        <text x="200" y="190" text-anchor="middle" font-size="12">6V</text>
+    </svg>
+</div>
+<div class="principle-box">
+    <h4>Series Example (use diagram above)</h4>
+    <p>Given V = 6.0 V, R₁ = 2.0 Ω, R₂ = 3.0 Ω:</p>
+    <ol>
+        <li>Calculate the total resistance $R_{\text{total}}$.</li>
+        <li>Determine the circuit current $I$.</li>
+        <li>Find the voltage across $R₁$ and $R₂$.</li>
+    </ol>
+    <p><strong>Answer:</strong><br>
+        <ol>
+        <li>$ R_{\text{total}} = R_1 + R_2 = 2.0\,\Omega + 3.0\,\Omega = 5.0\,\Omega $</li>
+        <li>$ I = \dfrac{V}{R_{\text{total}}} = \dfrac{6.0\,\text{V}}{5.0\,\Omega} = 1.2\,\text{A} $</li>
+        <li>$ V_1 = I\,R_1 = 1.2\,\text{A} \times 2.0\,\Omega = 2.4\,\text{V} $</li>
+        <li>$ V_2 = I\,R_2 = 1.2\,\text{A} \times 3.0\,\Omega = 3.6\,\text{V} $</li>
+        </ol>
+    </p>
+</div>
+<h3>Parallel Circuits</h3>
+
+<p>In a parallel circuit, components are connected across the same two points, providing multiple paths for current to flow.</p>
+
+<h4>Key Principles of Parallel Circuits</h4>
+
+<div class="principle-box">
+    <h4>1. Current in Parallel Circuits</h4>
+    <p>The sum of currents in the separate branches equals the current from the source:</p>
+    <p>\[ I_{\text{total}} = I_1 + I_2 + I_3 + \dots \]</p>
+</div>
+
+
+
+<div class="principle-box">
+    <h4>2. Potential Difference in Parallel Circuits</h4>
+    <p>The potential difference across each branch is the same:</p>
+    <p>\[ V = V_1 = V_2 = V_3 = \dots \]</p>
+</div>
+
+<div class="principle-box">
+    <h4>3. Resistance in Parallel Circuits</h4>
+    <p>The reciprocal of total resistance equals the sum of reciprocals of individual resistances:</p>
+    <p>\[ \frac{1}{R_{\text{total}}} = \frac{1}{R_1} + \frac{1}{R_2} + \frac{1}{R_3} + \dots \]</p>
+    <p>For two resistors in parallel, this simplifies to:</p>
+    <p>\[ R_{\text{total}} = \frac{R_1 \times R_2}{R_1 + R_2} \]</p>
+</div>
+<div class="circuit-example" style="text-align:center">
+    <svg width="400" height="250" viewBox="0 0 400 250">
+        <defs>
+            <marker id="arrow-current" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 L 3 5 z" fill="context-stroke"/>
+            </marker>
+        </defs>
+        <text x="200" y="24" text-anchor="middle" font-size="14" font-weight="bold">Parallel Circuit</text>
+        <!-- Left main top bus -->
+        <line x1="30" y1="100" x2="130" y2="100" stroke="#000" stroke-width="2"/>
+        <line x1="370" y1="100" x2="370" y2="180" stroke="#000" stroke-width="2"/>
+        <line x1="30" y1="180" x2="190" y2="180" stroke="#000" stroke-width="2"/>
+        <line x1="210" y1="180" x2="370" y2="180" stroke="#000" stroke-width="2"/>
+        <line x1="30" y1="180" x2="30" y2="100" stroke="#000" stroke-width="2"/>
+        <line x1="130" y1="100" x2="130" y2="60" stroke="#000" stroke-width="2"/>
+        <line x1="130" y1="60" x2="210" y2="60" stroke="#000" stroke-width="2"/>
+        <line x1="250" y1="60" x2="370" y2="60" stroke="#000" stroke-width="2"/>
+        <line x1="370" y1="60" x2="370" y2="100" stroke="#000" stroke-width="2"/>
+        <line x1="130" y1="100" x2="130" y2="140" stroke="#000" stroke-width="2"/>
+        <line x1="130" y1="140" x2="210" y2="140" stroke="#000" stroke-width="2"/>
+        <line x1="250" y1="140" x2="370" y2="140" stroke="#000" stroke-width="2"/>
+        <line x1="60" y1="100" x2="100" y2="100" stroke="#000" stroke-width="2" marker-end="url(#arrow-current)"/>
+        <line x1="150" y1="60" x2="190" y2="60" stroke="#000" stroke-width="2" marker-end="url(#arrow-current)"/>
+        <line x1="150" y1="140" x2="190" y2="140" stroke="#000" stroke-width="2" marker-end="url(#arrow-current)"/>
+        <rect x="200" y="52" width="60" height="16" stroke="#000" stroke-width="2" fill="#fff"/>
+        <text x="230" y="40" text-anchor="middle" font-size="10">R₁</text>
+        <rect x="200" y="132" width="60" height="16" stroke="#000" stroke-width="2" fill="#fff"/>
+        <text x="230" y="120" text-anchor="middle" font-size="10">R₂</text>
+        <line x1="190" y1="180" x2="190" y2="180" stroke="#000" stroke-width="2"/>
+        <line x1="210" y1="180" x2="210" y2="180" stroke="#000" stroke-width="2"/>
+        <line x1="195" y1="165" x2="195" y2="195" stroke="#000" stroke-width="3"/>
+        <line x1="205" y1="170" x2="205" y2="190" stroke="#000" stroke-width="3"/>
+        <!-- Battery voltage label -->
+        <text x="200" y="205" text-anchor="middle" font-size="12">6V</text>
+    </svg>
+</div>
+
+
+
+<div class="principle-box">
+    <h4>Parallel Example (use diagram above)</h4>
+    <p>Given V = 6.0 V, R₁ = 2.0 Ω, R₂ = 3.0 Ω:</p>
+    <ol>
+        <li>Calculate the total resistance $R_{total}$.</li>
+        <li>Determine the branch currents $I₁$ and $I₂$.</li>
+        <li>Find the total current $I_T$.</li>
+    </ol>
+    <p><strong>Answer:</strong><br>
+       <ol>
+        <li>$ R_{\text{total}} = \dfrac{R_1 R_2}{R_1 + R_2} = \dfrac{2.0\,\Omega \cdot 3.0\,\Omega}{2.0\,\Omega + 3.0\,\Omega} = \dfrac{6.0}{5.0}\,\Omega = 1.2\,\Omega $</li>
+        <li>$ I_1 = \dfrac{V}{R_1} = \dfrac{6.0\,\text{V}}{2.0\,\Omega} = 3.0\,\text{A} \\$
+        $ I_2 = \dfrac{V}{R_2} = \dfrac{6.0\,\text{V}}{3.0\,\Omega} = 2.0\,\text{A} $</li>
+        <li>$ I_{T} = I_1 + I_2 = 3.0\,\text{A} + 2.0\,\text{A} = 5.0\,\text{A} $</li>  
+    </ol>
+    </p>
+</div>
+
+<h3>Comparing Series and Parallel Circuits</h3>
+
+<div class="comparison-table">
+    <table>
+        <thead>
+            <tr>
+                <th>Property</th>
+                <th>Series Circuit</th>
+                <th>Parallel Circuit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Current</td>
+                <td>Same through all components</td>
+                <td>Splits between branches</td>
+            </tr>
+            <tr>
+                <td>Potential Difference</td>
+                <td>Divides across components</td>
+                <td>Same across all branches</td>
+            </tr>
+            <tr>
+                <td>Total Resistance</td>
+                <td>Sum of individual resistances</td>
+                <td>Less than smallest resistance</td>
+            </tr>
+            <tr>
+                <td>If one component fails</td>
+                <td>Whole circuit breaks</td>
+                <td>Other branches continue working</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<h3>Interactive Simulation</h3>
+
+<p>Use the simulation below to explore series and parallel circuits:</p>
+
+<div class="simulation-container">
+    <div class="controls">
+        <label for="circuit-mode">Circuit Configuration:</label>
+        <select id="circuit-mode" onchange="updateCircuit()">
+            <option value="series">Series Circuit</option>
+            <option value="parallel">Parallel Circuit</option>
+        </select>
+        <div class="slider-row">
+            <label for="r1-slider">Bulb 1 Resistance (Ω):</label>
+            <input id="r1-slider" type="range" min="0.5" max="10" step="0.1" value="2" oninput="updateCircuit()"/>
+            <span id="r1-value">2.0 Ω</span>
+        </div>
+        <div class="slider-row">
+            <label for="r2-slider">Bulb 2 Resistance (Ω):</label>
+            <input id="r2-slider" type="range" min="0.5" max="10" step="0.1" value="2" oninput="updateCircuit()"/>
+            <span id="r2-value">2.0 Ω</span>
+        </div>
+    </div>
+    <div class="sim-instructions">Drag the ammeter (A) or voltmeter (V) onto a bulb to attach. Ammeter measures current inline; voltmeter measures voltage across the bulb.</div>
+
+    <div class="circuit-diagram">
+        <svg id="circuit-svg" width="600" height="400" viewBox="0 0 600 400">
+            <defs>
+                <marker id="arrow-current" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+                    <path d="M 0 0 L 10 5 L 0 10 L 3 5 z" fill="context-stroke"/>
+                </marker>
+            </defs>
+
+            <g id="battery-group">
+                <line x1="280" y1="300" x2="294" y2="300" stroke="#000" stroke-width="2"/>
+                <line x1="306" y1="300" x2="320" y2="300" stroke="#000" stroke-width="2"/>
+                <line x1="306" y1="278" x2="306" y2="322" stroke="#000" stroke-width="3"/>
+                <line x1="294" y1="286" x2="294" y2="314" stroke="#000" stroke-width="3"/>
+                <text x="300" y="340" text-anchor="middle" font-size="12" fill="#000">6V</text>
+                <text x="300" y="355" text-anchor="middle" font-size="10" fill="#000">Battery</text>
+            </g>
+
+            <g id="series-circuit" style="display: block;">
+                <line x1="50" y1="200" x2="550" y2="200" stroke="#000" stroke-width="2"/>
+                <line x1="550" y1="200" x2="550" y2="300" stroke="#000" stroke-width="2"/>
+                <line x1="50" y1="300" x2="292" y2="300" stroke="#000" stroke-width="2"/>
+                <line x1="308" y1="300" x2="550" y2="300" stroke="#000" stroke-width="2"/>
+                <line x1="50" y1="300" x2="50" y2="200" stroke="#000" stroke-width="2"/>
+
+                <line x1="90" y1="200" x2="130" y2="200" stroke="#000" stroke-width="2" marker-end="url(#arrow-current)"/>
+
+                <g id="bulb1-series">
+                    <circle cx="200" cy="200" r="25" stroke="#000" stroke-width="2" fill="#ffeb3b"/>
+                    <line x1="182.3" y1="182.3" x2="217.7" y2="217.7" stroke="#000" stroke-width="2"/>
+                    <line x1="182.3" y1="217.7" x2="217.7" y2="182.3" stroke="#000" stroke-width="2"/>
+                    <text x="200" y="240" text-anchor="middle" font-size="10" fill="#000">Bulb 1</text>
+                    <text id="r1-label-series" x="200" y="255" text-anchor="middle" font-size="9" fill="#000">2Ω</text>
+                </g>
+
+                <g id="bulb2-series">
+                    <circle cx="400" cy="200" r="25" stroke="#000" stroke-width="2" fill="#ffeb3b"/>
+                    <line x1="382.3" y1="182.3" x2="417.7" y2="217.7" stroke="#000" stroke-width="2"/>
+                    <line x1="382.3" y1="217.7" x2="417.7" y2="182.3" stroke="#000" stroke-width="2"/>
+                    <text x="400" y="240" text-anchor="middle" font-size="10" fill="#000">Bulb 2</text>
+                    <text id="r2-label-series" x="400" y="255" text-anchor="middle" font-size="9" fill="#000">2Ω</text>
+                </g>
+            </g>
+
+            <g id="parallel-circuit" style="display: none;">
+                <line x1="50" y1="200" x2="150" y2="200" stroke="#000" stroke-width="2"/>
+                <line x1="450" y1="200" x2="550" y2="200" stroke="#000" stroke-width="2"/>
+                <line x1="550" y1="200" x2="550" y2="300" stroke="#000" stroke-width="2"/>
+                <line x1="50" y1="300" x2="280" y2="300" stroke="#000" stroke-width="2"/>
+                <line x1="320" y1="300" x2="550" y2="300" stroke="#000" stroke-width="2"/>
+                <line x1="50" y1="300" x2="50" y2="200" stroke="#000" stroke-width="2"/>
+
+                <line x1="150" y1="200" x2="150" y2="110" stroke="#000" stroke-width="2"/>
+                <line x1="150" y1="110" x2="275" y2="110" stroke="#000" stroke-width="2"/>
+                <line x1="325" y1="110" x2="450" y2="110" stroke="#000" stroke-width="2"/>
+                <line x1="450" y1="110" x2="450" y2="200" stroke="#000" stroke-width="2"/>
+
+                <line x1="150" y1="200" x2="150" y2="210" stroke="#000" stroke-width="2"/>
+                <line x1="150" y1="210" x2="275" y2="210" stroke="#000" stroke-width="2"/>
+                <line x1="325" y1="210" x2="450" y2="210" stroke="#000" stroke-width="2"/>
+                <line x1="450" y1="210" x2="450" y2="200" stroke="#000" stroke-width="2"/>
+
+                <line x1="90" y1="200" x2="130" y2="200" stroke="#000" stroke-width="2" marker-end="url(#arrow-current)"/>
+                <line x1="170" y1="110" x2="210" y2="110" stroke="#000" stroke-width="2" marker-end="url(#arrow-current)"/>
+                <line x1="170" y1="210" x2="210" y2="210" stroke="#000" stroke-width="2" marker-end="url(#arrow-current)"/>
+
+                <g id="bulb1-parallel">
+                    <circle cx="300" cy="110" r="25" stroke="#000" stroke-width="2" fill="#ffeb3b" opacity="0.9"/>
+                    <line x1="282.3" y1="92.3" x2="317.7" y2="127.7" stroke="#000" stroke-width="2"/>
+                    <line x1="282.3" y1="127.7" x2="317.7" y2="92.3" stroke="#000" stroke-width="2"/>
+                    <text x="300" y="145" text-anchor="middle" font-size="10" fill="#000">Bulb 1</text>
+                    <text id="r1-label-parallel" x="300" y="160" text-anchor="middle" font-size="9" fill="#000">2Ω</text>
+                </g>
+
+                <g id="bulb2-parallel">
+                    <circle cx="300" cy="210" r="25" stroke="#000" stroke-width="2" fill="#ffeb3b" opacity="0.9"/>
+                    <line x1="282.3" y1="192.3" x2="317.7" y2="227.7" stroke="#000" stroke-width="2"/>
+                    <line x1="282.3" y1="227.7" x2="317.7" y2="192.3" stroke="#000" stroke-width="2"/>
+                    <text x="300" y="245" text-anchor="middle" font-size="10" fill="#000">Bulb 2</text>
+                    <text id="r2-label-parallel" x="300" y="260" text-anchor="middle" font-size="9" fill="#000">2Ω</text>
+                </g>
+            </g>
+            <!-- Instruments (visible in both modes) -->
+            <g id="ammeter" transform="translate(60,30)" style="cursor: grab;">
+                <circle cx="0" cy="0" r="12" stroke="#000" stroke-width="2" fill="#fff"/>
+                <text x="0" y="4" text-anchor="middle" font-size="12" fill="#000">A</text>
+                <text id="ammeter-reading" x="0" y="24" text-anchor="middle" font-size="10" fill="#000"></text>
+            </g>
+            <g id="voltmeter" transform="translate(100,30)" style="cursor: grab;">
+                <circle cx="0" cy="0" r="12" stroke="#000" stroke-width="2" fill="#fff"/>
+                <text x="0" y="4" text-anchor="middle" font-size="12" fill="#000">V</text>
+                <text id="voltmeter-reading" x="0" y="24" text-anchor="middle" font-size="10" fill="#000"></text>
+            </g>
+            <g id="voltmeter-wires"></g>
+            <g id="reset-btn" transform="translate(584,384)" style="cursor: pointer;">
+                <circle cx="0" cy="0" r="16" stroke="#000" stroke-width="2" fill="#fff"/>
+                <path d="M 0 8 A 8 8 0 1 1 8 0" stroke="#000" stroke-width="2" fill="none"/>
+                <polyline points="4,0 8,4 12,0" stroke="#000" stroke-width="2" fill="none"/>
+            </g>
+        </svg>
+    </div>
+</div>
+
+<style>
+.simulation-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 20px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+}
+.controls { margin-bottom: 20px; text-align: center; }
+.controls label { font-weight: 500; margin-right: 10px; }
+.controls select { padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; background: white; }
+.circuit-diagram { text-align: center; margin-bottom: 10px; }
+.slider-row { display: flex; gap: 8px; align-items: center; justify-content: center; margin-top: 8px; }
+.slider-row input[type="range"] { width: 200px; }
+.slider-row label { font-weight: 500; }
+.slider-row span { min-width: 60px; text-align: left; font-weight: 600; color: #374151; }
+.sim-instructions { text-align: center; font-size: 12px; color: #374151; margin: 8px 0 12px; }
+.quiz-card { max-width: 720px; margin: 10px auto; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; }
+.quiz-grid { display: grid; grid-template-columns: 1fr 160px; gap: 8px 12px; align-items: center; }
+.quiz-grid-inline { grid-template-columns: 1fr 160px 40px 60px; }
+.inline-check { padding: 4px 6px; font-size: 12px; border: 1px solid #d1d5db; border-radius: 6px; background: #f3f4f6; cursor: pointer; }
+.inline-feedback { font-size: 12px; min-height: 16px; }
+.quiz-grid input { padding: 6px 8px; border: 1px solid #d1d5db; border-radius: 6px; }
+.quiz-feedback { margin-top: 6px; font-size: 12px; color: #374151; }
+.quiz-overall { margin-top: 8px; font-weight: 600; }
+.quiz-actions button { padding: 8px 12px; margin: 0 6px; border: 1px solid #d1d5db; border-radius: 6px; background: #f3f4f6; cursor: pointer; }
+</style>
+
+<script>
+function updateCircuit() {
+    const mode = document.getElementById('circuit-mode').value;
+    const batteryVoltage = 6;
+    const r1 = parseFloat(document.getElementById('r1-slider')?.value || '2');
+    const r2 = parseFloat(document.getElementById('r2-slider')?.value || '2');
+    const r1Span = document.getElementById('r1-value'); if (r1Span) r1Span.textContent = `${r1.toFixed(1)} Ω`;
+    const r2Span = document.getElementById('r2-value'); if (r2Span) r2Span.textContent = `${r2.toFixed(1)} Ω`;
+    const r1SeriesLbl = document.getElementById('r1-label-series'); if (r1SeriesLbl) r1SeriesLbl.textContent = `${r1.toFixed(1)} Ω`;
+    const r2SeriesLbl = document.getElementById('r2-label-series'); if (r2SeriesLbl) r2SeriesLbl.textContent = `${r2.toFixed(1)} Ω`;
+    const r1ParallelLbl = document.getElementById('r1-label-parallel'); if (r1ParallelLbl) r1ParallelLbl.textContent = `${r1.toFixed(1)} Ω`;
+    const r2ParallelLbl = document.getElementById('r2-label-parallel'); if (r2ParallelLbl) r2ParallelLbl.textContent = `${r2.toFixed(1)} Ω`;
+
+    document.getElementById('series-circuit').style.display = mode === 'series' ? 'block' : 'none';
+    document.getElementById('parallel-circuit').style.display = mode === 'parallel' ? 'block' : 'none';
+
+    let calculations = {};
+    if (mode === 'series') {
+        const totalResistance = r1 + r2;
+        const totalCurrent = batteryVoltage / totalResistance;
+        const voltageBulb1 = totalCurrent * r1;
+        const voltageBulb2 = totalCurrent * r2;
+        const powerBulb1 = Math.pow(totalCurrent, 2) * r1;
+        const powerBulb2 = Math.pow(totalCurrent, 2) * r2;
+        calculations = {
+            totalCurrent,
+            currentBulb1: totalCurrent,
+            currentBulb2: totalCurrent,
+            voltageBulb1,
+            voltageBulb2,
+            powerBulb1,
+            powerBulb2
+        };
+    } else {
+        const voltageBulb1 = batteryVoltage;
+        const voltageBulb2 = batteryVoltage;
+        const currentBulb1 = voltageBulb1 / r1;
+        const currentBulb2 = voltageBulb2 / r2;
+        const totalCurrent = currentBulb1 + currentBulb2;
+        const powerBulb1 = Math.pow(voltageBulb1, 2) / r1;
+        const powerBulb2 = Math.pow(voltageBulb2, 2) / r2;
+        calculations = {
+            totalCurrent,
+            currentBulb1,
+            currentBulb2,
+            voltageBulb1,
+            voltageBulb2,
+            powerBulb1,
+            powerBulb2
+        };
+    }
+
+    const refMax = Math.max((batteryVoltage*batteryVoltage)/r1, (batteryVoltage*batteryVoltage)/r2);
+    const brightness1 = Math.min(100, (calculations.powerBulb1 / refMax) * 100);
+    const brightness2 = Math.min(100, (calculations.powerBulb2 / refMax) * 100);
+    const maxParallelPower = (batteryVoltage * batteryVoltage) / 0.5;
+    const brightnessParallel1 = Math.min(100, (calculations.powerBulb1 / maxParallelPower) * 100);
+    const brightnessParallel2 = Math.min(100, (calculations.powerBulb2 / maxParallelPower) * 100);
+    const maxSeriesPower = (batteryVoltage * batteryVoltage) / (4 * 0.5);
+    const brightnessSeries1 = Math.min(100, (calculations.powerBulb1 / maxSeriesPower) * 100);
+    const brightnessSeries2 = Math.min(100, (calculations.powerBulb2 / maxSeriesPower) * 100);
+
+    const bulb1Series = document.querySelector('#bulb1-series circle');
+    const bulb2Series = document.querySelector('#bulb2-series circle');
+    const bulb1Parallel = document.querySelector('#bulb1-parallel circle');
+    const bulb2Parallel = document.querySelector('#bulb2-parallel circle');
+
+    const colorFor = (b) => {
+        const t = Math.max(0, Math.min(1, b / 100));
+        const ry = 251, gy = 191, by = 36;
+        const r = Math.round(255 * (1 - t) + ry * t);
+        const g = Math.round(255 * (1 - t) + gy * t);
+        const bl = Math.round(255 * (1 - t) + by * t);
+        return `rgb(${r}, ${g}, ${bl})`;
+    };
+    if (bulb1Series) bulb1Series.style.fill = colorFor(brightnessSeries1);
+    if (bulb2Series) bulb2Series.style.fill = colorFor(brightnessSeries2);
+    if (bulb1Parallel) bulb1Parallel.style.fill = colorFor(brightnessParallel1);
+    if (bulb2Parallel) bulb2Parallel.style.fill = colorFor(brightnessParallel2);
+
+    const lblSeries = document.getElementById('label-I-series');
+    if (lblSeries) lblSeries.textContent = `I = ${calculations.totalCurrent.toFixed(2)} A`;
+    const lblTotal = document.getElementById('label-I-total');
+    if (lblTotal) lblTotal.innerHTML = `I<tspan baseline-shift="sub">T</tspan> = ${calculations.totalCurrent.toFixed(2)} A`;
+    const lblI1 = document.getElementById('label-I1');
+    if (lblI1) lblI1.textContent = `I₁ = ${calculations.currentBulb1.toFixed(2)} A`;
+    const lblI2 = document.getElementById('label-I2');
+    if (lblI2) lblI2.textContent = `I₂ = ${calculations.currentBulb2.toFixed(2)} A`;
+
+    const seriesBulb1 = document.querySelector('#bulb1-series circle');
+    const seriesBulb2 = document.querySelector('#bulb2-series circle');
+    const parallelBulb1 = document.querySelector('#bulb1-parallel circle');
+    const parallelBulb2 = document.querySelector('#bulb2-parallel circle');
+    const ammeter = document.getElementById('ammeter');
+    const voltmeter = document.getElementById('voltmeter');
+    const aRead = document.getElementById('ammeter-reading');
+    const vRead = document.getElementById('voltmeter-reading');
+    const attach = window.__attachments || { ammeter: null, voltmeter: null };
+
+    const getInfo = (circleEl) => circleEl ? { cx: parseFloat(circleEl.getAttribute('cx')), cy: parseFloat(circleEl.getAttribute('cy')), r: parseFloat(circleEl.getAttribute('r')) } : null;
+    const infoSeries1 = getInfo(seriesBulb1);
+    const infoSeries2 = getInfo(seriesBulb2);
+    const infoParallel1 = getInfo(parallelBulb1);
+    const infoParallel2 = getInfo(parallelBulb2);
+
+    const placeAmmeter = (info) => {
+        if (!info || !ammeter) return;
+        const x = info.cx - info.r - 32;
+        const y = info.cy;
+        ammeter.setAttribute('transform', `translate(${x},${y})`);
+    };
+    const placeVoltmeter = (info) => {
+        if (!info || !voltmeter) return;
+        const x = info.cx;
+        const y = info.cy - info.r - 28;
+        voltmeter.setAttribute('transform', `translate(${x},${y})`);
+        const wires = document.getElementById('voltmeter-wires');
+        if (wires) {
+            const vtR = 12; const leftTermX = x - vtR; const rightTermX = x + vtR; const yWire = y;
+            const bulbLeft = info.cx - info.r; const bulbRight = info.cx + info.r; const bulbY = info.cy;
+            wires.innerHTML = `
+                <line x1="${bulbLeft}" y1="${bulbY}" x2="${bulbLeft}" y2="${yWire}" stroke="#000" stroke-width="2"/>
+                <line x1="${bulbLeft}" y1="${yWire}" x2="${leftTermX}" y2="${yWire}" stroke="#000" stroke-width="2"/>
+                <line x1="${bulbRight}" y1="${bulbY}" x2="${bulbRight}" y2="${yWire}" stroke="#000" stroke-width="2"/>
+                <line x1="${bulbRight}" y1="${yWire}" x2="${rightTermX}" y2="${yWire}" stroke="#000" stroke-width="2"/>
+            `;
+        }
+    };
+
+    if (attach.ammeter) {
+        if (mode === 'series') placeAmmeter(attach.ammeter === 'bulb1' ? infoSeries1 : infoSeries2);
+        else placeAmmeter(attach.ammeter === 'bulb1' ? infoParallel1 : infoParallel2);
+        const iVal = mode === 'series' ? calculations.totalCurrent : (attach.ammeter === 'bulb1' ? calculations.currentBulb1 : calculations.currentBulb2);
+        if (aRead) aRead.textContent = `I = ${iVal.toFixed(2)} A`;
+    } else if (aRead) {
+        aRead.textContent = '';
+    }
+
+    if (attach.voltmeter) {
+        if (mode === 'series') placeVoltmeter(attach.voltmeter === 'bulb1' ? infoSeries1 : infoSeries2);
+        else placeVoltmeter(attach.voltmeter === 'bulb1' ? infoParallel1 : infoParallel2);
+        const vVal = mode === 'series' ? (attach.voltmeter === 'bulb1' ? calculations.voltageBulb1 : calculations.voltageBulb2) : batteryVoltage;
+        if (vRead) vRead.textContent = `V = ${vVal.toFixed(2)} V`;
+    } else {
+        if (vRead) vRead.textContent = '';
+        const wires = document.getElementById('voltmeter-wires');
+        if (wires) wires.innerHTML = '';
+    }
+}
+
+updateCircuit();
+
+function resetSim(){
+    const modeSel = document.getElementById('circuit-mode'); if (modeSel) modeSel.value = 'series';
+    const r1s = document.getElementById('r1-slider'); if (r1s) r1s.value = '2';
+    const r2s = document.getElementById('r2-slider'); if (r2s) r2s.value = '2';
+    window.__attachments = { ammeter: null, voltmeter: null };
+    const am = document.getElementById('ammeter'); if (am) am.setAttribute('transform','translate(60,30)');
+    const vm = document.getElementById('voltmeter'); if (vm) vm.setAttribute('transform','translate(100,30)');
+    const wires = document.getElementById('voltmeter-wires'); if (wires) wires.innerHTML = '';
+    updateCircuit();
+}
+
+(function(){
+    const svg = document.getElementById('circuit-svg');
+    const ammeter = document.getElementById('ammeter');
+    const voltmeter = document.getElementById('voltmeter');
+    window.__attachments = { ammeter: null, voltmeter: null };
+
+    const startDrag = (el, e) => {
+        const pt = svg.createSVGPoint();
+        pt.x = e.clientX; pt.y = e.clientY;
+        const loc = pt.matrixTransform(svg.getScreenCTM().inverse());
+        const t = el.getAttribute('transform') || 'translate(0,0)';
+        const m = /translate\(([^,]+),([^\)]+)\)/.exec(t);
+        const ox = m ? parseFloat(m[1]) : 0;
+        const oy = m ? parseFloat(m[2]) : 0;
+        el.__drag = { dx: loc.x - ox, dy: loc.y - oy };
+        svg.__dragEl = el;
+        svg.addEventListener('mousemove', onMove);
+        svg.addEventListener('mouseup', onUp);
+    };
+    const onMove = (e) => {
+        const el = svg.__dragEl; if (!el || !el.__drag) return;
+        const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+        const loc = pt.matrixTransform(svg.getScreenCTM().inverse());
+        const x = loc.x - el.__drag.dx; const y = loc.y - el.__drag.dy;
+        el.setAttribute('transform', `translate(${x},${y})`);
+    };
+    const nearestBulb = () => {
+        const mode = document.getElementById('circuit-mode').value;
+        const circles = mode === 'series' ? [document.querySelector('#bulb1-series circle'), document.querySelector('#bulb2-series circle')] : [document.querySelector('#bulb1-parallel circle'), document.querySelector('#bulb2-parallel circle')];
+        const pts = circles.map(c => ({ cx: parseFloat(c.getAttribute('cx')), cy: parseFloat(c.getAttribute('cy')) }));
+        const t = svg.__dragEl.getAttribute('transform');
+        const m = /translate\(([^,]+),([^\)]+)\)/.exec(t);
+        const x = m ? parseFloat(m[1]) : 0; const y = m ? parseFloat(m[2]) : 0;
+        let best = 0; let dmin = Infinity;
+        pts.forEach((p,i)=>{ const d = Math.hypot(x - p.cx, y - p.cy); if (d < dmin){ dmin = d; best = i; } });
+        return { index: best, dist: dmin };
+    };
+    const onUp = () => {
+        const el = svg.__dragEl; svg.removeEventListener('mousemove', onMove); svg.removeEventListener('mouseup', onUp);
+        if (!el) return; const nb = nearestBulb(); if (nb.dist < 40){ const which = nb.index === 0 ? 'bulb1' : 'bulb2'; if (el.id==='ammeter') window.__attachments.ammeter = which; if (el.id==='voltmeter') window.__attachments.voltmeter = which; updateCircuit(); }
+        svg.__dragEl = null; if (el) el.__drag = null;
+    };
+    const bind = (el) => { el.addEventListener('mousedown', (e)=> startDrag(el,e)); };
+    bind(ammeter); bind(voltmeter);
+    const resetBtn = document.getElementById('reset-btn'); if (resetBtn) resetBtn.addEventListener('click', resetSim);
+})();
+</script>
+
+<script>
+(() => {
+    const nearlyEqual = (a,b,t=0.02) => Math.abs(a-b) <= t;
+    const showSeriesFeedback = (okRt, okI, okV2, okV3, okV5) => {
+        const el = document.getElementById('quiz-series-feedback');
+        if (!el) return;
+        el.innerHTML = `${okRt?'✅':'❌'} R_total, ${okI?'✅':'❌'} I, ${okV2?'✅':'❌'} V(2Ω), ${okV3?'✅':'❌'} V(3Ω), ${okV5?'✅':'❌'} V(5Ω)`;
+    };
+    const showParallelFeedback = (okRt, okI1, okI2, okIt) => {
+        const el = document.getElementById('quiz-parallel-feedback');
+        if (!el) return;
+        el.innerHTML = `${okRt?'✅':'❌'} R_total, ${okI1?'✅':'❌'} I₁, ${okI2?'✅':'❌'} I₂, ${okIt?'✅':'❌'} I_T`;
+    };
+    const overall = (count, total) => {
+        const el = document.getElementById('quiz-overall');
+        if (!el) return;
+        el.textContent = `Score: ${count}/${total}`;
+    };
+    const check = () => {
+        const v = 12;
+        const rtSeries = 2+3+5;
+        const iSeries = v/rtSeries;
+        const v2 = iSeries*2;
+        const v3 = iSeries*3;
+        const v5 = iSeries*5;
+        const rtParallel = (4*6)/(4+6);
+        const i1 = v/4;
+        const i2 = v/6;
+        const it = i1+i2;
+        const s_rt = parseFloat(document.getElementById('q_series_rt')?.value || 'NaN');
+        const s_i = parseFloat(document.getElementById('q_series_i')?.value || 'NaN');
+        const s_v2 = parseFloat(document.getElementById('q_series_v2')?.value || 'NaN');
+        const s_v3 = parseFloat(document.getElementById('q_series_v3')?.value || 'NaN');
+        const s_v5 = parseFloat(document.getElementById('q_series_v5')?.value || 'NaN');
+        const p_rt = parseFloat(document.getElementById('q_parallel_rt')?.value || 'NaN');
+        const p_i1 = parseFloat(document.getElementById('q_parallel_i1')?.value || 'NaN');
+        const p_i2 = parseFloat(document.getElementById('q_parallel_i2')?.value || 'NaN');
+        const p_it = parseFloat(document.getElementById('q_parallel_it')?.value || 'NaN');
+        const okRt = nearlyEqual(s_rt, rtSeries);
+        const okI = nearlyEqual(s_i, iSeries);
+        const okV2 = nearlyEqual(s_v2, v2);
+        const okV3 = nearlyEqual(s_v3, v3);
+        const okV5 = nearlyEqual(s_v5, v5);
+        const okPrt = nearlyEqual(p_rt, rtParallel);
+        const okI1 = nearlyEqual(p_i1, i1);
+        const okI2 = nearlyEqual(p_i2, i2);
+        const okIt = nearlyEqual(p_it, it);
+        showSeriesFeedback(okRt, okI, okV2, okV3, okV5);
+        showParallelFeedback(okPrt, okI1, okI2, okIt);
+        overall([okRt,okI,okV2,okV3,okV5,okPrt,okI1,okI2,okIt].filter(Boolean).length, 9);
+    };
+    const reset = () => {
+        ['q_series_rt','q_series_i','q_series_v2','q_series_v3','q_series_v5','q_parallel_rt','q_parallel_i1','q_parallel_i2','q_parallel_it'].forEach(id => {
+            const el = document.getElementById(id); if (el) el.value = '';
+        });
+        const f1 = document.getElementById('quiz-series-feedback'); if (f1) f1.textContent = '';
+        const f2 = document.getElementById('quiz-parallel-feedback'); if (f2) f2.textContent = '';
+        const o = document.getElementById('quiz-overall'); if (o) o.textContent = '';
+    };
+    const btnCheck = document.getElementById('quiz-check'); if (btnCheck) btnCheck.addEventListener('click', check);
+    const btnReset = document.getElementById('quiz-reset'); if (btnReset) btnReset.addEventListener('click', reset);
+    document.querySelectorAll('.inline-check').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-target');
+            const val = parseFloat(document.getElementById(id)?.value || 'NaN');
+            const v = 12;
+            const answers = {
+                q_series_rt: 2+3+5,
+                q_series_i: v/(2+3+5),
+                q_series_v2: (v/(2+3+5))*2,
+                q_series_v3: (v/(2+3+5))*3,
+                q_series_v5: (v/(2+3+5))*5,
+                q_parallel_rt: (4*6)/(4+6),
+                q_parallel_i1: v/4,
+                q_parallel_i2: v/6,
+                q_parallel_it: (v/4)+(v/6)
+            };
+            const ok = nearlyEqual(val, answers[id]);
+            const fb = document.getElementById('f_'+id);
+            if (fb) fb.textContent = ok ? '✅' : '❌';
+        });
+    });
+})();
+</script>
+
+<h3>Quiz</h3>
+
+<div class="quiz-card" id="quiz-series">
+    <h4>Series Circuit</h4>
+    <p>Three resistors of $2\,\Omega$, $3\,\Omega$, and $5\,\Omega$ in series to a $12\,\text{V}$ battery.</p>
+    <div class="quiz-grid quiz-grid-inline">
+        <label>Total resistance $R_{\text{total}}$ (Ω)</label>
+        <input id="q_series_rt" type="number" step="0.01" />
+        <button class="inline-check" data-target="q_series_rt">✓</button>
+        <span id="f_q_series_rt" class="inline-feedback"></span>
+        <label>Circuit current $I$ (A)</label>
+        <input id="q_series_i" type="number" step="0.01" />
+        <button class="inline-check" data-target="q_series_i">✓</button>
+        <span id="f_q_series_i" class="inline-feedback"></span>
+        <label>Voltage across $2\,\Omega$ (V)</label>
+        <input id="q_series_v2" type="number" step="0.01" />
+        <button class="inline-check" data-target="q_series_v2">✓</button>
+        <span id="f_q_series_v2" class="inline-feedback"></span>
+        <label>Voltage across $3\,\Omega$ (V)</label>
+        <input id="q_series_v3" type="number" step="0.01" />
+        <button class="inline-check" data-target="q_series_v3">✓</button>
+        <span id="f_q_series_v3" class="inline-feedback"></span>
+        <label>Voltage across $5\,\Omega$ (V)</label>
+        <input id="q_series_v5" type="number" step="0.01" />
+        <button class="inline-check" data-target="q_series_v5">✓</button>
+        <span id="f_q_series_v5" class="inline-feedback"></span>
+    </div>
+    <div id="quiz-series-feedback" class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-card" id="quiz-parallel">
+    <h4>Parallel Circuit</h4>
+    <p>Two resistors of $4\,\Omega$ and $6\,\Omega$ in parallel to a $12\,\text{V}$ battery.</p>
+    <div class="quiz-grid quiz-grid-inline">
+        <label>Total resistance $R_{\text{total}}$ (Ω)</label>
+        <input id="q_parallel_rt" type="number" step="0.01" />
+        <button class="inline-check" data-target="q_parallel_rt">✓</button>
+        <span id="f_q_parallel_rt" class="inline-feedback"></span>
+        <label>Branch current $I_1$ (A) through $4\,\Omega$</label>
+        <input id="q_parallel_i1" type="number" step="0.01" />
+        <button class="inline-check" data-target="q_parallel_i1">✓</button>
+        <span id="f_q_parallel_i1" class="inline-feedback"></span>
+        <label>Branch current $I_2$ (A) through $6\,\Omega$</label>
+        <input id="q_parallel_i2" type="number" step="0.01" />
+        <button class="inline-check" data-target="q_parallel_i2">✓</button>
+        <span id="f_q_parallel_i2" class="inline-feedback"></span>
+        <label>Total current $I_T$ (A)</label>
+        <input id="q_parallel_it" type="number" step="0.01" />
+        <button class="inline-check" data-target="q_parallel_it">✓</button>
+        <span id="f_q_parallel_it" class="inline-feedback"></span>
+    </div>
+    <div id="quiz-parallel-feedback" class="quiz-feedback"></div>
+</div>
+
+<div class="quiz-actions" style="text-align:center; margin-top:10px;">
+    <button id="quiz-check">Check Answers</button>
+    <button id="quiz-reset">Reset Quiz</button>
+    <div id="quiz-overall" class="quiz-overall"></div>
+</div>
+
+</body>
+</html>

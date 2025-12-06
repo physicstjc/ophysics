@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Action and Use of Circuit Components</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../katex.min.css">
+    <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
+    <script src="../header-loader.js" defer></script>
+    <script defer src="../katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
+    <script defer src="../auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <script defer src="../katex.js" integrity="sha384-HELAAZU8xvHgfT/8z4Mhmu+E2z3oBrMEuywaMh/CEd5uTZIDSct7TEaX+S43+dOi" crossorigin="anonymous"></script>
+</head>
+
+<body>
+<div id="header-placeholder"></div>
+<div id="breadcrumb"></div>
+<div id="header"></div>
+
+<h2>Action and Use of Circuit Components</h2>
+
+<p>Understanding how different electrical components work and their practical applications is crucial for designing and analyzing circuits. Each component has specific characteristics and functions that make it suitable for particular applications.</p>
+
+<h3>Variable Potential Divider (Potentiometer)</h3>
+
+<p>A potentiometer is a three-terminal variable resistor that can be used as a variable potential divider. It allows for precise control of potential difference in a circuit.</p>
+
+<h4>Construction and Principle</h4>
+
+<div class="component-detail">
+    <div class="diagram-section">
+        <svg width="400" height="200" viewBox="0 0 400 200">
+            <text x="200" y="30" text-anchor="middle" font-size="14" font-weight="bold">Potentiometer Circuit</text>
+            
+            <!-- Battery -->
+            <line x1="50" y1="100" x2="80" y2="100" stroke="#000" stroke-width="2"/>
+            <line x1="80" y1="80" x2="80" y2="120" stroke="#000" stroke-width="2"/>
+            <line x1="80" y1="85" x2="90" y2="85" stroke="#000" stroke-width="2"/>
+            <line x1="80" y1="115" x2="90" y2="115" stroke="#000" stroke-width="2"/>
+            <line x1="90" y1="100" x2="120" y2="100" stroke="#000" stroke-width="2"/>
+            
+            <!-- Potentiometer -->
+            <rect x="120" y="70" width="160" height="60" stroke="#000" stroke-width="2" fill="none"/>
+            <line x1="140" y1="70" x2="140" y2="130" stroke="#000" stroke-width="2"/>
+            <line x1="260" y1="70" x2="260" y2="130" stroke="#000" stroke-width="2"/>
+            <line x1="200" y1="70" x2="200" y2="130" stroke="#000" stroke-width="2"/>
+            <circle cx="200" cy="100" r="5" stroke="#ff0000" stroke-width="2" fill="#ff0000"/>
+            <text x="140" y="65" text-anchor="middle" font-size="10">A</text>
+            <text x="200" y="65" text-anchor="middle" font-size="10">W</text>
+            <text x="260" y="65" text-anchor="middle" font-size="10">B</text>
+            
+            <!-- Output -->
+            <line x1="200" y1="100" x2="280" y2="100" stroke="#ff0000" stroke-width="2"/>
+            <line x1="280" y1="100" x2="280" y2="150" stroke="#ff0000" stroke-width="2"/>
+            <line x1="280" y1="150" x2="120" y2="150" stroke="#ff0000" stroke-width="2"/>
+            <line x1="120" y1="150" x2="120" y2="130" stroke="#ff0000" stroke-width="2"/>
+            
+            <!-- Labels -->
+            <text x="100" y="90" text-anchor="middle" font-size="10" fill="#000">V_in</text>
+            <text x="320" y="105" text-anchor="middle" font-size="10" fill="#ff0000">V_out</text>
+            <text x="200" y="155" text-anchor="middle" font-size="10" fill="#ff0000">Variable Output</text>
+        </svg>
+    </div>
+    
+    <div class="explanation-section">
+        <h5>How it Works:</h5>
+        <ol>
+            <li>The potentiometer consists of a resistive element with a sliding contact (wiper)</li>
+            <li>Input voltage is applied across the entire resistive element (A to B)</li>
+            <li>The wiper (W) can be moved along the resistive element</li>
+            <li>Output voltage is taken between the wiper and one end of the resistive element</li>
+            <li>Moving the wiper changes the ratio of resistances, thus varying the output voltage</li>
+        </ol>
+    </div>
+</div>
+
+<h4>Applications of Potentiometers</h4>
+
+<div class="applications-grid">
+    <div class="application-item">
+        <h5>Volume Controls</h5>
+        <p>Used in audio equipment to control sound volume by varying the signal strength.</p>
+    </div>
+    
+    <div class="application-item">
+        <h5>Light Dimmers</h5>
+        <p>Control the brightness of lights by varying the voltage supplied to the bulb.</p>
+    </div>
+    
+    <div class="application-item">
+        <h5>Sensor Calibration</h5>
+        <p>Adjust the sensitivity or zero point of electronic sensors and instruments.</p>
+    </div>
+    
+    <div class="application-item">
+        <h5>Motor Speed Control</h5>
+        <p>Regulate the speed of DC motors by controlling the applied voltage.</p>
+    </div>
+</div>
+
+<h3>Other Important Circuit Components</h3>
+
+<h4>Light Dependent Resistor (LDR)</h4>
+
+<div class="component-detail">
+    <div class="component-symbol">
+        <svg width="150" height="60" viewBox="0 0 150 60">
+            <line x1="10" y1="30" x2="30" y2="30" stroke="#000" stroke-width="2"/>
+            <rect x="30" y="20" width="50" height="20" stroke="#000" stroke-width="2" fill="none"/>
+            <line x1="80" y1="30" x2="140" y2="30" stroke="#000" stroke-width="2"/>
+            <text x="55" y="15" text-anchor="middle" font-size="10">LDR</text>
+            <path d="M 40 10 L 45 5 L 50 10 M 45 5 L 45 15" stroke="#ffaa00" stroke-width="1.5" fill="none"/>
+            <path d="M 55 10 L 60 5 L 65 10 M 60 5 L 60 15" stroke="#ffaa00" stroke-width="1.5" fill="none"/>
+            <path d="M 70 10 L 75 5 L 80 10 M 75 5 L 75 15" stroke="#ffaa00" stroke-width="1.5" fill="none"/>
+        </svg>
+    </div>
+    
+    <div class="component-info">
+        <h5>Action:</h5>
+        <p>Resistance decreases as light intensity increases (inverse relationship).</p>
+        
+        <h5>Applications:</h5>
+        <ul>
+            <li>Automatic street lights</li>
+            <li>Camera exposure controls</li>
+            <li>Light meters</li>
+            <li>Alarm systems</li>
+        </ul>
+    </div>
+</div>
+
+<h4>LDR Photoconductivity Simulation</h4>
+
+<div class="current-sim"> 
+   <style> 
+     /* Scoped styles – only affect elements inside .current-sim */ 
+     .current-sim { 
+       max-width: 720px; 
+       margin: 1.5rem auto; 
+       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; 
+       font-size: 14px; 
+       color: #111827; 
+     } 
+
+     .current-sim .quiz-container { 
+       background: #f9fafb; 
+       border: 1px solid #e5e7eb; 
+       border-radius: 10px; 
+       padding: 12px 16px 16px; 
+       box-sizing: border-box; 
+     } 
+
+     .current-sim h3 { 
+       margin: 0 0 0.5rem; 
+       font-size: 1.05rem; 
+     } 
+
+     .current-sim .button-container { 
+       margin-top: 0.35rem; 
+       display: flex; 
+       align-items: center; 
+       gap: 8px; 
+       flex-wrap: wrap; 
+     } 
+
+     .current-sim label { 
+       font-weight: 500; 
+     } 
+
+     .current-sim input[type="range"] { 
+       flex: 0 0 180px; 
+     } 
+
+     .current-sim button { 
+       padding: 4px 10px; 
+       border-radius: 6px; 
+       border: 1px solid #2563eb; 
+       background: #2563eb; 
+       color: #fff; 
+       font-size: 13px; 
+       cursor: pointer; 
+     } 
+
+     .current-sim button:hover { 
+       background: #1d4ed8; 
+       border-color: #1d4ed8; 
+     } 
+
+     .current-sim canvas { 
+       background: #ffffff; 
+       border: 1px solid #d1d5db; 
+       border-radius: 6px; 
+       margin-top: 10px; 
+       display: block; 
+       max-width: 100%; 
+       height: auto; /* responsive */ 
+     } 
+
+     .current-sim .score { 
+       margin-top: 8px; 
+       font-size: 0.9rem; 
+     } 
+
+     .current-sim .sim-caption { 
+       margin-top: 4px; 
+       font-size: 0.85rem; 
+       color: #4b5563; 
+     } 
+   </style> 
+
+   <div class="quiz-container" id="ldr-sim"> 
+     <h3>LDR Photoconductivity Simulation</h3> 
+
+     <div class="button-container"> 
+       <label for="sim-voltage">Voltage</label> 
+       <input type="range" id="sim-voltage" min="0" max="12" step="0.1" value="3"> 
+       <span id="sim-voltage-label">3.0 V</span> 
+     </div> 
+
+     <div class="button-container"> 
+       <label for="sim-light-intensity">Light Intensity</label> 
+       <input type="range" id="sim-light-intensity" min="0" max="100" value="20"> 
+       <span id="sim-light-label">20%</span> 
+     </div> 
+
+     <div class="button-container" style="margin-top:10px;"> 
+       <button id="sim-start">Start Photoconduction</button> 
+       <button id="sim-reset" type="button">Reset</button> 
+     </div> 
+
+     <div id="sim-stats" class="score"> 
+       Charge Carrier Density: <span id="sim-carriers">Very Low</span> 
+     </div> 
+     <div id="sim-resistance" class="score">Resistance: <span id="sim-R">∞</span> Ω</div> 
+     <div id="sim-equation" class="sim-caption"> 
+       In darkness, few charge carriers exist. As light intensity increases, photons create electron-hole pairs, reducing resistance. 
+     </div> 
+
+     <canvas id="ldrCanvas" 
+             width="680" 
+             height="300"> 
+       Your browser does not support the HTML5 canvas tag. 
+     </canvas> 
+   </div> 
+
+   <script> 
+     (function() { 
+       const root = document.getElementById('ldr-sim'); 
+       if (!root) return; 
+
+       // DOM references scoped to this block 
+       const canvas = root.querySelector('#ldrCanvas'); 
+       const ctx = canvas.getContext('2d'); 
+       const vSlider = root.querySelector('#sim-voltage'); 
+       const lightSlider = root.querySelector('#sim-light-intensity'); 
+       const vLabel = root.querySelector('#sim-voltage-label'); 
+       const lightLabel = root.querySelector('#sim-light-label'); 
+       const carriersLabel = root.querySelector('#sim-carriers'); 
+       const RLabel = root.querySelector('#sim-R'); 
+       const eqDiv = root.querySelector('#sim-equation'); 
+       const startBtn = root.querySelector('#sim-start'); 
+       const resetBtn = root.querySelector('#sim-reset'); 
+
+       const W = canvas.width; 
+       const H = canvas.height; 
+
+       // Semiconductor lattice setup 
+       const gridCols = 14, gridRows = 6; 
+       const cellW = W / (gridCols + 1); 
+       const cellH = H / (gridRows + 1); 
+       const lattice = []; 
+
+       for (let r = 0; r < gridRows; r++) { 
+         for (let c = 0; c < gridCols; c++) { 
+           lattice.push({ 
+             x: (c + 1) * cellW, 
+             y: (r + 1) * cellH, 
+             type: 'cds' // Cadmium Sulfide - common LDR material
+           }); 
+         } 
+       } 
+
+       const ATOM_RADIUS = 8; 
+       const yMin = cellH * 0.5; 
+       const yMax = gridRows * cellH + cellH * 0.5; 
+
+       // Charge carriers (electrons only) 
+       const carriers = []; 
+       let lastLightIntensity = 20; // Track previous light intensity for electron management
+
+       function initCarriers() { 
+         const lightIntensity = Number(lightSlider.value);
+         // Calculate target number of electrons based on light intensity
+         const targetCount = Math.floor(3 + lightIntensity * 1.5); // Minimum 3 electrons, scaling up with light
+         
+         // Only add or remove electrons if light intensity actually changed
+         if (lightIntensity !== lastLightIntensity) {
+           const currentCount = carriers.length;
+           
+           if (lightIntensity > lastLightIntensity) {
+             // Light intensity increased - add new electrons (photoconductivity)
+             const electronsToAdd = targetCount - currentCount;
+             for (let i = 0; i < electronsToAdd; i++) { 
+               carriers.push({ 
+                 x: Math.random() * W, 
+                 y: yMin + Math.random() * (yMax - yMin), 
+                 vx: 0, 
+                 vy: 0, 
+                 type: 'electron',
+                 isNew: true, // Mark as new electron (starts red)
+                 age: 0 // Track how long this electron has existed
+               }); 
+             }
+           } else if (lightIntensity < lastLightIntensity) {
+             // Light intensity decreased - remove electrons
+             const electronsToRemove = currentCount - targetCount;
+             if (electronsToRemove > 0) {
+               carriers.splice(-electronsToRemove); // Remove from the end
+             }
+           }
+         }
+         
+         lastLightIntensity = lightIntensity;
+       }
+
+       function setupInitialCarriers() {
+         // Set up initial electrons at 20% light intensity - only called once at startup
+         const initialCount = 3; // Minimum electrons at low light
+         for (let i = 0; i < initialCount; i++) { 
+           carriers.push({ 
+             x: Math.random() * W, 
+             y: yMin + Math.random() * (yMax - yMin), 
+             vx: 0, 
+             vy: 0, 
+             type: 'electron',
+             isNew: false, // Initial electrons start blue
+             age: 10 // Mark as old electrons
+           }); 
+         }
+       }
+
+       setupInitialCarriers(); // Setup initial electrons
+
+       // Simulation state 
+       let running = false; 
+       let last = performance.now(); 
+       let voltage = Number(vSlider.value); 
+       let lightIntensity = Number(lightSlider.value); 
+
+       function ldrResistance() { 
+         // LDR resistance decreases with light intensity
+         // Adjusted to give ~300-500Ω at 100% light intensity
+         const rDark = 1000000; // 1MΩ in darkness (0% light)
+         const rMin = 400; // Minimum resistance at 100% light (~400Ω)
+         const k = 0.15; // Sensitivity factor - adjusted for realistic range
+         
+         // Exponential decay from dark resistance to minimum resistance
+         return rMin + (rDark - rMin) * Math.exp(-k * lightIntensity / 10);
+       }
+
+       function updateCarrierDensity() {
+         const light = Number(lightSlider.value);
+         if (light < 10) return 'Very Low';
+         if (light < 30) return 'Low';
+         if (light < 60) return 'Moderate';
+         if (light < 85) return 'High';
+         return 'Very High';
+       }
+
+       function updateExplanation() { 
+         if (!eqDiv) return; 
+         const v = voltage; 
+         const light = lightIntensity; 
+
+         if (light < 10) { 
+           eqDiv.textContent = 
+             `In darkness (${light}% light), the CdS semiconductor has very few free charge carriers. Resistance is extremely high (~1MΩ).`; 
+         } else if (light < 30) { 
+           eqDiv.textContent = 
+             `At low light (${light}% light), some photons create electron-hole pairs. Resistance decreases to ~50kΩ as conductivity improves.`; 
+         } else if (light < 60) { 
+           eqDiv.textContent = 
+             `With moderate light (${light}% light), photoconductivity increases significantly. Resistance drops to ~5kΩ.`; 
+         } else if (light < 85) { 
+           eqDiv.textContent = 
+             `Under bright light (${light}% light), abundant photons create many charge carriers. Resistance drops to ~1kΩ.`; 
+         } else {
+           eqDiv.textContent = 
+             `In intense light (${light}% light), the LDR approaches its minimum resistance of ~400Ω as photoconductivity saturates.`; 
+         }
+       } 
+
+       // Slider handlers 
+       vSlider.addEventListener('input', function() { 
+         voltage = Number(vSlider.value); 
+         vLabel.textContent = voltage.toFixed(1) + ' V'; 
+       }); 
+
+       lightSlider.addEventListener('input', function() { 
+         lightIntensity = Number(lightSlider.value); 
+         lightLabel.textContent = lightIntensity + '%';
+         carriersLabel.textContent = updateCarrierDensity();
+         RLabel.textContent = ldrResistance().toFixed(0);
+         initCarriers(); // Use new electron management
+         initPhotons();
+         updateExplanation(); 
+       }); 
+
+       // Buttons 
+       startBtn.addEventListener('click', function() { 
+         running = !running; 
+         startBtn.textContent = running ? 'Pause Photoconduction' : 'Start Photoconduction'; 
+       }); 
+
+       resetBtn.addEventListener('click', function() { 
+         running = false; 
+         startBtn.textContent = 'Start Photoconduction'; 
+         carriers.length = 0; // Clear all carriers
+         lastLightIntensity = 20; // Reset light intensity tracking
+         setupInitialCarriers(); // Setup initial electrons
+         voltage = 3; 
+         lightIntensity = 20; 
+         vSlider.value = '3'; 
+         lightSlider.value = '20'; 
+         vLabel.textContent = '3.0 V'; 
+         lightLabel.textContent = '20%';
+         carriersLabel.textContent = updateCarrierDensity();
+         RLabel.textContent = ldrResistance().toFixed(0);
+         updateExplanation(); 
+       }); 
+
+       function update(dt) { 
+         if (!running) return;
+
+         const lightNorm = lightIntensity / 100;
+         const drift = (voltage / 12) * 60 * (0.2 + 0.8 * lightNorm); // More carriers = more current
+         const vMax = (voltage / 12) * 150 * (0.3 + 0.7 * lightNorm); 
+
+         // Create new electrons based on light intensity (no visible photons)
+         // Occasionally create new electrons based on light intensity
+         if (Math.random() < lightNorm * 1.5 * dt) {
+           // Choose a random atom for electron generation
+           const atom = lattice[Math.floor(Math.random() * lattice.length)];
+           
+           // Create new electron (photoconductivity)
+           carriers.push({
+             x: atom.x + (Math.random() - 0.5) * 20,
+             y: atom.y + (Math.random() - 0.5) * 20,
+             vx: (Math.random() - 0.5) * 40,
+             vy: (Math.random() - 0.5) * 40,
+             type: 'electron',
+             isNew: true, // New electrons start red
+             age: 0
+           });
+         }
+
+         // Update charge carriers (electrons only)
+         for (const carrier of carriers) { 
+           // Age electrons - new electrons become old after 2.5 seconds
+           if (carrier.isNew) {
+             carrier.age += dt;
+             if (carrier.age > 2.5) {
+               carrier.isNew = false; // Transition from red to blue
+             }
+           }
+
+           // Electron movement
+           carrier.vx += drift * dt; 
+           carrier.x += carrier.vx * dt; 
+           carrier.y += carrier.vy * dt; 
+
+           // Add thermal motion 
+           const thermalMotion = 12;
+           carrier.vx += (Math.random() - 0.5) * thermalMotion * dt;
+           carrier.vy += (Math.random() - 0.5) * thermalMotion * dt;
+
+           // Boundary conditions 
+           if (carrier.x < 0) carrier.x += W; 
+           if (carrier.x > W) carrier.x -= W; 
+
+           if (carrier.y < yMin) { 
+             carrier.y = yMin; 
+             carrier.vy *= -0.5; 
+           } 
+           if (carrier.y > yMax) { 
+             carrier.y = yMax; 
+             carrier.vy *= -0.5; 
+           } 
+
+           // Speed limiting 
+           const sp = Math.hypot(carrier.vx, carrier.vy); 
+           if (sp > vMax && vMax > 0) { 
+             const k = vMax / sp; 
+             carrier.vx *= k; 
+             carrier.vy *= k; 
+           } 
+         } 
+
+         // Electron management is now handled by initCarriers() when light intensity changes
+       } 
+
+       function draw() { 
+         // Draw uniform background that changes from black to bright based on light intensity
+         const lightNorm = lightIntensity / 100;
+         
+         // Uniform background color from black (0% light) to bright (100% light)
+         const brightness = Math.max(0.02, lightNorm * 0.98); // Minimum 2% brightness (very dark) to 98% brightness
+         
+         // Black/dark to bright yellow-white uniform background
+         ctx.fillStyle = `rgba(${Math.floor(30 + 225 * brightness)}, ${Math.floor(30 + 225 * brightness)}, ${Math.floor(30 + 225 * brightness)}, 1)`;
+         ctx.fillRect(0, 0, W, H);
+
+         // Draw CdS semiconductor lattice 
+         for (const atom of lattice) { 
+           ctx.beginPath(); 
+           ctx.arc(atom.x, atom.y, ATOM_RADIUS, 0, Math.PI * 2); 
+           
+           ctx.strokeStyle = '#f57c00'; // Orange for CdS
+           ctx.fillStyle = '#fff3e0';
+           
+           ctx.lineWidth = 2; 
+           ctx.stroke(); 
+           ctx.fill(); 
+         } 
+
+         // Draw charge carriers (electrons only)
+         for (const carrier of carriers) { 
+           ctx.beginPath(); 
+           
+           // Simple color scheme: old electrons blue, new electrons red
+           ctx.fillStyle = carrier.isNew ? '#ff0000' : '#1e40af'; // Red for new, blue for old
+           ctx.arc(carrier.x, carrier.y, 3, 0, Math.PI * 2); 
+           
+           ctx.fill(); 
+         }
+       } 
+
+       function loop(now) { 
+         const dt = Math.min(0.05, (now - last) / 1000); 
+         last = now; 
+         update(dt); 
+         draw(); 
+         window.requestAnimationFrame(loop); 
+       } 
+
+       // Initialize
+       setupInitialCarriers(); // Setup initial electrons
+       carriersLabel.textContent = updateCarrierDensity();
+       RLabel.textContent = ldrResistance().toFixed(0);
+       updateExplanation(); 
+       window.requestAnimationFrame(loop); 
+     })(); 
+   </script> 
+ </div>
+
+<p>As light intensity increases, photons with sufficient energy create electron-hole pairs through the photoelectric effect, increasing conductivity and decreasing resistance.</p>
+
+<h4>Thermistor</h4>
+
+<div class="component-detail">
+    <div class="component-symbol">
+        <svg width="150" height="60" viewBox="0 0 150 60">
+            <line x1="10" y1="30" x2="30" y2="30" stroke="#000" stroke-width="2"/>
+            <rect x="30" y="20" width="50" height="20" stroke="#000" stroke-width="2" fill="none"/>
+            <line x1="80" y1="30" x2="140" y2="30" stroke="#000" stroke-width="2"/>
+            <text x="55" y="15" text-anchor="middle" font-size="10">TH</text>
+            <path d="M 45 5 L 45 15 M 40 10 L 50 10 M 42 8 L 48 8 M 44 6 L 46 6" stroke="#ff0000" stroke-width="1.5" fill="none"/>
+        </svg>
+    </div>
+    
+    <div class="component-info">
+        <h5>Action:</h5>
+        <p>There are two types:</p>
+        <ul>
+            <li><strong>NTC (Negative Temperature Coefficient):</strong> Resistance decreases as temperature increases</li>
+            <li><strong>PTC (Positive Temperature Coefficient):</strong> Resistance increases as temperature increases</li>
+        </ul>
+        
+        <h5>Applications:</h5>
+        <ul>
+            <li>Temperature sensors</li>
+            <li>Overcurrent protection</li>
+            <li>Temperature compensation circuits</li>
+            <li>Fire alarms</li>
+        </ul>
+    </div>
+</div>
+
+<h4>Thermistor Semiconductor Physics Simulation</h4>
+
+<div class="current-sim"> 
+   <style> 
+     /* Scoped styles – only affect elements inside .current-sim */ 
+     .current-sim { 
+       max-width: 720px; 
+       margin: 1.5rem auto; 
+       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; 
+       font-size: 14px; 
+       color: #111827; 
+     } 
+
+     .current-sim .quiz-container { 
+       background: #f9fafb; 
+       border: 1px solid #e5e7eb; 
+       border-radius: 10px; 
+       padding: 12px 16px 16px; 
+       box-sizing: border-box; 
+     } 
+
+     .current-sim h3 { 
+       margin: 0 0 0.5rem; 
+       font-size: 1.05rem; 
+     } 
+
+     .current-sim .button-container { 
+       margin-top: 0.35rem; 
+       display: flex; 
+       align-items: center; 
+       gap: 8px; 
+       flex-wrap: wrap; 
+     } 
+
+     .current-sim label { 
+       font-weight: 500; 
+     } 
+
+     .current-sim input[type="range"] { 
+       flex: 0 0 180px; 
+     } 
+
+     .current-sim button { 
+       padding: 4px 10px; 
+       border-radius: 6px; 
+       border: 1px solid #2563eb; 
+       background: #2563eb; 
+       color: #fff; 
+       font-size: 13px; 
+       cursor: pointer; 
+     } 
+
+     .current-sim button:hover { 
+       background: #1d4ed8; 
+       border-color: #1d4ed8; 
+     } 
+
+     .current-sim canvas { 
+       background: #ffffff; 
+       border: 1px solid #d1d5db; 
+       border-radius: 6px; 
+       margin-top: 10px; 
+       display: block; 
+       max-width: 100%; 
+       height: auto; /* responsive */ 
+     } 
+
+     .current-sim .score { 
+       margin-top: 8px; 
+       font-size: 0.9rem; 
+     } 
+
+     .current-sim .sim-caption { 
+       margin-top: 4px; 
+       font-size: 0.85rem; 
+       color: #4b5563; 
+     } 
+   </style> 
+
+   <div class="quiz-container" id="thermistor-sim"> 
+     <h3>NTC Thermistor Semiconductor Simulation</h3> 
+
+     <div class="button-container"> 
+       <label for="sim-voltage">Voltage</label> 
+       <input type="range" id="sim-voltage" min="0" max="12" step="0.1" value="3"> 
+       <span id="sim-voltage-label">3.0 V</span> 
+     </div> 
+
+     <div class="button-container"> 
+       <label for="sim-temperature">Temperature</label> 
+       <input type="range" id="sim-temperature" min="20" max="150" value="20"> 
+       <span id="sim-temperature-label">20 °C</span> 
+     </div> 
+
+     <div class="button-container" style="margin-top:10px;"> 
+       <button id="sim-start">Start Conduction</button> 
+       <button id="sim-reset" type="button">Reset</button> 
+     </div> 
+
+     <div id="sim-stats" class="score"> 
+       Charge Carrier Density: <span id="sim-carriers">Low</span> 
+     </div> 
+     <div id="sim-resistance" class="score">Resistance: <span id="sim-R">∞</span> Ω</div> 
+     <div id="sim-equation" class="sim-caption"> 
+       At low temperature, few electrons are freed from valence band, so resistance is high. 
+     </div> 
+
+     <canvas id="semiconductorCanvas" 
+             width="680" 
+             height="300"> 
+       Your browser does not support the HTML5 canvas tag. 
+     </canvas> 
+   </div> 
+
+   <script> 
+     (function() { 
+       const root = document.getElementById('thermistor-sim'); 
+       if (!root) return; 
+
+       // DOM references scoped to this block 
+       const canvas = root.querySelector('#semiconductorCanvas'); 
+       const ctx = canvas.getContext('2d'); 
+       const vSlider = root.querySelector('#sim-voltage'); 
+       const tSlider = root.querySelector('#sim-temperature'); 
+       const vLabel = root.querySelector('#sim-voltage-label'); 
+       const tLabel = root.querySelector('#sim-temperature-label'); 
+       const carriersLabel = root.querySelector('#sim-carriers'); 
+       const RLabel = root.querySelector('#sim-R'); 
+       const eqDiv = root.querySelector('#sim-equation'); 
+       const startBtn = root.querySelector('#sim-start'); 
+       const resetBtn = root.querySelector('#sim-reset'); 
+
+       const W = canvas.width; 
+       const H = canvas.height; 
+
+       // Semiconductor lattice setup 
+       const gridCols = 14, gridRows = 6; 
+       const cellW = W / (gridCols + 1); 
+       const cellH = H / (gridRows + 1); 
+       const lattice = []; 
+
+       for (let r = 0; r < gridRows; r++) { 
+         for (let c = 0; c < gridCols; c++) { 
+           lattice.push({ 
+             baseX: (c + 1) * cellW, 
+             baseY: (r + 1) * cellH, 
+             x: (c + 1) * cellW, 
+             y: (r + 1) * cellH, 
+             type: (r + c) % 3 === 0 ? 'dopant' : 'silicon',
+             vibrationPhase: Math.random() * Math.PI * 2 // Random phase for each atom
+           }); 
+         } 
+       } 
+
+       const ATOM_RADIUS = 8; 
+       const yMin = cellH * 0.5; 
+       const yMax = gridRows * cellH + cellH * 0.5; 
+
+       // Charge carriers (electrons only) 
+       const carriers = []; 
+       let maxCarriers = 20; 
+       let lastTemperature = 20; // Track previous temperature
+
+       function initCarriers() { 
+         const temperature = Number(tSlider.value); 
+         // Calculate target number of electrons based on temperature
+         const targetCount = Math.floor(3 + (temperature - 20) * 0.8); 
+         
+         // Only add or remove electrons if temperature actually changed
+         if (temperature !== lastTemperature) {
+           const currentCount = carriers.length;
+           
+           if (temperature > lastTemperature) {
+             // Temperature increased - add new electrons
+             const electronsToAdd = targetCount - currentCount;
+             for (let i = 0; i < electronsToAdd; i++) { 
+               carriers.push({ 
+                 x: Math.random() * W, 
+                 y: yMin + Math.random() * (yMax - yMin), 
+                 vx: 0, 
+                 vy: 0, 
+                 type: 'electron',
+                 isNew: true, // Mark as new electron (starts red)
+                 age: 0 // Track how long this electron has existed
+               }); 
+             }
+           } else if (temperature < lastTemperature) {
+             // Temperature decreased - remove electrons
+             const electronsToRemove = currentCount - targetCount;
+             if (electronsToRemove > 0) {
+               carriers.splice(-electronsToRemove); // Remove from the end
+             }
+           }
+         }
+         
+         lastTemperature = temperature;
+       } 
+
+       function setupInitialCarriers() {
+         // Set up initial electrons at 20°C - only called once at startup
+         const initialCount = 3; // Minimum electrons at 20°C
+         for (let i = 0; i < initialCount; i++) { 
+           carriers.push({ 
+             x: Math.random() * W, 
+             y: yMin + Math.random() * (yMax - yMin), 
+             vx: 0, 
+             vy: 0, 
+             type: 'electron',
+             isNew: false, // Initial electrons start blue
+             age: 10 // Mark as old electrons
+           }); 
+         }
+       }
+
+       setupInitialCarriers(); // Call once at startup
+
+       // Simulation state 
+       let running = false; 
+       let last = performance.now(); 
+       let voltage = Number(vSlider.value); 
+       let temperature = Number(tSlider.value); 
+
+       function thermistorResistance() { 
+         // NTC thermistor: R = R₀ * exp(B*(1/T - 1/T₀))
+         const R0 = 10000; // 10kΩ at 25°C
+         const B = 3950; // Beta constant for common NTC thermistor
+         const T0 = 298.15; // 25°C in Kelvin
+         const T = temperature + 273.15; // Convert to Kelvin
+         return R0 * Math.exp(B * (1/T - 1/T0));
+       }
+
+       function updateCarrierDensity() {
+         const temp = Number(tSlider.value);
+         if (temp < 40) return 'Very Low';
+         if (temp < 70) return 'Low';
+         if (temp < 100) return 'Moderate';
+         if (temp < 130) return 'High';
+         return 'Very High';
+       }
+
+       function updateExplanation() { 
+         if (!eqDiv) return; 
+         const v = voltage; 
+         const T = temperature; 
+
+         if (T < 40) { 
+           eqDiv.textContent = 
+             `At low temperature (${T}°C), few electrons are freed as charge carriers. Resistance is very high.`; 
+         } else if (T < 70) { 
+           eqDiv.textContent = 
+             `As temperature rises (${T}°C), more electrons gain thermal energy and become free charge carriers. Resistance decreases.`; 
+         } else if (T < 100) { 
+           eqDiv.textContent = 
+             `At moderate temperature (${T}°C), thermal energy frees more electrons. Semiconductor conductivity improves significantly.`; 
+         } else { 
+           eqDiv.textContent = 
+             `At high temperature (${T}°C), thermal energy frees many electrons as charge carriers. Resistance drops dramatically for NTC thermistors.`; 
+         } 
+       } 
+
+       // Slider handlers 
+       vSlider.addEventListener('input', function() { 
+         voltage = Number(vSlider.value); 
+         vLabel.textContent = voltage.toFixed(1) + ' V'; 
+       }); 
+
+       tSlider.addEventListener('input', function() { 
+         temperature = Number(tSlider.value); 
+         tLabel.textContent = temperature.toFixed(0) + ' °C'; 
+         carriersLabel.textContent = updateCarrierDensity();
+         RLabel.textContent = thermistorResistance().toFixed(0);
+         initCarriers(); // This will add/remove electrons based on temperature change
+         updateExplanation(); 
+       }); 
+
+       // Buttons 
+       startBtn.addEventListener('click', function() { 
+         running = !running; 
+         startBtn.textContent = running ? 'Pause Conduction' : 'Start Conduction'; 
+       }); 
+
+       resetBtn.addEventListener('click', function() { 
+         running = false; 
+         startBtn.textContent = 'Start Conduction'; 
+         carriers.length = 0; // Clear all carriers
+         lastTemperature = 20; // Reset temperature tracking
+         // Setup initial electrons at 20°C
+         setupInitialCarriers();
+         voltage = 3; 
+         temperature = 20; 
+         vSlider.value = '3'; 
+         tSlider.value = '20'; 
+         vLabel.textContent = '3.0 V'; 
+         tLabel.textContent = '20 °C'; 
+         carriersLabel.textContent = updateCarrierDensity();
+         RLabel.textContent = thermistorResistance().toFixed(0);
+         updateExplanation(); 
+       }); 
+
+       function updateAtomVibrations() {
+         const tempNorm = Math.min(Math.max((temperature - 20) / 130, 0), 1);
+         const vibrationAmplitude = tempNorm * 3; // Max 3 pixels vibration
+         const vibrationSpeed = 2 + tempNorm * 3; // Vibration frequency increases with temperature
+         
+         for (const atom of lattice) {
+           atom.vibrationPhase += vibrationSpeed * 0.016; // Approximate 60fps
+           const vibrationX = Math.sin(atom.vibrationPhase) * vibrationAmplitude;
+           const vibrationY = Math.cos(atom.vibrationPhase * 0.7) * vibrationAmplitude;
+           
+           atom.x = atom.baseX + vibrationX;
+           atom.y = atom.baseY + vibrationY;
+         }
+       }
+
+       function update(dt) { 
+         // Update atom vibrations continuously (even when not running)
+         updateAtomVibrations();
+
+         if (!running) return;
+
+         const tempNorm = Math.min(Math.max((temperature - 20) / 130, 0), 1); 
+         const drift = (voltage / 12) * 60 * (0.3 + 0.7 * tempNorm); // More carriers = more current
+         const vMax = (voltage / 12) * 150 * (0.4 + 0.6 * tempNorm);
+
+         // Update charge carriers (electrons only)
+         for (const carrier of carriers) { 
+           // Age electrons - new electrons become old after 2.5 seconds
+           if (carrier.isNew) {
+             carrier.age += dt;
+             if (carrier.age > 2.5) {
+               carrier.isNew = false; // Transition from red to blue
+             }
+           }
+
+           // Electron movement
+           carrier.vx += drift * dt; 
+           carrier.x += carrier.vx * dt; 
+           carrier.y += carrier.vy * dt; 
+
+           // Add thermal motion 
+           const thermalMotion = 15 * tempNorm;
+           carrier.vx += (Math.random() - 0.5) * thermalMotion * dt;
+           carrier.vy += (Math.random() - 0.5) * thermalMotion * dt;
+
+           // Boundary conditions 
+           if (carrier.x < 0) carrier.x += W; 
+           if (carrier.x > W) carrier.x -= W; 
+
+           if (carrier.y < yMin) { 
+             carrier.y = yMin; 
+             carrier.vy *= -0.5; 
+           } 
+           if (carrier.y > yMax) { 
+             carrier.y = yMax; 
+             carrier.vy *= -0.5; 
+           } 
+
+           // Speed limiting 
+           const sp = Math.hypot(carrier.vx, carrier.vy); 
+           if (sp > vMax && vMax > 0) { 
+             const k = vMax / sp; 
+             carrier.vx *= k; 
+             carrier.vy *= k; 
+           } 
+         } 
+       } 
+
+       function draw() { 
+         ctx.clearRect(0, 0, W, H); 
+
+         // Draw semiconductor lattice - all nuclei same color
+         for (const atom of lattice) { 
+           ctx.beginPath(); 
+           ctx.arc(atom.x, atom.y, ATOM_RADIUS, 0, Math.PI * 2); 
+           
+           // All nuclei same color - gray for consistency
+           ctx.strokeStyle = '#6b7280'; // Gray outline
+           ctx.fillStyle = '#f3f4f6';   // Light gray fill
+           
+           ctx.lineWidth = 2; 
+           ctx.stroke(); 
+           ctx.fill(); 
+         } 
+
+         // Draw charge carriers (electrons only)
+         for (const carrier of carriers) { 
+           ctx.beginPath(); 
+           
+           // Simple color scheme: old electrons blue, new electrons red
+           ctx.fillStyle = carrier.isNew ? '#ff0000' : '#1e40af'; // Red for new, blue for old
+           
+           ctx.arc(carrier.x, carrier.y, 3, 0, Math.PI * 2); 
+           ctx.fill(); 
+         }
+       } 
+
+       function loop(now) { 
+         const dt = Math.min(0.05, (now - last) / 1000); 
+         last = now; 
+         update(dt); 
+         draw(); 
+         window.requestAnimationFrame(loop); 
+       } 
+
+       // Initialize
+       lastTemperature = 20; // Initialize temperature tracking
+       carriersLabel.textContent = updateCarrierDensity();
+       RLabel.textContent = thermistorResistance().toFixed(0);
+       updateExplanation(); 
+       window.requestAnimationFrame(loop); 
+     })(); 
+   </script> 
+ </div>
+
+<p>As temperature increases, more electrons gain enough thermal energy to jump from the valence band to the conduction band, creating more charge carriers and reducing resistance.</p>
+ 
+  <h4>LED (Light Emitting Diode)</h4>
+
+<div class="component-detail">
+    <div class="component-symbol">
+        <svg width="150" height="60" viewBox="0 0 150 60">
+            <line x1="10" y1="30" x2="30" y2="30" stroke="#000" stroke-width="2"/>
+            <line x1="30" y1="20" x2="30" y2="40" stroke="#000" stroke-width="2"/>
+            <line x1="30" y1="25" x2="40" y2="25" stroke="#000" stroke-width="2"/>
+            <line x1="30" y1="35" x2="40" y2="35" stroke="#000" stroke-width="2"/>
+            <line x1="40" y1="30" x2="140" y2="30" stroke="#000" stroke-width="2"/>
+            <path d="M 50 20 L 55 25 L 50 30 M 55 20 L 60 25 L 55 30" stroke="#00ff00" stroke-width="1.5" fill="none"/>
+        </svg>
+    </div>
+    
+    <div class="component-info">
+        <h5>Action:</h5>
+        <p>Emits light when forward-biased (current flows in the direction of the arrow). Requires a current-limiting resistor.</p>
+        
+        <h5>Applications:</h5>
+        <ul>
+            <li>Indicator lights</li>
+            <li>Display panels</li>
+            <li>Traffic signals</li>
+            <li>Lighting applications</li>
+        </ul>
+    </div>
+</div>
+
+<h3>Interactive Component Explorer</h3>
+
+<p>Explore how different components behave in circuits:</p>
+
+<iframe scrolling="no" title="Circuit Components Explorer" src="https://www.geogebra.org/material/iframe/id/components-explorer/width/800/height/600/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width="100%" height="600px" style="border:0px;" allowfullscreen> </iframe>
+
+<h3>Practical Applications</h3>
+
+<div class="practical-example">
+    <h4>Automatic Night Light Circuit</h4>
+    <p>A practical application using an LDR and transistor to automatically turn on lights when it gets dark:</p>
+    <ul>
+        <li>LDR detects light level</li>
+        <li>Circuit amplifies the signal</li>
+        <li>LED or lamp turns on when dark</li>
+        <li>Automatically turns off when light returns</li>
+    </ul>
+</div>
+
+<div class="practical-example">
+    <h4>Temperature Alarm System</h4>
+    <p>Using a thermistor to create a temperature monitoring system:</p>
+    <ul>
+        <li>Thermistor monitors temperature changes</li>
+        <li>Circuit detects when threshold is exceeded</li>
+        <li>Alarm sounds when temperature is too high</li>
+        <li>Can be calibrated for different temperature ranges</li>
+    </ul>
+</div>
+
+</body>
+</html>
