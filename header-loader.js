@@ -1,4 +1,16 @@
 document.addEventListener("DOMContentLoaded", function() {
+    if (!window.gtag) {
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function(){dataLayer.push(arguments);};
+
+        const gaScript = document.createElement('script');
+        gaScript.async = true;
+        gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-XRKVYJZ5K3';
+        document.head.appendChild(gaScript);
+
+        gtag('js', new Date());
+        gtag('config', 'G-XRKVYJZ5K3');
+    }
     fetch('../header.html')
         .then(response => response.text())
         .then(data => {
