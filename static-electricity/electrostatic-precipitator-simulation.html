@@ -40,15 +40,23 @@
     }
     .controls-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
     button {
-      padding: 6px 16px; font-size: 12px; font-weight: 500; border: none; border-radius: 4px;
+      padding: 10px 24px; font-size: 0.9rem; font-weight: 600; border: none; border-radius: 24px;
       cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px;
-      transition: transform .15s ease, box-shadow .15s ease, background-color .2s ease;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.16); min-width: 60px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12); min-width: 80px;
     }
-    .btn-on { background-color: #4caf50; color: #fff; }
-    .btn-off { background-color: #f44336; color: #fff; }
-    .btn-reset { background-color: #ff9800; color: #fff; }
-    button:hover { transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.24); }
+    .btn-on { background-color: #43A047; color: #fff; }
+    .btn-off { background-color: #E53935; color: #fff; }
+    .btn-reset { background-color: #FB8C00; color: #fff; }
+    button:hover { 
+      transform: translateY(-1px); 
+      box-shadow: 0 4px 8px rgba(0,0,0,0.24);
+      filter: brightness(1.1);
+    }
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+    }
     .status-card {
       background: #fff; border: 1px solid #e0e0e0; border-radius: 4px;
       padding: 8px 12px; font-size: 13px; font-weight: 500; text-align: center;
@@ -75,7 +83,7 @@
     <div class="simulation-area">
       <canvas id="canvas"></canvas>
       <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#2196f3;"></div><span>Clean Air</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#9ACD32;"></div><span>Clean Air</span></div>
         <div class="legend-item"><div class="legend-dot" style="background:#795548;"></div><span>Dust/Smoke</span></div>
         <div class="legend-item"><div class="legend-dot" style="background:#ffb300;"></div><span>Charged (−)</span></div>
         <div class="legend-item"><div class="legend-dot" style="background:#424242;"></div><span>Negative Plates</span></div>
@@ -257,7 +265,7 @@
         ctx.globalAlpha = this.opacity;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = '#2196f3';
+        ctx.fillStyle = '#9ACD32';
         ctx.fill();
         ctx.globalAlpha = 1;
       }
@@ -280,7 +288,7 @@
       ctx.fillRect(OUTLET.x, OUTLET.y, OUTLET.width, OUTLET.height);
 
       // Flow arrows (4 lanes across housing)
-      ctx.strokeStyle = 'rgba(33,150,243,0.5)';
+      ctx.strokeStyle = 'rgba(154, 205, 50, 0.5)';
       ctx.lineWidth = 2;
       for (let i = 0; i < 4; i++) {
         const y = HOUSING.y + 0.15*HOUSING.height + i * (0.2*HOUSING.height);

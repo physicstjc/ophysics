@@ -57,21 +57,32 @@
         <p>In other words, $A = Z + N$.</p>
         
         
-        <table width="100%"><tr><td>
-            <h3>Check for Understanding</h3>
-            <p>
-                The conventional notation for the iron nucleus is $^{56}_{26}\text{Fe}$. State	</p>
-            <ol type="a"><li>the number of protons,</li><li>the number of neutrons,</li>
-                <li>the nucleon number, in its nucleus.</li></ol>
-            
-            <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
-            <div id="ans1" style="display:none">
-            <ol type="a"><li>26</li><li>30</li>
-                <li>56</li></ol>
-            
+    <div class="quiz-container">
+        <h3>Checking for Understanding</h3>
+        <div class="quiz-content">
+            <div class="problem-box">
+                <p>The conventional notation for the iron nucleus is $^{56}_{26}\text{Fe}$. State</p>
+                <ol type="a">
+                    <li>the number of protons,</li>
+                    <li>the number of neutrons,</li>
+                    <li>the nucleon number, in its nucleus.</li>
+                </ol>
             </div>
             
-            </td></tr></table>
+            <div class="button-container">
+                <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
+            </div>
+
+            <div id="ans1" style="display:none; background: #e8f5e9; padding: 16px; border-radius: 4px; border-left: 4px solid #4caf50; margin-top: 16px;">
+                <p style="font-weight: 700; color: #2e7d32; margin-bottom: 8px;">Solution:</p>
+                <ol type="a">
+                    <li>26</li>
+                    <li>30</li>
+                    <li>56</li>
+                </ol>
+            </div>
+        </div>
+    </div>
 
         <h3>Isotopes</h3>
         
@@ -84,52 +95,58 @@
                 <figcaption>The 3 isotopes of hydrogen. Note that they each have exactly one proton but a different number of neutrons.</figcaption>
         </figure>
         
-<table width="100%"><tr><td>
-            <h3>Check for Understanding</h3>
-    <p>The nuclear notation of an isotope of nitrogen is $^{14}_7\text{N}$. Which of the following is another isotope of nitrogen?</p>
-                
-    <div id='block-1' style='padding: 5px;'>
-    <label for='15N7' style=' padding: 5px;'>
-      <input type='radio' name='option' value='15N7' id='option-1' style='margin-right: 5px; vertical-align: middle; ' />
-      $^{15}_7\text{N}$</label>
-    <span id='result-1'></span></div>
-    <div id='block-2' style='padding: 5px;'>
-    <label for='15N8' style=' padding: 5px;'>
-      <input type='radio' name='option' value='15N8' id='option-2' style='margin-right: 5px; vertical-align: middle; ' />
-      $^{15}_8\text{N}$</label>
-    <span id='result-2'></span></div>
-       <div id='block-3' style='padding: 5px;'>
-    <label for='14N8' style=' padding: 5px;'>
-      <input type='radio' name='option' value='14N8' id='option-3' style='margin-right: 5px; vertical-align: middle; ' />
-      $^{14}_8\text{N}$</label>
-    <span id='result-3'></span></div>
-                
-    <script>
-                
-    function displayAnswer1() {
-    if (document.getElementById('option-1').checked) {
-        document.getElementById('result-1').style.color = 'green'
-        document.getElementById('result-1').innerHTML = 'Correct!'
-    }
-    if (document.getElementById('option-2').checked) {        
-        document.getElementById('result-2').style.color = 'red'
-        document.getElementById('result-2').innerHTML = 'Incorrect!'
-      showCorrectAnswer1()
-    }
-    if (document.getElementById('option-3').checked) {
-        document.getElementById('result-3').style.color = 'red'
-        document.getElementById('result-3').innerHTML = 'Incorrect!'
-      showCorrectAnswer1()
-    }
-  }
-
-        </script>
-                                             
-                
-            <button id="btn1" data-div="ans1" onclick="displayAnswer1()">Check Answer</button>
-
+    <div class="quiz-container">
+        <h3>Checking for Understanding</h3>
+        <div class="quiz-content">
+            <div class="problem-box">
+                <p>The nuclear notation of an isotope of nitrogen is $^{14}_7\text{N}$. Which of the following is another isotope of nitrogen?</p>
+            </div>
             
-            </td></tr></table>
+            <div id="choices-2" class="choice-container">
+                <div class="choice-option" onclick="selectOptionStandard(this, 'choice-1')">
+                    $^{15}_7\text{N}$
+                </div>
+                <div class="choice-option" onclick="selectOptionStandard(this, 'choice-2')">
+                    $^{15}_8\text{N}$
+                </div>
+                <div class="choice-option" onclick="selectOptionStandard(this, 'choice-3')">
+                    $^{14}_8\text{N}$
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button onclick="checkNitrogenIsotope()">Check Answer</button>
+            </div>
+            <div id="feedback-2" class="feedback-box"></div>
+        </div>
+    </div>
+
+    <script>
+        function selectOptionStandard(el) {
+            const container = el.parentElement;
+            container.querySelectorAll('.choice-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+                
+        function checkNitrogenIsotope() {
+            const container = document.getElementById('choices-2');
+            const selected = container.querySelector('.choice-option.selected');
+            const feedback = document.getElementById('feedback-2');
+            
+            if (!selected) {
+                alert('Please select an option first.');
+                return;
+            }
+            
+            const choiceText = selected.innerText.trim();
+            if (choiceText.includes('^{15}_7')) {
+                feedback.innerHTML = '<div style="background: #e8f5e9; padding: 16px; border-radius: 4px; border-left: 4px solid #4caf50;"><p style="font-weight: 700; color: #2e7d32; margin-bottom: 8px;">Correct!</p><p>Isotopes of nitrogen must have the same number of protons (7).</p></div>';
+            } else {
+                feedback.innerHTML = '<div style="background: #fbe9e7; padding: 16px; border-radius: 4px; border-left: 4px solid #ff5722;"><p style="font-weight: 700; color: #d32f2f; margin-bottom: 8px;">Incorrect.</p><p>Isotopes must have the same number of protons (the lower number). Nitrogen always has 7 protons.</p></div>';
+            }
+            if (typeof renderMathInElement === 'function') { try { renderMathInElement(feedback); } catch(e){} }
+        }
+    </script>
 
         <div id="footer"></div>        
     </body>

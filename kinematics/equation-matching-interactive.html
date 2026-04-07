@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kinematics Equation Matching</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <style>
+        body { background: transparent; margin: 0; padding: 10px; font-family: 'Roboto', system-ui, sans-serif; }
+        .match-card {
+            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border-radius: 8px;
+            background: #ffffff;
+            /* Elevation z1 */
+            box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+            position: relative;
+            overflow: hidden;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .match-card:hover {
+            /* Elevation z2 */
+            box-shadow: 0 3px 3px -2px rgba(0,0,0,.2), 0 3px 4px 0 rgba(0,0,0,.14), 0 1px 8px 0 rgba(0,0,0,.12);
+        }
+        .match-card.selected {
+            background-color: #e8eaf6;
+            color: #3f51b5;
+            box-shadow: 0 0 0 2px #3f51b5;
+        }
+        .match-card.matched {
+            background-color: #f1f8e9;
+            color: #4caf50;
+            opacity: 0.6;
+            box-shadow: none;
+            cursor: default;
+            pointer-events: none;
+        }
+        .match-card.error {
+            background-color: #ffebee;
+            color: #f44336;
+            animation: m-shake 0.4s;
+            box-shadow: 0 0 0 2px #f44336;
+        }
+        @keyframes m-shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-5px); }
+            40% { transform: translateX(5px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+        /* Ripple effect simulation */
+        .match-card::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(63, 81, 181, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+        .match-card:active::after {
+            width: 200%;
+            height: 200%;
+        }
+    </style>
+</head>
+<body>
+    <div class="max-w-3xl mx-auto bg-slate-50 min-h-[480px] rounded-xl overflow-hidden shadow-lg border border-slate-200">
+        <div class="p-4 bg-[#3f51b5] text-white">
+            <h2 class="text-xl font-medium tracking-tight">Kinematics Matcher</h2>
+            <p class="text-sm opacity-80 mt-1">Match equations to the variables they omit</p>
+        </div>
+
+        <div class="p-4">
+            <div class="grid grid-cols-2 gap-6">
+                <!-- Equations Column -->
+                <div class="space-y-3" id="equations-col">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest pl-1">Equations</h3>
+                </div>
+
+                <!-- Missing Variables Column -->
+                <div class="space-y-3" id="variables-col">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest pl-1">Omitted Variable</h3>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-between items-center pt-4 border-t border-slate-200">
+                <div id="progress" class="text-sm font-medium text-slate-600">Matched: 0 / 4</div>
+                <button id="resetBtn" class="uppercase text-xs tracking-widest font-bold text-[#3f51b5] px-4 py-2 hover:bg-indigo-50 rounded-md transition-colors">Reset Game</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const pairs = [
+            { eq: 'v = u + at', missing: 'Displacement (s)', id: 1 },
+            { eq: 's = \\frac{1}{2}(u + v)t', missing: 'Acceleration (a)', id: 2 },
+            { eq: 's = ut + \\frac{1}{2}at^2', missing: 'Final Velocity (v)', id: 3 },
+            { eq: 'v^2 = u^2 + 2as', missing: 'Time (t)', id: 4 }
+        ];
+
+        let selectedEquation = null;
+        let selectedVariable = null;
+        let matchedCount = 0;
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function initGame() {
+            const eqCol = document.getElementById('equations-col');
+            const varCol = document.getElementById('variables-col');
+            matchedCount = 0;
+            updateProgress();
+
+            document.querySelectorAll('h3').forEach(h => {
+                const next = h.nextElementSibling;
+                while(next && next.tagName !== 'H3') {
+                    const toRemove = next;
+                    // Move to next before removing
+                    // Actually easier to just clear innerHTML and re-add headers
+                }
+            });
+
+            // Re-render
+            renderColumns();
+            renderMath();
+        }
+
+        function renderColumns() {
+            const eqCol = document.getElementById('equations-col');
+            const varCol = document.getElementById('variables-col');
+            
+            // Clear but keep headers
+            eqCol.innerHTML = '<h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest pl-1">Equations</h3>';
+            varCol.innerHTML = '<h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest pl-1">Omitted Variable</h3>';
+
+            const shuffledEqs = shuffle([...pairs]);
+            const shuffledVars = shuffle([...pairs]);
+
+            shuffledEqs.forEach(pair => {
+                const div = document.createElement('div');
+                div.className = 'match-card p-2 text-center font-medium text-lg';
+                div.dataset.id = pair.id;
+                div.innerHTML = `$$${pair.eq}$$`;
+                div.onclick = () => selectItem(div, 'equation');
+                eqCol.appendChild(div);
+            });
+
+            shuffledVars.forEach(pair => {
+                const div = document.createElement('div');
+                div.className = 'match-card p-2 text-center font-medium text-xs text-slate-600';
+                div.dataset.id = pair.id;
+                div.innerText = pair.missing;
+                div.onclick = () => selectItem(div, 'variable');
+                varCol.appendChild(div);
+            });
+        }
+
+        function selectItem(el, type) {
+            if (el.classList.contains('matched')) return;
+
+            if (type === 'equation') {
+                if (selectedEquation) selectedEquation.classList.remove('selected');
+                selectedEquation = el;
+            } else {
+                if (selectedVariable) selectedVariable.classList.remove('selected');
+                selectedVariable = el;
+            }
+
+            el.classList.add('selected');
+            checkMatch();
+        }
+
+        function checkMatch() {
+            if (selectedEquation && selectedVariable) {
+                if (selectedEquation.dataset.id === selectedVariable.dataset.id) {
+                    // Success
+                    selectedEquation.classList.remove('selected');
+                    selectedVariable.classList.remove('selected');
+                    selectedEquation.classList.add('matched');
+                    selectedVariable.classList.add('matched');
+                    matchedCount++;
+                    updateProgress();
+                    selectedEquation = null;
+                    selectedVariable = null;
+                } else {
+                    // Failure
+                    const e = selectedEquation;
+                    const v = selectedVariable;
+                    e.classList.add('error');
+                    v.classList.add('error');
+                    setTimeout(() => {
+                        e.classList.remove('error', 'selected');
+                        v.classList.remove('error', 'selected');
+                    }, 400);
+                    selectedEquation = null;
+                    selectedVariable = null;
+                }
+            }
+        }
+
+        function updateProgress() {
+            document.getElementById('progress').innerText = `Matched: ${matchedCount} / 4`;
+            if (matchedCount === 4) {
+                document.getElementById('progress').innerHTML = '<span class="text-green-600 font-bold">Perfect! You know your equations!</span>';
+            }
+        }
+
+        function renderMath() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ]
+            });
+        }
+
+        document.getElementById('resetBtn').onclick = initGame;
+
+        window.onload = initGame;
+    </script>
+</body>
+</html>

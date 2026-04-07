@@ -50,18 +50,39 @@
             \end{align}$$</p>
 
     <p>When tackling kinematics problems, a quick way to decide which equation to use is to look carefully at which variables are given and which one you need to find. The four equations involve only five quantities — $u$ (initial velocity), $v$ (final velocity), $a$ (acceleration), $t$ (time), and $s$(displacement). Each equation links four of them, leaving one out. So if, for example, time $t$ is not mentioned anywhere in the problem, the best choice is usually the equation $v^2 = u^2 + 2as$, since that one does not involve $t$. By matching the known and unknown quantities against the “missing variable” in each equation, you can quickly narrow down the correct equation to apply.</p>
-    <iframe src="https://physicstjc.github.io/sls/kinematics-quiz/kinematics-equations.html" width="720px" height="480px"></iframe>
+    
+    <iframe src="equation-matching-interactive.html" width="100%" height="520px" style="border:none; border-radius: 12px; overflow: hidden;"></iframe>
+
         <div class="quiz-container">
-      <h3>Checking for Understanding</h3>
-            <div><div class="problem" id="problem"></div><br>
-    <input type="text" id="answer" placeholder="Enter your answer" style="width: 200px;"><span id="unit"></span></div>
-    <div class="button-container">
-    <button id="submit" onclick="checkAnswer()">Submit</button>
-    <button id="previous" onclick="previousProblem()">Previous</button>
-    <button id="next" onclick="nextProblem()">Next</button></div>
-    <div class="score" id="score">Score: 0/0</div>
-    <div class="feedback" id="feedback"></div>
-  </div>
+            <h3>Checking for Understanding</h3>
+            
+            <div class="quiz-content">
+                <div class="problem-box">
+                    <div class="problem" id="problem"></div>
+                </div>
+                
+                <div class="input-group">
+                    <input type="number" id="answer" placeholder=" ">
+                    <label for="answer">Enter your answer</label>
+                    <span id="unit" style="position: absolute; right: 0; top: 12px; color: rgba(0,0,0,0.6); font-weight: 500;"></span>
+                </div>
+                
+                <div class="button-container">
+                    <button id="submit" onclick="checkAnswer()">Submit</button>
+                    <button id="previous" onclick="previousProblem()" class="secondary">Previous</button>
+                    <button id="next" onclick="nextProblem()" class="secondary">Next</button>
+                </div>
+                
+                <div class="quiz-footer">
+                    <div class="score-display" id="score">Score: 0/0</div>
+                    <div class="feedback-display" id="feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            /* Removed redundant inline styles as they are now in main.css */
+        </style>
     
   <script>
     let currentProblemIndex = 0;
@@ -179,69 +200,76 @@
 
     shuffle(problems);
 function displayProblem() {
-    if (currentProblemIndex >= problems.length) {
-        document.getElementById('problem').innerText = 'Congratulations! You have completed all problems.';
-        document.getElementById('answer').style.display = 'none';
-        document.getElementById('unit').style.display = 'none';
-        document.getElementById('submit').style.display = 'none';
-        document.getElementById('previous').style.display = 'none';
-        document.getElementById('next').style.display = 'none';
-        document.getElementById('feedback').style.display = 'none'; // Hide feedback
-        return;
-    }
+                if (currentProblemIndex >= problems.length) {
+                    document.getElementById('problem').innerHTML = '<div style="text-align: center; padding: 20px;"><div style="font-size: 3rem; margin-bottom: 10px;">🎉</div><div style="font-size: 1.25rem; font-weight: 500; color: #3f51b5;">Congratulations!</div><div style="color: rgba(0,0,0,0.6);">You have completed all questions.</div></div>';
+                    document.getElementById('answer').parentElement.style.display = 'none';
+                    document.getElementById('submit').style.display = 'none';
+                    document.getElementById('previous').style.display = 'none';
+                    document.getElementById('next').style.display = 'none';
+                    return;
+                }
 
-    document.getElementById('problem').innerText = problems[currentProblemIndex].question;
-    document.getElementById('unit').innerText = problems[currentProblemIndex].unit;
-    document.getElementById('feedback').innerText = '';
-    document.getElementById('feedback').style.display = 'block'; // Show feedback for other problems
+                document.getElementById('problem').innerText = problems[currentProblemIndex].question;
+                document.getElementById('unit').innerText = problems[currentProblemIndex].unit;
+                document.getElementById('feedback').innerText = '';
+                document.getElementById('answer').parentElement.style.display = 'block';
+                document.getElementById('submit').style.display = 'inline-block';
 
-    const answerInput = document.getElementById('answer');
-    const submitButton = document.getElementById('submit');
+                const answerInput = document.getElementById('answer');
+                const submitButton = document.getElementById('submit');
+                const feedbackEl = document.getElementById('feedback');
 
-    if (attemptedProblems[currentProblemIndex]) {
-        answerInput.value = attemptedProblems[currentProblemIndex].userAnswer;
-        answerInput.disabled = true;
-        submitButton.disabled = true;
-        submitButton.classList.add('disabled');
-        document.getElementById('feedback').innerText = attemptedProblems[currentProblemIndex].feedback;
-    } else {
-        answerInput.value = '';
-        answerInput.disabled = false;
-        submitButton.disabled = false;
-        submitButton.classList.remove('disabled');
-        document.getElementById('feedback').innerText = '';
-    }
-}
+                if (attemptedProblems[currentProblemIndex]) {
+                    answerInput.value = attemptedProblems[currentProblemIndex].userAnswer;
+                    answerInput.disabled = true;
+                    submitButton.disabled = true;
+                    submitButton.style.opacity = '0.5';
+                    feedbackEl.innerText = attemptedProblems[currentProblemIndex].feedback;
+                    feedbackEl.style.color = attemptedProblems[currentProblemIndex].feedback.startsWith('Correct') ? '#2e7d32' : '#d32f2f';
+                } else {
+                    answerInput.value = '';
+                    answerInput.disabled = false;
+                    submitButton.disabled = false;
+                    submitButton.style.opacity = '1';
+                    feedbackEl.innerText = '';
+                }
+                updateScore();
+            }
 
-    function updateScore() {
-      document.getElementById('score').innerText = `Score: ${score}/${attempts}`;
-    }
+            function updateScore() {
+                document.getElementById('score').innerText = `Score: ${score}/${attempts}`;
+            }
 
-    function checkAnswer() {
-      const userAnswer = parseFloat(document.getElementById('answer').value);
-      const correctAnswer = problems[currentProblemIndex].correctAnswer;
+            function checkAnswer() {
+                const userAnswer = parseFloat(document.getElementById('answer').value);
+                const feedbackEl = document.getElementById('feedback');
+                const currentProblem = problems[currentProblemIndex];
 
-      attempts++;
-      let feedback = '';
-      if (userAnswer === correctAnswer) {
-        score++;
-        feedback = 'Correct!';
-        document.getElementById('feedback').classList.add('correct');
-        document.getElementById('feedback').classList.remove('incorrect');
-      } else {
-        feedback = 'Incorrect. ' + problems[currentProblemIndex].explanation;
-        document.getElementById('feedback').classList.add('incorrect');
-        document.getElementById('feedback').classList.remove('correct');
-      }
+                if (isNaN(userAnswer)) {
+                    feedbackEl.innerText = 'Please enter a valid number.';
+                    feedbackEl.style.color = '#f57c00';
+                    return;
+                }
 
-      updateScore();
-      attemptedProblems[currentProblemIndex] = { userAnswer, feedback };
+                attempts++;
+                let feedbackText = '';
+                if (Math.abs(userAnswer - currentProblem.correctAnswer) < 0.01) {
+                    score++;
+                    feedbackText = 'Correct! ' + (currentProblem.explanation || '');
+                    feedbackEl.style.color = '#2e7d32';
+                } else {
+                    feedbackText = 'Incorrect. ' + currentProblem.explanation;
+                    feedbackEl.style.color = '#d32f2f';
+                }
 
-      document.getElementById('answer').disabled = true;
-      document.getElementById('submit').disabled = true;
-      document.getElementById('submit').classList.add('disabled');
-      document.getElementById('feedback').innerText = feedback;
-    }
+                updateScore();
+                attemptedProblems[currentProblemIndex] = { userAnswer, feedback: feedbackText };
+
+                document.getElementById('answer').disabled = true;
+                document.getElementById('submit').disabled = true;
+                document.getElementById('submit').style.opacity = '0.5';
+                feedbackEl.innerText = feedbackText;
+            }
 
     function nextProblem() {
         if (currentProblemIndex < problems.length - 1) {

@@ -70,18 +70,31 @@
             <p>\[ V_1 = I_{\text{series}} \cdot R_1, \quad V_2 = I_{\text{series}} \cdot R_2 \]</p>
 
     <div class="quiz-container">
-        
-        <h3>Check for Understanding</h3>
-        <div class="problem" id="problem"></div><br>
-        <div class="button-container">
-            <button id="submit" onclick="checkAnswer()">Submit</button><br><br>
-            <button id="previous" onclick="previousProblem()">Previous</button>
-            <button id="next" onclick="nextProblem()">Next</button>
-        </div>
-        <div class="feedback" id="feedback"></div>
-        <div class="score" id="score">Score: 0/0</div>
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar">0%</div>
+        <h3>Checking for Understanding</h3>
+        <div class="quiz-content">
+            <div class="problem-box">
+                <div id="problem"></div>
+            </div>
+            
+            <div class="button-container">
+                <button id="submit" onclick="checkAnswer()">Submit</button>
+                <button id="previous" class="secondary" onclick="previousProblem()">Previous</button>
+                <button id="next" class="secondary" onclick="nextProblem()">Next</button>
+            </div>
+            
+            <div class="quiz-footer">
+                <div class="score-display" id="score">Score: 0/0</div>
+                <div class="feedback-display" id="feedback"></div>
+            </div>
+
+            <div id="solution" class="solution-box">
+                <div class="solution-title">Explanation:</div>
+                <div id="solution-text" class="solution-text"></div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
         </div>
     </div>
     
@@ -178,54 +191,77 @@
 
         function displayProblem() {
             if (currentProblemIndex >= problems.length) {
-                const summaryMessage = `🎉 Congratulations! You have completed all problems. Your final score is ${score} out of ${attempts}.`;
-                document.getElementById('problem').innerHTML = `<p>${summaryMessage}</p>`;
+                document.getElementById('problem').innerHTML = `
+                    <div class="quiz-success">
+                        <span class="emoji">🎉</span>
+                        <div class="title">Quiz Completed!</div>
+                        <div class="message">You have completed all circuit combination problems.</div>
+                        <div class="message" style="font-weight: 500; color: #4caf50; margin-top: 8px;">Final Score: ${score} out of ${attempts}</div>
+                        <button onclick="location.reload()" style="margin-top: 24px;">Restart Quiz</button>
+                    </div>
+                `;
                 document.getElementById('submit').style.display = 'none';
                 document.getElementById('previous').style.display = 'none';
                 document.getElementById('next').style.display = 'none';
-                document.getElementById('feedback').innerText = '';
-
-                // **Set Progress Bar to 100%**
-                const progressBar = document.getElementById('progress-bar');
-                progressBar.style.width = `100%`;
-                progressBar.innerText = `100% Completed`;
-
+                document.getElementById('feedback').style.display = 'none';
                 return;
             }
 
-            const problem = problems[currentProblemIndex];
-            document.getElementById('problem').innerHTML = `
-                <img src="${problem.diagram}" alt="Circuit Diagram"><br>
-                <p>${problem.question}</p>
-                ${problem.options.map(option => `
-                    <label>
-                        <input type="radio" name="answer" value="${option}"> ${option}
-                    </label><br>
-                `).join('')}
-            `;
-            document.getElementById('feedback').innerText = '';
+            // Restore elements that might have been hidden by success screen
+            document.getElementById('submit').style.display = 'block';
+            document.getElementById('previous').style.display = 'block';
+            document.getElementById('next').style.display = 'block';
+            document.getElementById('feedback').style.display = 'block';
 
-            if (attemptedProblems[currentProblemIndex]) {
-                const { userAnswer, feedback, isCorrect } = attemptedProblems[currentProblemIndex];
-                document.querySelector(`input[name="answer"][value="${userAnswer}"]`).checked = true;
-                document.querySelectorAll('input[name="answer"]').forEach(radio => radio.disabled = true);
+            const problem = problems[currentProblemIndex];
+            const isAttempted = !!attemptedProblems[currentProblemIndex];
+            
+            let problemHTML = `
+                <img src="${problem.diagram}" alt="Circuit Diagram">
+                <p>${problem.question}</p>
+                <div class="choice-container">
+            `;
+            
+            problem.options.forEach(option => {
+                const isSelected = isAttempted && attemptedProblems[currentProblemIndex].userAnswer === option;
+                problemHTML += `
+                    <div class="choice-option ${isSelected ? 'selected' : ''}" onclick="selectOption(this)">
+                        <input type="radio" name="answer" value="${option}" ${isSelected ? 'checked' : ''} ${isAttempted ? 'disabled' : ''}>
+                        <span>${option}</span>
+                    </div>
+                `;
+            });
+            
+            problemHTML += `</div>`;
+            document.getElementById('problem').innerHTML = problemHTML;
+
+            const feedbackEl = document.getElementById('feedback');
+            const solutionEl = document.getElementById('solution');
+            const solutionTextEl = document.getElementById('solution-text');
+
+            if (isAttempted) {
+                const { feedback, isCorrect } = attemptedProblems[currentProblemIndex];
+                feedbackEl.innerText = feedback;
+                feedbackEl.className = 'feedback-display ' + (isCorrect ? 'correct' : 'incorrect');
                 document.getElementById('submit').disabled = true;
-                document.getElementById('submit').classList.add('disabled');
-                document.getElementById('feedback').innerText = feedback;
-                if (isCorrect) {
-                    document.getElementById('feedback').classList.add('correct');
-                    document.getElementById('feedback').classList.remove('incorrect');
-                } else {
-                    document.getElementById('feedback').classList.add('incorrect');
-                    document.getElementById('feedback').classList.remove('correct');
-                }
+                
+                solutionEl.style.display = 'block';
+                solutionTextEl.innerText = problems[currentProblemIndex].explanation;
             } else {
+                feedbackEl.innerText = '';
+                feedbackEl.className = 'feedback-display';
                 document.getElementById('submit').disabled = false;
-                document.getElementById('submit').classList.remove('disabled');
-                document.getElementById('feedback').classList.remove('correct', 'incorrect');
+                solutionEl.style.display = 'none';
             }
             
             updateProgressBar();
+        }
+
+        function selectOption(el) {
+            if (attemptedProblems[currentProblemIndex]) return;
+            document.querySelectorAll('.choice-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            el.querySelector('input').checked = true;
         }
         
 
@@ -249,23 +285,28 @@
                 score++;
                 feedback = '✅ Correct!';
                 isCorrect = true;
-                document.getElementById('feedback').classList.add('correct');
-                document.getElementById('feedback').classList.remove('incorrect');
             } else {
-                feedback = `❌ Incorrect. ${problems[currentProblemIndex].explanation}`;
-                document.getElementById('feedback').classList.add('incorrect');
-                document.getElementById('feedback').classList.remove('correct');
+                feedback = '❌ Incorrect';
+                isCorrect = false;
             }
 
             updateScore();
             attemptedProblems[currentProblemIndex] = { userAnswer, feedback, isCorrect };
+
+            const feedbackEl = document.getElementById('feedback');
+            feedbackEl.innerText = feedback;
+            feedbackEl.className = 'feedback-display ' + (isCorrect ? 'correct' : 'incorrect');
 
             // Disable all radio buttons
             const radios = document.querySelectorAll('input[name="answer"]');
             radios.forEach(radio => radio.disabled = true);
             // Disable the submit button
             document.getElementById('submit').disabled = true;
-            document.getElementById('submit').classList.add('disabled');
+            
+            // Show solution
+            document.getElementById('solution').style.display = 'block';
+            document.getElementById('solution-text').innerText = problems[currentProblemIndex].explanation;
+
             // Show feedback
             document.getElementById('feedback').innerText = feedback;
         }
@@ -285,6 +326,11 @@
                 currentProblemIndex--;
                 displayProblem();
             }
+        }
+
+        function updateProgressBar() {
+            const progress = (currentProblemIndex / problems.length) * 100;
+            document.getElementById('progress-bar').style.width = progress + '%';
         }
 
         // Initialize the first problem

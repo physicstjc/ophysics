@@ -41,42 +41,38 @@
         <p>For example, if a person pushes a box with a force of 50 N over a distance of 3 meters, the work done is 50 N × 3.0 m = 150 J. By understanding and applying this formula, students can solve various problems involving work, whether it's lifting an object, moving it horizontally, or analyzing situations where forces and distances are given.</p>
         
                     
-        <table width="100%"><tr><td>
-            <h3>Check for Understanding</h3>
-            <p>A boy is pulling a box with a horizontal force of 10 N. There is a frictional force of 2.0 N due to the ground. After moving 3.0 m, what is:</p>
-            <ol><li>the work done by the boy,</li>
-                <li>the work done against friction,</li>
-                <li>the net work done?</li>
-            </ol>
-            <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
-            <div id="ans1" style="display:none">
-            <ol><li>Work done by the boy = Force exerted by the boy × distance moved in the direction of the force <br>
-                = 10 N × 3.0 m = 30 J
-                </li>
-                <li>Work done against friction = - work done by friction <br>
-                    = - (2.0 N)(-3.0 m) = 6.0 J</li>
-                <li>Net work done = Work done by boy + Work done by friction
-                <br> = Work done by boy - Work done against friction
-                <br> = 30 J - 6.0 J = 24 J</li>
-            </ol>
+    <div class="quiz-container">
+        <h3>Checking for Understanding</h3>
+        <div class="quiz-content">
+            <div class="problem-box">
+                <div id="problem"></div>
             </div>
             
-            </td></tr></table>
-        
-         <div class="quiz-container">
-            <h3>Check for Understanding</h3>
-            <div class="problem" id="problem"></div><br>
-            <div><input type="text" id="answer" placeholder="Enter your answer" style="width:200px">
-            <span id="unit"></span>
-            <div class="button">    
-            <button id="submit" onclick="checkAnswer()">Submit</button>
-            <button id="previous" onclick="previousProblem()">Previous</button>
-            <button id="next" onclick="nextProblem()">Next</button></div>
-            <div class="feedback" id="feedback"></div>
-            <div class="score" id="score">Score: 0/0</div>
+            <div class="input-group">
+                <input type="number" id="answer" placeholder=" ">
+                <label for="answer">Enter your answer</label>
+                <span id="unit" style="position: absolute; right: 0; top: 12px; color: rgba(0,0,0,0.6); font-weight: 500;"></span>
+            </div>
+
+            <div class="button-container">
+                <button id="submit" onclick="checkAnswer()">Submit</button>
+                <button id="previous" class="secondary" onclick="previousProblem()">Previous</button>
+                <button id="next" class="secondary" onclick="nextProblem()">Next</button>
+            </div>
+            
+            <div class="quiz-footer">
+                <div class="score-display" id="score">Score: 0/0</div>
+                <div class="feedback-display" id="feedback"></div>
+            </div>
+
+            <div id="solution" style="display: none; background: #e8f5e9; padding: 16px; border-radius: 4px; border-left: 4px solid #4caf50; margin-top: 16px;">
+                <div style="font-weight: 700; color: #2e7d32; margin-bottom: 8px;">Explanation:</div>
+                <div id="solution-text" style="font-size: 0.875rem; line-height: 1.5; color: rgba(0,0,0,0.87);"></div>
+            </div>
+        </div>
     </div>
         
-        <script>
+    <script>
         let currentProblemIndex = 0;
         let score = 0;
         let attempts = 0;
@@ -84,24 +80,39 @@
 
         const problems = [
             {
+                question: "A boy is pulling a box with a horizontal force of 10 N. After moving 3.0 m, what is the work done by the boy?",
+                correctAnswer: 30,
+                unit: "J",
+                explanation: "Work done by the boy = Force exerted by the boy × distance moved in the direction of the force = 10 N × 3.0 m = 30 J"
+            },
+            {
+                question: "A boy is pulling a box with a horizontal force of 10 N. There is a frictional force of 2.0 N due to the ground. After moving 3.0 m, what is the work done against friction?",
+                correctAnswer: 6,
+                unit: "J",
+                explanation: "Work done against friction = magnitude of frictional force × distance = 2.0 N × 3.0 m = 6.0 J"
+            },
+            {
+                question: "A boy is pulling a box with a horizontal force of 10 N. There is a frictional force of 2.0 N due to the ground. After moving 3.0 m, what is the net work done?",
+                correctAnswer: 24,
+                unit: "J",
+                explanation: "Net work done = Work done by boy - Work done against friction = 30 J - 6.0 J = 24 J"
+            },
+            {
                 question: "A force of 10 N is applied to push a box across a floor for a distance of 5.0 meters. How much work is done by the force?",
                 correctAnswer: 50,
                 unit: "J",
-                equation: "Work done = Force × Distance",
                 explanation: "Using the formula Work done = Force × Distance, where Force = 10 N and Distance = 5.0 m, we get Work done = 10 N × 5.0 m = 50 J."
             },
             {
-                question: "A person lifts a 20 kg box to a height of 2.0 meters. What is the work done against gravity? (Take g = 9.8 m/s². Give your answer in 2 significant figures.)",
+                question: "A person lifts a 20 kg box to a height of 2.0 meters. What is the work done against gravity? (Take g = 9.8 m/s². Give your answer to 2 significant figures.)",
                 correctAnswer: 390,
                 unit: "J",
-                equation: "Work done = Force × Distance",
-                explanation: "Using the formula Work done = Force × Distance, where Force = mass × gravity = 20 kg × 9.8 m/s² = 196 N and Distance = 2.0 m, we get Work done = 196 N × 2 m = 392 J = 390 J (2 sig. fig.). Note that if the question had asked for work done by gravity, the answer will be -390 J."
+                explanation: "Using the formula Work done = Force × Distance, where Force = weight = mass × gravity = 20 kg × 9.8 m/s² = 196 N and Distance = 2.0 m, we get Work done = 196 N × 2 m = 392 J ≈ 390 J (2 sig. fig.)."
             },
             {
                 question: "A car engine exerts a force of 5000 N to move the car 100 meters along a road. How much work is done by the engine?",
                 correctAnswer: 500000,
                 unit: "J",
-                equation: "Work done = Force × Distance",
                 explanation: "Using the formula Work done = Force × Distance, where Force = 5000 N and Distance = 100 m, we get Work done = 5000 N × 100 m = 500000 J."
             }
         ];
@@ -117,33 +128,54 @@
 
     function displayProblem() {
       if (currentProblemIndex >= problems.length) {
-        document.getElementById('problem').innerText = 'Congratulations! You have completed all problems.';
+                document.getElementById('problem').innerHTML = `
+                    <div class="quiz-success">
+                        <span class="emoji">🎉</span>
+                        <div class="title">Quiz Completed!</div>
+                        <div class="message">You have completed all work problems.</div>
+                        <div class="message" style="font-weight: 500; color: #9ACD32; margin-top: 8px;">Final Score: ${score} out of ${attempts}</div>
+                        <button onclick="location.reload()" style="margin-top: 24px;">Restart Quiz</button>
+                    </div>
+                `;
         document.getElementById('answer').style.display = 'none';
-        document.getElementById('unit').style.display = 'none';
+        document.querySelectorAll('.input-group').forEach(el => el.style.display = 'none');
         document.getElementById('submit').style.display = 'none';
         document.getElementById('previous').style.display = 'none';
         document.getElementById('next').style.display = 'none';
+        document.getElementById('feedback').style.display = 'none';
         return;
       }
 
-      document.getElementById('problem').innerText = problems[currentProblemIndex].question;
-      document.getElementById('unit').innerText = problems[currentProblemIndex].unit;
-      document.getElementById('feedback').innerText = '';
+      const problem = problems[currentProblemIndex];
+      document.getElementById('problem').innerText = problem.question;
+      document.getElementById('unit').innerText = problem.unit;
+      
       const answerInput = document.getElementById('answer');
       const submitButton = document.getElementById('submit');
+      const feedbackEl = document.getElementById('feedback');
+      const solutionEl = document.getElementById('solution');
+      const solutionTextEl = document.getElementById('solution-text');
 
       if (attemptedProblems[currentProblemIndex]) {
         answerInput.value = attemptedProblems[currentProblemIndex].userAnswer;
         answerInput.disabled = true;
         submitButton.disabled = true;
-        submitButton.classList.add('disabled');
-        document.getElementById('feedback').innerText = attemptedProblems[currentProblemIndex].feedback;
+        submitButton.style.opacity = '0.5';
+        feedbackEl.innerText = attemptedProblems[currentProblemIndex].feedback;
+        feedbackEl.className = 'feedback-display ' + (attemptedProblems[currentProblemIndex].isCorrect ? 'correct' : 'incorrect');
+        solutionEl.style.display = 'block';
+        solutionTextEl.innerHTML = problem.explanation;
+        if (typeof renderMathInElement === 'function') {
+            renderMathInElement(solutionTextEl);
+        }
       } else {
         answerInput.value = '';
         answerInput.disabled = false;
         submitButton.disabled = false;
-        submitButton.classList.remove('disabled');
-        document.getElementById('feedback').innerText = '';
+        submitButton.style.opacity = '1';
+        feedbackEl.innerText = '';
+        feedbackEl.className = 'feedback-display';
+        solutionEl.style.display = 'none';
       }
     }
 
@@ -152,33 +184,32 @@
     }
 
     function checkAnswer() {
-      const userAnswer = parseFloat(document.getElementById('answer').value);
+      const answerInput = document.getElementById('answer');
+      const userAnswer = parseFloat(answerInput.value);
+      if (isNaN(userAnswer)) {
+          alert("⚠️ Please enter a numerical answer.");
+          return;
+      }
       const correctAnswer = problems[currentProblemIndex].correctAnswer;
 
       attempts++;
       let feedback = '';
-      if (userAnswer === correctAnswer) {
+      let isCorrect = false;
+      if (Math.abs(userAnswer - correctAnswer) < 1) {
         score++;
-        feedback = 'Correct!';
-        document.getElementById('feedback').classList.add('correct');
-        document.getElementById('feedback').classList.remove('incorrect');
+        feedback = '✅ Correct!';
+        isCorrect = true;
       } else {
-        feedback = 'Incorrect. ' + problems[currentProblemIndex].explanation;
-        document.getElementById('feedback').classList.add('incorrect');
-        document.getElementById('feedback').classList.remove('correct');
+        feedback = '❌ Incorrect. ';
       }
 
       updateScore();
-      attemptedProblems[currentProblemIndex] = { userAnswer, feedback };
-
-      document.getElementById('answer').disabled = true;
-      document.getElementById('submit').disabled = true;
-      document.getElementById('submit').classList.add('disabled');
-      document.getElementById('feedback').innerText = feedback;
+      attemptedProblems[currentProblemIndex] = { userAnswer, feedback, isCorrect };
+      displayProblem();
     }
 
     function nextProblem() {
-      if (currentProblemIndex < problems.length - 1) {
+      if (currentProblemIndex < problems.length) {
         currentProblemIndex++;
         displayProblem();
       }

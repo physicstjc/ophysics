@@ -60,6 +60,167 @@
         <h3>Experiment to Verify Laws of Reflection</h3>
     <iframe width="100%" height="460" src="https://www.youtube.com/embed/hZ3miHIE-fg?si=Yw70PUCKX45HatDy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
+    <div class="quiz-container">
+        <h3>Checking for Understanding</h3>
+        <div class="quiz-content">
+            <div class="problem-box">
+                <div id="problem"></div>
+            </div>
+            
+            <div id="choices-container" class="choice-container"></div>
+
+            <div class="button-container">
+                <button id="submit" onclick="checkAnswer()">Submit</button>
+                <button id="previous" class="secondary" onclick="previousProblem()">Previous</button>
+                <button id="next" class="secondary" onclick="nextProblem()">Next</button>
+            </div>
+            
+            <div class="quiz-footer">
+                <div class="score-display" id="score">Score: 0/0</div>
+                <div class="feedback-display" id="feedback"></div>
+            </div>
+
+            <div id="solution" style="display: none; background: #e8f5e9; padding: 16px; border-radius: 4px; border-left: 4px solid #4caf50; margin-top: 16px;">
+                <div style="font-weight: 700; color: #2e7d32; margin-bottom: 8px;">Explanation:</div>
+                <div id="solution-text" style="font-size: 0.875rem; line-height: 1.5; color: rgba(0,0,0,0.87);"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentProblemIndex = 0;
+        let score = 0;
+        let attempts = 0;
+        const attemptedProblems = [];
+
+        const problems = [
+            {
+                question: "An object is placed 15 cm in front of a plane mirror. What is the distance between the object and its image?",
+                correctAnswer: "30 cm",
+                options: ["15 cm", "30 cm", "7.5 cm", "45 cm"],
+                explanation: "The image in a plane mirror is the same distance behind the mirror as the object is in front of it. Object to mirror = 15 cm, Mirror to image = 15 cm. Total distance = 30 cm."
+            },
+            {
+                question: "A man stands 2 m in front of a plane mirror. He walks 0.5 m towards the mirror. How far is he now from his image?",
+                correctAnswer: "3.0 m",
+                options: ["1.5 m", "2.0 m", "3.0 m", "4.0 m"],
+                explanation: "Initial distance: 2 m. New distance to mirror: 2 - 0.5 = 1.5 m. New distance mirror to image: 1.5 m. Total distance = 1.5 + 1.5 = 3.0 m."
+            },
+            {
+                question: "Which of the following describes the image formed by a plane mirror?",
+                correctAnswer: "Virtual, upright and laterally inverted",
+                options: [
+                    "Real, inverted and same size",
+                    "Virtual, upright and laterally inverted",
+                    "Real, upright and enlarged",
+                    "Virtual, inverted and diminished"
+                ],
+                explanation: "Plane mirrors always form virtual, upright, same-sized, and laterally inverted images."
+            }
+        ];
+
+        function displayProblem() {
+            if (currentProblemIndex >= problems.length) {
+                document.getElementById('problem').innerHTML = `
+                    <div class="quiz-success">
+                        <span class="emoji">✨</span>
+                        <div class="title">Reflection Mastery!</div>
+                        <div class="message">You have completed the reflection quiz.</div>
+                        <div class="message" style="font-weight: 500; color: #9ACD32; margin-top: 8px;">Final Score: ${score}/${attempts}</div>
+                        <button onclick="location.reload()" style="margin-top: 24px;">Try Again</button>
+                    </div>
+                `;
+                document.getElementById('submit').style.display = 'none';
+                document.getElementById('previous').style.display = 'none';
+                document.getElementById('next').style.display = 'none';
+                document.getElementById('feedback').style.display = 'none';
+                document.getElementById('choices-container').style.display = 'none';
+                return;
+            }
+
+            const problem = problems[currentProblemIndex];
+            document.getElementById('problem').innerText = problem.question;
+            const choicesContainer = document.getElementById('choices-container');
+            choicesContainer.innerHTML = '';
+            choicesContainer.style.display = 'flex';
+
+            const isAttempted = !!attemptedProblems[currentProblemIndex];
+
+            problem.options.forEach(option => {
+                const isSelected = isAttempted && attemptedProblems[currentProblemIndex].userAnswer === option;
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'choice-option' + (isSelected ? ' selected' : '');
+                optionDiv.onclick = () => selectOption(optionDiv, option);
+                
+                optionDiv.innerHTML = `
+                    <input type="radio" name="answer" value="${option}" ${isSelected ? 'checked' : ''} ${isAttempted ? 'disabled' : ''}>
+                    <span>${option}</span>
+                `;
+                choicesContainer.appendChild(optionDiv);
+            });
+
+            const feedbackEl = document.getElementById('feedback');
+            const solutionEl = document.getElementById('solution');
+            const solutionTextEl = document.getElementById('solution-text');
+
+            if (isAttempted) {
+                const { feedback, isCorrect } = attemptedProblems[currentProblemIndex];
+                feedbackEl.innerText = feedback;
+                feedbackEl.className = 'feedback-display ' + (isCorrect ? 'correct' : 'incorrect');
+                document.getElementById('submit').disabled = true;
+                document.getElementById('submit').style.opacity = '0.5';
+                solutionEl.style.display = 'block';
+                solutionTextEl.innerText = problem.explanation;
+            } else {
+                feedbackEl.innerText = '';
+                feedbackEl.className = 'feedback-display';
+                document.getElementById('submit').disabled = false;
+                document.getElementById('submit').style.opacity = '1';
+                solutionEl.style.display = 'none';
+            }
+            document.getElementById('score').innerText = `Score: ${score}/${attempts}`;
+        }
+
+        function selectOption(el, val) {
+            if (attemptedProblems[currentProblemIndex]) return;
+            document.querySelectorAll('.choice-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            el.querySelector('input').checked = true;
+        }
+
+        function checkAnswer() {
+            const selected = document.querySelector('input[name="answer"]:checked');
+            if (!selected) return;
+
+            const userAnswer = selected.value;
+            const problem = problems[currentProblemIndex];
+            attempts++;
+            
+            const isCorrect = userAnswer === problem.correctAnswer;
+            if (isCorrect) score++;
+
+            const feedback = isCorrect ? "✅ Correct!" : "❌ Incorrect.";
+            attemptedProblems[currentProblemIndex] = { userAnswer, feedback, isCorrect };
+            displayProblem();
+        }
+
+        function nextProblem() {
+            if (currentProblemIndex < problems.length) {
+                currentProblemIndex++;
+                displayProblem();
+            }
+        }
+
+        function previousProblem() {
+            if (currentProblemIndex > 0) {
+                currentProblemIndex--;
+                displayProblem();
+            }
+        }
+
+        displayProblem();
+    </script>
+
     
     </body>
 </html>

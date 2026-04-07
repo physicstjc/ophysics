@@ -29,26 +29,34 @@
         
         <p>From Newton’s first law, it means that for an object that is moving with constant velocity, it experiences zero net force. However, from our daily experience, it seems that a force has to be exerted to keep an object moving with constant velocity. This is because of the presence of frictional force, which opposes motion. Therefore, for a body that is moving at constant velocity, the force exerted and the frictional force adds up to zero (they are directed in the opposite directions and have the same magnitude).</p>
         
-        <table width="100%"><tr><td>
-            <h3>Check for Understanding</h3>
-            <p>Which of the following scenarios show a body acted upon by a resultant force?</p>
+    <div class="quiz-container">
+        <h3>Checking for Understanding</h3>
+        <div class="quiz-content">
+            <div class="problem-box">
+                <p>Which of the following scenarios show a body acted upon by a resultant force?</p>
+                <ol>
+                    <li>a body at rest</li>
+                    <li>a body moving in a straight line at a constant speed.</li>
+                    <li>a body moving in a circular path at a constant speed.</li>
+                    <li>a body moving falling from rest.</li>
+                </ol>
+                <p>A. 1 and 2<br>
+                B. 1, 2 and 3<br>
+                C. 3 and 4<br>
+                D. 4 only </p>
+            </div>
             
-            <ol><li> a body at rest</li>
-            <li>a body moving in a straight line at a constant speed.</li>
-            <li>a body moving in a circular path at a constant speed.</li>
-            <li>a body moving falling from rest.</li></ol>
-            
-            <p>A. 1 and 2<br>
-            B. 1, 2 and 3<br>
-            C. 3 and 4<br>
-            D. 4 only </p>
-            
-            <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
-            <div id="ans1" style="display:none">
+            <div class="button-container">
+                <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
+            </div>
+
+            <div id="ans1" style="display:none; background: #e8f5e9; padding: 16px; border-radius: 4px; border-left: 4px solid #4caf50; margin-top: 16px;">
+                <p style="font-weight: 700; color: #2e7d32; margin-bottom: 8px;">Solution:</p>
                 <p>C. 3 and 4.</p>
-                <p>A body moving in a circular path will have a changing velocity even if its magntitude is constant, as its direction is changing. A body falling from rest is undergoing gravitational force and hence, accelerating.</p></div>
-            
-            </td></tr></table>
+                <p>A body moving in a circular path will have a changing velocity even if its magnitude is constant, as its direction is changing. A body falling from rest is undergoing gravitational force and hence, accelerating.</p>
+            </div>
+        </div>
+    </div>
         
         <h3>Newton's Second Law of Motion</h3>
         
@@ -61,30 +69,40 @@
         
         <p>There will be many examples for practice in the next page. For now, let's try something simple.</p>
 
-        <table width="100%"><tr><td>
-            <p>The mass of a lift is 2000 kg. When the tension in the supporting cable is 28 000 N, its acceleration is:</p>
-            <p>A. 4.2 m s<sup>-2</sup> upwards<br>
-            B. 4.2 m s<sup>-2</sup> downwards<br>
-            C. 14 m s<sup>-2</sup> upwards<br>
-            D. 30 m s<sup>-2</sup> downwards </p>
+    <div class="quiz-container">
+        <h3>Sample Problem 2</h3>
+        <div class="quiz-content">
+            <div class="problem-box">
+                <p>The mass of a lift is 2000 kg. When the tension in the supporting cable is 28 000 N, its acceleration is:</p>
+                <ol type="A">
+                    <li>4.2 m s<sup>-2</sup> upwards</li>
+                    <li>4.2 m s<sup>-2</sup> downwards</li>
+                    <li>14 m s<sup>-2</sup> upwards</li>
+                    <li>30 m s<sup>-2</sup> downwards</li>
+                </ol>
+            </div>
             
-            <button id="btn1" data-div="ans2" onclick="reveal(this)">Reveal Answer</button>
-            <div id="ans2" style="display:none">
-                <p>A. 4.2 m s<sup>-2</sup> upwards</p>
-                    $$\begin{aligned}
-                    W &= 2000 \times 9.81 \\
-                    &= 19 600 \text{ N}\\
-                    \end{aligned}$$
-                                     
-                    Since T > W, the net force and acceleration are upward. We will express the net force as the difference between T and W. Ensure that the difference is positive (i.e. take T - W instead of W - T),  as acceleration is taken to be positive.
+            <div class="button-container">
+                <button id="btn1" data-div="ans2" onclick="reveal(this)">Reveal Answer</button>
+            </div>
 
-                    $$\begin{aligned}
-                    F_{net} &= ma \\
-                    T - W &= ma \\
-                    28000 - 19600 &= (2000)a\\
-                    a &= 4.2 \text{ m s}^{-2}\\
-                    \end{aligned}$$</div>
-            </td></tr></table>
+            <div id="ans2" style="display:none; background: #e8f5e9; padding: 16px; border-radius: 4px; border-left: 4px solid #4caf50; margin-top: 16px;">
+                <p style="font-weight: 700; color: #2e7d32; margin-bottom: 8px;">Solution:</p>
+                <p>A. 4.2 m s<sup>-2</sup> upwards</p>
+                $$\begin{aligned}
+                W &= 2000 \times 9.81 \\
+                &= 19 600 \text{ N}\\
+                \end{aligned}$$
+                <p>Since T > W, the net force and acceleration are upward. We will express the net force as the difference between T and W. Ensure that the difference is positive (i.e. take T - W instead of W - T), as acceleration is taken to be positive.</p>
+                $$\begin{aligned}
+                F_{net} &= ma \\
+                T - W &= ma \\
+                28000 - 19600 &= (2000)a\\
+                a &= 4.2 \text{ m s}^{-2}\\
+                \end{aligned}$$
+            </div>
+        </div>
+    </div>
         
         <h3>Newton's Third Law of Motion</h3>
         
@@ -100,17 +118,29 @@
 <li>The normal contact force exerted by a table on a book resting on it and the normal contact force exerted by the book on the table.</li>
 </ol>
 
-<table width="100%"><tr><td>
-            <p>In a game of tug of war, team A consists of members with a larger total mass than team B. Team B, however, eventually wins the competition due to superiority in strength. What can we say about the forces each team exerts on the other team?</p>
-            <p>A. Team A exerts a larger tension on team B than team B exerts on team A.<br>
-            B. Team A exerts a smaller tension on team B than team B exerts on team A.<br>
-            C. Team A exerts a tension on team B that is equal to the tension exerted by team B on team A.<br>
-            D. Team A exerts a tension on team B while team B does not exert any tension.</p>
+    <div class="quiz-container">
+        <h3>Sample Problem 3</h3>
+        <div class="quiz-content">
+            <div class="problem-box">
+                <p>In a game of tug of war, team A consists of members with a larger total mass than team B. Team B, however, eventually wins the competition due to superiority in strength. What can we say about the forces each team exerts on the other team?</p>
+                <ol type="A">
+                    <li>Team A exerts a larger tension on team B than team B exerts on team A.</li>
+                    <li>Team A exerts a smaller tension on team B than team B exerts on team A.</li>
+                    <li>Team A exerts a tension on team B that is equal to the tension exerted by team B on team A.</li>
+                    <li>Team A exerts a tension on team B while team B does not exert any tension.</li>
+                </ol>
+            </div>
             
-            <button id="btn1" data-div="ans3" onclick="reveal(this)">Reveal Answer</button>
-            <div id="ans3" style="display:none">
-            <p>C. The magnitude of action-reaction pairs must be equal.</div>
-            </td></tr></table>
+            <div class="button-container">
+                <button id="btn1" data-div="ans3" onclick="reveal(this)">Reveal Answer</button>
+            </div>
+
+            <div id="ans3" style="display:none; background: #e8f5e9; padding: 16px; border-radius: 4px; border-left: 4px solid #4caf50; margin-top: 16px;">
+                <p style="font-weight: 700; color: #2e7d32; margin-bottom: 8px;">Solution:</p>
+                <p>C. The magnitude of action-reaction pairs must be equal.</p>
+            </div>
+        </div>
+    </div>
     
        
         <div id="footer"></div>        

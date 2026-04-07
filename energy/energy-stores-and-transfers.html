@@ -96,35 +96,38 @@
         
         <p>However, regardless of which diagram is used, the energy calculations should still be consistent.</p>
         
-        <table width="100%"><tr><td>
-        <h3>Check for Understanding</h3>
-        <p>A 5.0 kg object is dropped from a height of 10 meters. Assuming there is no air resistance, calculate the velocity of the object just before it hits the ground using the principle of conservation of energy. Take g = 10 m s⁻²</p>
-        
-        <button id="btn1" data-div="ans2" onclick="reveal(this)">Reveal Answer</button>
-        <div id="ans2" style="display:none">
-            <p>The principle of conservation of energy states that the total energy remains constant. Here, the potential energy at the height is converted into kinetic energy just before impact.</p>
-            <p>Potential Energy (PE) at height, $PE = mgh = 5.0 \text{ kg} \times 10 \text{ m/s}^2 \times 10 \text{ m} = 500 \text{ J}$</p>
-            <p>Kinetic Energy (KE) just before impact, $KE = \dfrac{1}{2}mv^2 = PE$</p>
-            <p>So, $\dfrac{1}{2} \times 5.0 \text{ kg} \times v^2 = 500 \text{ J}$</p>
-            <p>$v^2 = \dfrac{500 \text{ J}}{2.5 \text{ kg}} = 200 \text{ m}^2/\text{s}^2$</p>
-            <p>$v = \sqrt{200 \text{ m}^2/\text{s}^2} = 14 \text{ m/s}$</p>
-            <p>Therefore, the velocity of the object just before it hits the ground is 14 m/s.</p>
-        </div>
-            
-            </td></tr></table>
-        
     <div class="quiz-container">
-        <h3>Check for Understanding</h3>
-            <div class="problem" id="problem"></div><br>
-            <div><input type="text" id="answer" placeholder="Enter your answer" style='width:200px'><span id="unit"></span></div>
-            <div><button id="submit" onclick="checkAnswer()">Submit</button>
-            <button id="previous" onclick="previousProblem()">Previous</button>
-            <button id="next" onclick="nextProblem()">Next</button></div>
-            <div class="feedback" id="feedback"></div>
-            <div class="score" id="score">Score: 0/0</div>
+        <h3>Checking for Understanding</h3>
+        <div class="quiz-content">
+            <div class="problem-box">
+                <div id="problem"></div>
+            </div>
+            
+            <div class="input-group">
+                <input type="number" id="answer" placeholder=" ">
+                <label for="answer">Enter your answer</label>
+                <span id="unit" style="position: absolute; right: 0; top: 12px; color: rgba(0,0,0,0.6); font-weight: 500;"></span>
+            </div>
+
+            <div class="button-container">
+                <button id="submit" onclick="checkAnswer()">Submit</button>
+                <button id="previous" class="secondary" onclick="previousProblem()">Previous</button>
+                <button id="next" class="secondary" onclick="nextProblem()">Next</button>
+            </div>
+            
+            <div class="quiz-footer">
+                <div class="score-display" id="score">Score: 0/0</div>
+                <div class="feedback-display" id="feedback"></div>
+            </div>
+
+            <div id="solution" style="display: none; background: #e8f5e9; padding: 16px; border-radius: 4px; border-left: 4px solid #4caf50; margin-top: 16px;">
+                <div style="font-weight: 700; color: #2e7d32; margin-bottom: 8px;">Explanation:</div>
+                <div id="solution-text" style="font-size: 0.875rem; line-height: 1.5; color: rgba(0,0,0,0.87);"></div>
+            </div>
+        </div>
     </div>
         
-        <script>
+    <script>
         let currentProblemIndex = 0;
         let score = 0;
         let attempts = 0;
@@ -132,31 +135,33 @@
 
         const problems = [
             {
+                question: "A 5.0 kg object is dropped from a height of 10 meters. Assuming there is no air resistance, calculate the velocity of the object just before it hits the ground using the principle of conservation of energy. Take g = 10 m s⁻²",
+                correctAnswer: 14,
+                unit: "m/s",
+                explanation: "The principle of conservation of energy states that the total energy remains constant. Here, the potential energy at the height is converted into kinetic energy just before impact.<br>Potential Energy (PE) at height, $PE = mgh = 5.0 \text{ kg} \times 10 \text{ m/s}^2 \times 10 \text{ m} = 500 \text{ J}$<br>Kinetic Energy (KE) just before impact, $KE = \\dfrac{1}{2}mv^2 = PE$<br>So, $\\dfrac{1}{2} \times 5.0 \text{ kg} \times v^2 = 500 \text{ J}$<br>$v^2 = \\dfrac{500 \text{ J}}{2.5 \text{ kg}} = 200 \text{ m}^2/\text{s}^2$<br>$v = \\sqrt{200 \text{ m}^2/\text{s}^2} \\approx 14 \text{ m/s}$"
+            },
+            {
                 question: "A battery supplies 100 J of energy electrically to a light bulb, which then transfers 60 J by light to the surroundings. How much energy is converted into the internal energy of the bulb?",
                 correctAnswer: 40,
                 unit: "J",
-                equation: "Gain in Internal Energy = Energy transferred electrically - Light Energy",
                 explanation: "The total energy supplied is 100 J and the light energy produced is 60 J. Therefore, the internal energy gain is 100 J - 60 J = 40 J."
             },
             {
                 question: "A toaster converts 1500 J of electrical energy into 1200 J of internal energy. How much energy is lost as sound and other forms?",
                 correctAnswer: 300,
                 unit: "J",
-                equation: "Energy Lost = Total Energy - Internal Energy",
                 explanation: "The total energy supplied is 1500 J and the internal energy produced is 1200 J. Therefore, the energy lost as sound and other forms is 1500 J - 1200 J = 300 J."
             },
             {
                 question: "A hydroelectric dam converts 5000 J of potential energy of water into 4000 J of electrical energy. How much energy is lost during the conversion process?",
                 correctAnswer: 1000,
                 unit: "J",
-                equation: "Energy Lost = Total Energy - Useful Energy",
                 explanation: "The total potential energy of water is 5000 J and the electrical energy produced is 4000 J. Therefore, the energy lost during the conversion process is 5000 J - 4000 J = 1000 J."
             },
             {
                 question: "A person consumes food that provides 2000 J of chemical potential energy. If 1500 J is converted into kinetic energy for running, how much energy is lost as internal energy?",
                 correctAnswer: 500,
                 unit: "J",
-                equation: "Internal Energy = Total Energy - Kinetic Energy",
                 explanation: "The total chemical potential energy provided by food is 2000 J and the kinetic energy used for running is 1500 J. Therefore, the internal energy lost is 2000 J - 1500 J = 500 J."
             }
         ];
@@ -172,33 +177,54 @@
 
     function displayProblem() {
       if (currentProblemIndex >= problems.length) {
-        document.getElementById('problem').innerText = 'Congratulations! You have completed all problems.';
+        document.getElementById('problem').innerHTML = `
+                    <div class="quiz-success">
+                        <span class="emoji">🎉</span>
+                        <div class="title">Quiz Completed!</div>
+                        <div class="message">You have completed all energy store and transfer problems.</div>
+                        <div class="message" style="font-weight: 500; color: #9ACD32; margin-top: 8px;">Final Score: ${score} out of ${attempts}</div>
+                        <button onclick="location.reload()" style="margin-top: 24px;">Restart Quiz</button>
+                    </div>
+                `;
         document.getElementById('answer').style.display = 'none';
-        document.getElementById('unit').style.display = 'none';
+        document.querySelectorAll('.input-group').forEach(el => el.style.display = 'none');
         document.getElementById('submit').style.display = 'none';
         document.getElementById('previous').style.display = 'none';
         document.getElementById('next').style.display = 'none';
+        document.getElementById('feedback').style.display = 'none';
         return;
       }
 
-      document.getElementById('problem').innerText = problems[currentProblemIndex].question;
-      document.getElementById('unit').innerText = problems[currentProblemIndex].unit;
-      document.getElementById('feedback').innerText = '';
+      const problem = problems[currentProblemIndex];
+      document.getElementById('problem').innerText = problem.question;
+      document.getElementById('unit').innerText = problem.unit;
+      
       const answerInput = document.getElementById('answer');
       const submitButton = document.getElementById('submit');
+      const feedbackEl = document.getElementById('feedback');
+      const solutionEl = document.getElementById('solution');
+      const solutionTextEl = document.getElementById('solution-text');
 
       if (attemptedProblems[currentProblemIndex]) {
         answerInput.value = attemptedProblems[currentProblemIndex].userAnswer;
         answerInput.disabled = true;
         submitButton.disabled = true;
-        submitButton.classList.add('disabled');
-        document.getElementById('feedback').innerText = attemptedProblems[currentProblemIndex].feedback;
+        submitButton.style.opacity = '0.5';
+        feedbackEl.innerText = attemptedProblems[currentProblemIndex].feedback;
+        feedbackEl.className = 'feedback-display ' + (attemptedProblems[currentProblemIndex].isCorrect ? 'correct' : 'incorrect');
+        solutionEl.style.display = 'block';
+        solutionTextEl.innerHTML = problem.explanation;
+        if (typeof renderMathInElement === 'function') {
+            renderMathInElement(solutionTextEl);
+        }
       } else {
         answerInput.value = '';
         answerInput.disabled = false;
         submitButton.disabled = false;
-        submitButton.classList.remove('disabled');
-        document.getElementById('feedback').innerText = '';
+        submitButton.style.opacity = '1';
+        feedbackEl.innerText = '';
+        feedbackEl.className = 'feedback-display';
+        solutionEl.style.display = 'none';
       }
     }
 
@@ -207,33 +233,32 @@
     }
 
     function checkAnswer() {
-      const userAnswer = parseFloat(document.getElementById('answer').value);
+      const answerInput = document.getElementById('answer');
+      const userAnswer = parseFloat(answerInput.value);
+      if (isNaN(userAnswer)) {
+          alert("⚠️ Please enter a numerical answer.");
+          return;
+      }
       const correctAnswer = problems[currentProblemIndex].correctAnswer;
 
       attempts++;
       let feedback = '';
-      if (userAnswer === correctAnswer) {
+      let isCorrect = false;
+      if (Math.abs(userAnswer - correctAnswer) < 0.1) {
         score++;
-        feedback = 'Correct!';
-        document.getElementById('feedback').classList.add('correct');
-        document.getElementById('feedback').classList.remove('incorrect');
+        feedback = '✅ Correct!';
+        isCorrect = true;
       } else {
-        feedback = 'Incorrect. ' + problems[currentProblemIndex].explanation;
-        document.getElementById('feedback').classList.add('incorrect');
-        document.getElementById('feedback').classList.remove('correct');
+        feedback = '❌ Incorrect. ';
       }
 
       updateScore();
-      attemptedProblems[currentProblemIndex] = { userAnswer, feedback };
-
-      document.getElementById('answer').disabled = true;
-      document.getElementById('submit').disabled = true;
-      document.getElementById('submit').classList.add('disabled');
-      document.getElementById('feedback').innerText = feedback;
+      attemptedProblems[currentProblemIndex] = { userAnswer, feedback, isCorrect };
+      displayProblem();
     }
 
     function nextProblem() {
-      if (currentProblemIndex < problems.length - 1) {
+      if (currentProblemIndex < problems.length) {
         currentProblemIndex++;
         displayProblem();
       }

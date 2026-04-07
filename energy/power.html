@@ -41,20 +41,155 @@
         <p>The standard unit of power is the watt (W), where one watt equals one joule of work done per second (1 W = 1 J/s). For example, if a person does 100 joules of work in 20 seconds, the power exerted is 5.0 watts. </p>
         
         
-        <table width="100%"><tr><td>
-            <h3>Check for Understanding</h3>
-            <p>An elevator has a mass of 1000 kg and carries a maximum load of 800 kg. Determine the minimum power that the motor must deliver to lift the fully loaded elevator at a constant speed of 3.0 m s<sup>-1</sup>.</p>
-            
-            <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
-            <div id="ans1" style="display:none">
-                <p>Given that elevator is travelling at constant speed, this means that the work done by the motor is equal to the gain in gravitational potential energy of the elevator and the load.</p>
-                <p>$P = \dfrac{E}{t} = \dfrac{mgh}{t}$</p>
-                <p>$\>\>\>\>= 1800 \text{ kg} \times 10 \text{ N kg}^{-1} \times 3.0 \text{ m s}^{-1}$</p>
-                <p>$\>\>\>\>= 53 000 \text{ W}$
-            </p>
+        <div class="quiz-container">
+            <h3>Checking for Understanding</h3>
+            <div class="quiz-content">
+                <div class="problem-box">
+                    <div id="problem"></div>
+                </div>
+                
+                <div class="input-group">
+                    <input type="number" id="answer" placeholder=" ">
+                    <label for="answer">Enter your answer</label>
+                    <span id="unit" style="position: absolute; right: 0; top: 12px; color: rgba(0,0,0,0.6); font-weight: 500;"></span>
+                </div>
+
+                <div class="button-container">
+                    <button id="submit" onclick="checkAnswer()">Submit</button>
+                    <button id="previous" class="secondary" onclick="previousProblem()">Previous</button>
+                    <button id="next" class="secondary" onclick="nextProblem()">Next</button>
+                </div>
+                
+                <div class="quiz-footer">
+                    <div class="score-display" id="score">Score: 0/0</div>
+                    <div class="feedback-display" id="feedback"></div>
+                </div>
+
+                <div id="solution" style="display: none; background: #e8f5e9; padding: 16px; border-radius: 4px; border-left: 4px solid #4caf50; margin-top: 16px;">
+                    <div style="font-weight: 700; color: #2e7d32; margin-bottom: 8px;">Explanation:</div>
+                    <div id="solution-text" style="font-size: 0.875rem; line-height: 1.5; color: rgba(0,0,0,0.87);"></div>
+                </div>
             </div>
+        </div>
+
+        <script>
+        let currentProblemIndex = 0;
+        let score = 0;
+        let attempts = 0;
+        const attemptedProblems = [];
+
+        const problems = [
+            {
+                question: "An elevator has a mass of 1000 kg and carries a maximum load of 800 kg. Determine the minimum power that the motor must deliver to lift the fully loaded elevator at a constant speed of 3.0 m s⁻¹.",
+                correctAnswer: 54000,
+                unit: "W",
+                explanation: "Given that the elevator is travelling at constant speed, the work done by the motor per unit time (power) is equal to the rate of gain in gravitational potential energy.<br>$P = \\dfrac{E}{t} = \\dfrac{mgh}{t} = (mg) \\times \\dfrac{h}{t} = (mg) \\times v$<br>$P = 1800 \\text{ kg} \\times 10 \\text{ N kg}^{-1} \\times 3.0 \\text{ m s}^{-1} = 54000 \\text{ W}$"
+            },
+            {
+                question: "A crane lifts a 500 kg concrete block to a height of 20 m in 10 seconds. What is the average power output of the crane? (Take g = 10 m/s²)",
+                correctAnswer: 10000,
+                unit: "W",
+                explanation: "$P = \\dfrac{mgh}{t} = \\dfrac{500 \\times 10 \\times 20}{10} = 10000 \\text{ W}$"
+            }
+        ];
+
+        function displayProblem() {
+            if (currentProblemIndex >= problems.length) {
+                document.getElementById('problem').innerHTML = `
+                    <div class="quiz-success">
+                        <span class="emoji">🎉</span>
+                        <div class="title">Quiz Completed!</div>
+                        <div class="message">You have completed all power problems.</div>
+                        <div class="message" style="font-weight: 500; color: #9ACD32; margin-top: 8px;">Final Score: ${score} out of ${attempts}</div>
+                        <button onclick="location.reload()" style="margin-top: 24px;">Restart Quiz</button>
+                    </div>
+                `;
+                document.getElementById('answer').style.display = 'none';
+                document.querySelectorAll('.input-group').forEach(el => el.style.display = 'none');
+                document.getElementById('submit').style.display = 'none';
+                document.getElementById('previous').style.display = 'none';
+                document.getElementById('next').style.display = 'none';
+                document.getElementById('feedback').style.display = 'none';
+                return;
+            }
+            const problem = problems[currentProblemIndex];
+            document.getElementById('problem').innerText = problem.question;
+            document.getElementById('unit').innerText = problem.unit;
             
-            </td></tr></table>
+            const answerInput = document.getElementById('answer');
+            const submitButton = document.getElementById('submit');
+            const feedbackEl = document.getElementById('feedback');
+            const solutionEl = document.getElementById('solution');
+            const solutionTextEl = document.getElementById('solution-text');
+
+            if (attemptedProblems[currentProblemIndex]) {
+                answerInput.value = attemptedProblems[currentProblemIndex].userAnswer;
+                answerInput.disabled = true;
+                submitButton.disabled = true;
+                submitButton.style.opacity = '0.5';
+                feedbackEl.innerText = attemptedProblems[currentProblemIndex].feedback;
+                feedbackEl.className = 'feedback-display ' + (attemptedProblems[currentProblemIndex].isCorrect ? 'correct' : 'incorrect');
+                solutionEl.style.display = 'block';
+                solutionTextEl.innerHTML = problem.explanation;
+                if (typeof renderMathInElement === 'function') {
+                    renderMathInElement(solutionTextEl);
+                }
+            } else {
+                answerInput.value = '';
+                answerInput.disabled = false;
+                submitButton.disabled = false;
+                submitButton.style.opacity = '1';
+                feedbackEl.innerText = '';
+                feedbackEl.className = 'feedback-display';
+                solutionEl.style.display = 'none';
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('score').innerText = `Score: ${score}/${attempts}`;
+        }
+
+        function checkAnswer() {
+            const answerInput = document.getElementById('answer');
+            const userAnswer = parseFloat(answerInput.value);
+            if (isNaN(userAnswer)) {
+                alert("⚠️ Please enter a numerical answer.");
+                return;
+            }
+            const correctAnswer = problems[currentProblemIndex].correctAnswer;
+
+            attempts++;
+            let feedback = '';
+            let isCorrect = false;
+            if (Math.abs(userAnswer - correctAnswer) < 1) {
+                score++;
+                feedback = '✅ Correct!';
+                isCorrect = true;
+            } else {
+                feedback = '❌ Incorrect. ';
+            }
+
+            updateScore();
+            attemptedProblems[currentProblemIndex] = { userAnswer, feedback, isCorrect };
+            displayProblem();
+        }
+
+        function nextProblem() {
+            if (currentProblemIndex < problems.length) {
+                currentProblemIndex++;
+                displayProblem();
+            }
+        }
+
+        function previousProblem() {
+            if (currentProblemIndex > 0) {
+                currentProblemIndex--;
+                displayProblem();
+            }
+        }
+
+        displayProblem();
+        </script>
         
        
         

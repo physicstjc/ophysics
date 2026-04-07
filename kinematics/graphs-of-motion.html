@@ -28,9 +28,9 @@
         <img src="kinematics%20graphs.png" alt="Graphs of Motion in Kinematics" width=640px>
         <p align="center"><i>The graphs of motion for an object released from rest in free fall.</i></p>
     
-        <p>The following simulation shows the movement of a spider along a straight line, with its displacement varying with time. You can observe how the velocity is calculated at each point using the checkbox "Show velocity calculations". The graph of velocity can also be displayed by checking "Show velocity graph".</p>
+        <p>The following simulation shows the movement of a particle along a straight line, with its displacement varying with time. You can observe how the velocity (the gradient of the displacement-time graph) is calculated at each point using the "Show Calculation" toggle. You can also switch to "Quiz Mode" to test your understanding of describing motion from graphs.</p>
     
-        <iframe scrolling="no" title="Displacement time graph with animation" src="https://www.geogebra.org/material/iframe/id/k3ja7bnm/width/640/height/480/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width="100%" height="480px" style="border:0px;"> </iframe>
+        <iframe scrolling="no" title="Displacement time graph interactive" src="displacement-graph-interactive.html" width="100%" height="600px" style="border:1px solid #eee; border-radius: 8px;"> </iframe>
     
         <table cellpadding="5" cellspacing="0">
             <tr>
@@ -77,28 +77,48 @@
         <iframe scrolling="no" title="Bouncing Ball" src="https://www.geogebra.org/material/iframe/id/zx2uqua3/width/640/height/480/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/false/rc/false/ld/false/sdz/false/ctl/false" width=100% height="460px" style="border:0px;"> </iframe>
 
         <p></p>
-        <table width="100%"><tr><td>
-        <h3>Checking for Understanding</h3>
-        <div id="quiz-container">
-        <div id="plot-container"></div>
-        <p id="question"></p>
-        <div id="answer-container">
-            <input type="number" id="answer" placeholder="Your answer" style="width: 200px;">
-            <span id="unit"></span>
+        <div class="quiz-container">
+            <h3>Checking for Understanding</h3>
+            
+            <div class="quiz-content">
+                <div style="background: #ffffff; border: 1px solid #eee; border-radius: 4px; margin-bottom: 24px;">
+                    <div id="plot-container" style="width: 100%; height: 300px;"></div>
+                </div>
+
+                <div class="problem-box">
+                    <div id="question" style="margin: 0;"></div>
+                </div>
+                
+                <div class="input-group">
+                    <input type="number" id="answer" placeholder=" ">
+                    <label for="answer">Enter your answer</label>
+                    <span id="unit" style="position: absolute; right: 0; top: 12px; color: rgba(0,0,0,0.6); font-weight: 500;"></span>
+                </div>
+                
+                <div class="button-container">
+                    <button id="check-button" onclick="checkAnswer()">Submit</button>
+                    <button id="previous" onclick="prevQuestion()" class="secondary">Previous</button>
+                    <button id="next" onclick="nextQuestion()" class="secondary">Next</button>
+                </div>
+                
+                <div class="quiz-footer">
+                    <div style="display: flex; flex-direction: column; width: 100%; gap: 16px;">
+                        <div style="display: flex; justify-content: space-between; width: 100%;">
+                            <div id="score" class="score-display">Score: 0/0</div>
+                            <div id="feedback" class="feedback-display"></div>
+                        </div>
+                        <div id="solution" style="display: none; background: #e8f5e9; padding: 16px; border-radius: 4px; border-left: 4px solid #4caf50;">
+                            <div style="font-weight: 700; color: #2e7d32; margin-bottom: 8px;">Solution:</div>
+                            <div id="solution-text" style="font-size: 0.875rem; line-height: 1.5; color: rgba(0,0,0,0.87);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="button-container">
-            <button id="check-button" onclick="checkAnswer()">Submit</button>           
-            <button onclick="prevQuestion()">Previous</button>
-            <button onclick="nextQuestion()">Next</button>
-        </div>
-        <p id="score"></p>
-        <p id="feedback"></p>
-            <div id="solution" style="display: none;">
-            <p>Solution:</p>
-            <p id="solution-text"></p>
-        </div>
-    </div>
-            </td></tr></table>
+
+        <style>
+            /* Removed redundant inline styles */
+        </style>
         
     <script>
         const questions = [
@@ -255,50 +275,87 @@
     }
 
     function showQuestion() {
+        if (currentQuestionIndex >= questions.length) {
+            document.getElementById('question').innerHTML = '<div style="text-align: center; padding: 20px;"><div style="font-size: 3rem; margin-bottom: 10px;">🎉</div><div style="font-size: 1.25rem; font-weight: 500; color: #3f51b5;">Congratulations!</div><div style="color: rgba(0,0,0,0.6);">You have completed all questions.</div></div>';
+            document.getElementById('answer').parentElement.style.display = 'none';
+            document.getElementById('check-button').style.display = 'none';
+            document.getElementById('plot-container').parentElement.style.display = 'none';
+            document.getElementById('solution').style.display = 'none';
+            return;
+        }
+
         const questionData = questions[currentQuestionIndex];
         document.getElementById('question').textContent = questionData.question;
         document.getElementById('answer').value = '';
         document.getElementById('unit').textContent = questionData.unit;
         document.getElementById('solution').style.display = 'none';
-        document.getElementById('check-button').disabled = attemptedQuestions[currentQuestionIndex] === true;
-        document.getElementById('answer').disabled = attemptedQuestions[currentQuestionIndex] === true;
-        document.getElementById('feedback').textContent = ''; // Clear feedback on new question
+        
+        const isAttempted = attemptedQuestions[currentQuestionIndex] === true;
+        document.getElementById('check-button').disabled = isAttempted;
+        document.getElementById('check-button').style.opacity = isAttempted ? '0.5' : '1';
+        document.getElementById('answer').disabled = isAttempted;
+        document.getElementById('answer').parentElement.style.display = 'block';
+        document.getElementById('check-button').style.display = 'inline-block';
+        document.getElementById('plot-container').parentElement.style.display = 'block';
+        
+        document.getElementById('feedback').textContent = isAttempted ? 'Question already completed.' : '';
+        document.getElementById('feedback').style.color = 'rgba(0,0,0,0.6)';
     }
 
     function checkAnswer() {
-        const answer = parseFloat(document.getElementById('answer').value);
+        const answerInput = document.getElementById('answer');
+        const answer = parseFloat(answerInput.value);
+        const feedback = document.getElementById('feedback');
+        
+        if (isNaN(answer)) {
+            feedback.innerText = 'Please enter a valid number.';
+            feedback.style.color = '#f57c00';
+            return;
+        }
+
         attemptedQuestions[currentQuestionIndex] = true;
 
-        if (answer === questions[currentQuestionIndex].correctAnswer) {
+        if (Math.abs(answer - questions[currentQuestionIndex].correctAnswer) < 0.01) {
             score++;
-            document.getElementById('feedback').textContent = 'Correct answer!';
-            document.getElementById('feedback').style.color = 'green';
+            feedback.textContent = 'Correct answer!';
+            feedback.style.color = '#2e7d32'; // Material Green
         } else {
-            document.getElementById('feedback').textContent = 'Wrong answer.';
-            document.getElementById('feedback').style.color = 'red';
+            feedback.textContent = 'Wrong answer.';
+            feedback.style.color = '#d32f2f'; // Material Red
             showSolution();
         }
+        
         document.getElementById('check-button').disabled = true;
-        document.getElementById('answer').disabled = true;
+        document.getElementById('check-button').style.opacity = '0.5';
+        answerInput.disabled = true;
         updateScore();
     }
 
     function showSolution() {
         const solutionText = questions[currentQuestionIndex].solution;
         document.getElementById('solution-text').innerHTML = `\\[${solutionText}\\]`;
-        MathJax.typeset();
+        if (typeof MathJax !== 'undefined') {
+            MathJax.typeset();
+        }
         document.getElementById('solution').style.display = 'block';
     }
+
     function nextQuestion() {
-        if (currentQuestionIndex === questions.length - 1 && attemptedQuestions[currentQuestionIndex]) {
-            document.getElementById('feedback').textContent = `You have completed the quiz! Your score is: ${score}/${attemptedQuestions.length}`;
-            document.getElementById('feedback').style.color = 'blue';
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex++;
+            showQuestion();
+            plotGraph();
         } else {
-            if (currentQuestionIndex < questions.length - 1) {
-                currentQuestionIndex++;
-                showQuestion();
-                plotGraph();
-            }
+            currentQuestionIndex = questions.length; // Final state
+            showQuestion();
+        }
+    }
+
+    function prevQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            showQuestion();
+            plotGraph();
         }
     }
 

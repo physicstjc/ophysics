@@ -35,69 +35,87 @@
   <style>
     /* Scoped styles – only affect elements inside .current-sim */
     .current-sim {
-      max-width: 720px;
+      max-width: 800px;
       margin: 1.5rem auto;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: 'Roboto', 'Open Sans', sans-serif;
       font-size: 14px;
       color: #111827;
     }
 
-    .current-sim .quiz-container {
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      padding: 12px 16px 16px;
-      box-sizing: border-box;
+    .current-sim .controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      padding: 24px;
+      background: #f5f5f5;
+      border-radius: 8px 8px 0 0;
+      border-bottom: 2px solid #9ACD32;
     }
 
-    .current-sim h3 {
-      margin: 0 0 0.5rem;
-      font-size: 1.05rem;
-    }
-
-    .current-sim .button-container {
-      margin-top: 0.35rem;
+    .current-sim .control-group {
       display: flex;
-      align-items: center;
+      flex-direction: column;
       gap: 8px;
-      flex-wrap: wrap;
     }
 
     .current-sim label {
       font-weight: 500;
+      color: #616161;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     .current-sim input[type="range"] {
-      flex: 0 0 180px;
+      width: 100%;
+      accent-color: #9ACD32;
+    }
+
+    .current-sim .button-container {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .current-sim button {
-      padding: 4px 10px;
-      border-radius: 6px;
-      border: 1px solid #2563eb;
-      background: #2563eb;
+      padding: 10px 24px;
+      border-radius: 24px;
+      border: none;
+      background: #9ACD32;
       color: #fff;
-      font-size: 13px;
+      font-weight: 600;
+      text-transform: none;
+      font-size: 0.95rem;
       cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .current-sim button:hover {
-      background: #1d4ed8;
-      border-color: #1d4ed8;
+      background: #7CB342;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.16);
+      transform: translateY(-1px);
+    }
+
+    .current-sim button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.12);
     }
 
     .current-sim canvas {
       background: #ffffff;
       border: 1px solid #d1d5db;
-      border-radius: 6px;
-      margin-top: 10px;
+      border-radius: 0 0 8px 8px;
       display: block;
-      max-width: 100%;
-      height: auto; /* responsive */
+      width: 100%;
+      height: auto;
     }
 
     .current-sim .score {
-      margin-top: 8px;
+      font-weight: 700;
+      color: #9ACD32;
       font-size: 0.9rem;
     }
 
@@ -110,6 +128,7 @@
 
   <div class="quiz-container" id="lattice-sim">
     <h3>Metal Lattice Simulation</h3>
+    <div class="quiz-content">
 
     <div class="button-container">
       <label for="sim-voltage">Voltage</label>
@@ -141,6 +160,7 @@
             height="300">
       Your browser does not support the HTML5 canvas tag.
     </canvas>
+    </div>
   </div>
 
   <script>
@@ -396,7 +416,7 @@
         }
 
         // Draw electrons
-        ctx.fillStyle = '#1e88e5';
+        ctx.fillStyle = '#9ACD32';
         for (const e of electrons) {
           ctx.beginPath();
           ctx.arc(e.x, e.y, 2.5, 0, Math.PI * 2);
@@ -428,19 +448,23 @@
   <div class="current-sim">
     <div class="quiz-container" id="iv-ohmic-sec">
       <h3>Ohmic Conductor I–V</h3>
-      <p class="sim-caption">An <strong>ohmic conductor</strong> obeys Ohm’s law at constant temperature: \(V \propto I\). Its I–V graph is a straight line through the origin and the resistance \(R = V/I\) (the slope) is constant.</p>
+      <div class="quiz-content">
+<p class="sim-caption">An <strong>ohmic conductor</strong> obeys Ohm’s law at constant temperature: \(V \propto I\). Its I–V graph is a straight line through the origin and the resistance \(R = V/I\) (the slope) is constant.</p>
       <canvas id="iv-ohmic" width="360" height="240"></canvas>
       <div class="sim-caption">Straight line through the origin: constant resistance, \(V \propto I\).</div>
     </div>
+</div>
   </div>
 
   <div class="current-sim">
     <div class="quiz-container" id="iv-lamp-sec">
       <h3>Filament Lamp I–V</h3>
-      <p class="sim-caption">The filament is a metal (typically tungsten) with a positive temperature coefficient of resistivity. As current flows, the filament heats up. Higher temperature increases lattice vibrations. Electrons scatter more, their mobility drops, and resistivity rises.</p>
+      <div class="quiz-content">
+<p class="sim-caption">The filament is a metal (typically tungsten) with a positive temperature coefficient of resistivity. As current flows, the filament heats up. Higher temperature increases lattice vibrations. Electrons scatter more, their mobility drops, and resistivity rises.</p>
       <canvas id="iv-lamp" width="360" height="240"></canvas>
       <div class="sim-caption">Curve bends so gradient decreases: resistance rises with current (heating).</div>
     </div>
+</div>
   </div>
           <h3>Semiconductor Diode</h3>
 <p>A diode allows current to flow primarily in one direction: it conducts after a forward threshold and blocks in reverse (apart from a tiny leakage). Applications include rectifiers in power supplies, polarity protection, signal detection, and light emission in LEDs (special diodes that emit light under forward bias).</p>
@@ -448,7 +472,8 @@
   <div class="current-sim">
     <div class="quiz-container" id="diode-sim">
       <h3>Diode Circuit Simulation</h3>
-      <div class="button-container">
+      <div class="quiz-content">
+<div class="button-container">
         <label for="ds-vin">Supply Voltage</label>
         <input type="range" id="ds-vin" min="0" max="12" step="0.1" value="3">
         <span id="ds-vin-label">3.0 V</span>
@@ -467,6 +492,7 @@
       <div class="score">I: <span id="ds-I">0.00</span> mA, emf: <span id="ds-emf">3.0</span> V</div>
       <canvas id="ds-canvas" width="640" height="200"></canvas>
     </div>
+</div>
     <script>
       (function(){
         const root = document.getElementById('diode-sim');
@@ -570,11 +596,14 @@
 
   <div class="current-sim">
     <div class="quiz-container" id="iv-diode-sec">
+<div class="quiz-content">
+
 
       <p class="sim-caption">A diode allows current to flow primarily in one direction: it conducts after a forward threshold and blocks in reverse (apart from a tiny leakage).</p>
       <canvas id="iv-diode" width="360" height="240"></canvas>
       <div class="sim-caption">Very small current until threshold; steep rise after the knee; tiny reverse leakage.</div>
     </div>
+</div>
   </div>
 
   <style>
@@ -624,7 +653,7 @@
       }
       function drawDiode(){
         const c = document.getElementById('iv-diode'); if(!c) return; const ctx=c.getContext('2d'); const W=c.width, H=c.height; const {ox,oy}=axesCentered(ctx,W,H);
-        ctx.strokeStyle='#1e88e5'; ctx.lineWidth=2;
+        ctx.strokeStyle='#689F38'; ctx.lineWidth=2;
         const vth=0.2;
         ctx.beginPath();
         for(let v=-1; v<=1; v+=0.02){

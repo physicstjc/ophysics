@@ -21,13 +21,15 @@
 
     
     <h2>Specific Latent Heat</h2>
-    <div class="callout">
-    <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
-    <span class="callout-text"><strong><em>Latent heat</em></strong> is the amount of heat energy required to change the state of a substance without changing its temperature.</span></div>
+    <div class="callout info">
+        <span class="emoji">💡</span>
+        <span class="callout-text"><strong><em>Latent heat</em></strong> is the amount of heat energy required to change the state of a substance without changing its temperature.</span>
+    </div>
        
-    <div class="callout">
-    <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
-    <span class="callout-text"><strong><em>Specific latent heat</em></strong> is the amount of heat energy required to change the state of a unit mass of a substance without changing its temperature.</span></div>
+    <div class="callout info">
+        <span class="emoji">💡</span>
+        <span class="callout-text"><strong><em>Specific latent heat</em></strong> is the amount of heat energy required to change the state of a unit mass of a substance without changing its temperature.</span>
+    </div>
     
 
     <p>$$l = \dfrac{L}{m}$$</p>
@@ -40,13 +42,15 @@
     
     <p> Specific latent heat is an intrinsic property of the material and is independent of the amount of substance. Different substances have different specific latent heats, which reflect how much energy is required to change their state.</p>
     
-    <div class="callout">
-    <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
-    <span class="callout-text"><strong><em>Specific latent heat of fusion</em></strong> is the amount of heat energy required to a unit mass of a substance <em>from solid to liquid</em> (or vice versa) without changing its temperature.</span></div>
+    <div class="callout info">
+        <span class="emoji">💡</span>
+        <span class="callout-text"><strong><em>Specific latent heat of fusion</em></strong> is the amount of heat energy required to a unit mass of a substance <em>from solid to liquid</em> (or vice versa) without changing its temperature.</span>
+    </div>
     
-    <div class="callout">
-    <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
-    <span class="callout-text"><strong><em>Specific latent heat of vaporisation</em></strong> is the amount of heat energy required to a unit mass of a substance <em>from liquid to gas</em> (or vice versa) without changing its temperature.</span></div>
+    <div class="callout info">
+        <span class="emoji">💡</span>
+        <span class="callout-text"><strong><em>Specific latent heat of vaporisation</em></strong> is the amount of heat energy required to a unit mass of a substance <em>from liquid to gas</em> (or vice versa) without changing its temperature.</span>
+    </div>
     
     <p>The following is a table of some of the commonly known specific latent heats.</p>
     
@@ -121,14 +125,23 @@
     
     
     <div class="quiz-container">
-        <h3>Check for Understanding</h3>
-        <div class="problem" id="problem"></div><br>
-        <div class="button-container">
-        <button id="submit" onclick="checkAnswer()">Submit</button><br>
-        <button id="previous" onclick="previousProblem()">Previous</button>
-        <button id="next" onclick="nextProblem()">Next</button></div>
-        <div class="feedback" id="feedback"></div>
-        <div class="score" id="score">Score: 0/0</div>
+        <h3>Checking for Understanding</h3>
+        <div class="quiz-content">
+            <div class="problem-box">
+                <div id="problem"></div>
+            </div>
+            
+            <div class="button-container">
+                <button id="submit" onclick="checkAnswer()">Submit</button>
+                <button id="previous" class="secondary" onclick="previousProblem()">Previous</button>
+                <button id="next" class="secondary" onclick="nextProblem()">Next</button>
+            </div>
+            
+            <div class="quiz-footer">
+                <div class="score-display" id="score">Score: 0/0</div>
+                <div class="feedback-display" id="feedback"></div>
+            </div>
+        </div>
     </div>
     
     <script>
@@ -183,26 +196,43 @@
         }
 
         shuffle(problems);
+
+        function selectOption(el) {
+            if (attemptedProblems[currentProblemIndex]) return;
+            document.querySelectorAll('.choice-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+            el.querySelector('input').checked = true;
+        }
+
        function displayProblem() {
             if (currentProblemIndex >= problems.length) {
-                const summaryMessage = `Congratulations! You have completed all problems. Your score is ${score} out of ${attempts}.`;
-                document.getElementById('problem').innerText = summaryMessage;
+                document.getElementById('problem').innerHTML = `
+                    <div class="quiz-success">
+                        <span class="emoji">🎉</span>
+                        <div class="title">Quiz Completed!</div>
+                        <div class="message">You have completed all specific latent heat problems.</div>
+                        <div class="message" style="font-weight: 500; color: #9ACD32; margin-top: 8px;">Final Score: ${score} out of ${attempts}</div>
+                        <button onclick="location.reload()" style="margin-top: 24px;">Restart Quiz</button>
+                    </div>
+                `;
                 document.getElementById('submit').style.display = 'none';
                 document.getElementById('previous').style.display = 'none';
                 document.getElementById('next').style.display = 'none';
-                document.getElementById('feedback').innerText = '';
+                document.getElementById('feedback').style.display = 'none';
                 return;
             }
 
             const problem = problems[currentProblemIndex];
-            document.getElementById('problem').innerHTML = `
-                <p>${problem.question}</p>
-                ${problem.options.map(option => `
-                    <label>
-                        <input type="radio" name="answer" value="${option}"> ${option}
-                    </label><br>
-                `).join('')}
-            `;
+            let problemHTML = `<p>${problem.question}</p>`;
+            problemHTML += `<div class="choice-container">`;
+            problemHTML += problem.options.map(option => `
+                <div class="choice-option" onclick="selectOption(this)">
+                    <input type="radio" name="answer" value="${option}">
+                    <span>${option}</span>
+                </div>
+            `).join('');
+            problemHTML += `</div>`;
+            document.getElementById('problem').innerHTML = problemHTML;
             document.getElementById('feedback').innerText = '';
 
             if (attemptedProblems[currentProblemIndex]) {

@@ -32,14 +32,20 @@
         
         <iframe scrolling="no" title="Hydraulic Press" src="https://www.geogebra.org/material/iframe/id/egyer7nk/width/638/height/478/border/888888/sfsb/true/smb/false/stb/false/stbh/false/ai/false/asb/false/sri/true/rc/false/ld/false/sdz/false/ctl/false" width="638px" height="478px" style="border:0px;"> </iframe>
         
-        <table width="100%"><tr><td>
-            <h3>Check for Understanding</h3>
-            <p>A hydraulic press has a small piston with a diameter of 5 cm and a large piston with a diameter of 30 cm. A force of 500 N is applied to the small piston.</p>
+    <div class="quiz-container">
+        <h3>Checking for Understanding</h3>
+        <div class="quiz-content">
+            <div class="problem-box">
+                <p>A hydraulic press has a small piston with a diameter of 5 cm and a large piston with a diameter of 30 cm. A force of 500 N is applied to the small piston.</p>
+                <p>Calculate the force exerted by the hydraulic press on the larger piston. Assume the hydraulic fluid is incompressible and neglect any friction or losses.</p>
+            </div>
             
-            <p>Calculate the force exerted by the hydraulic press on the larger piston. Assume the hydraulic fluid is incompressible and neglect any friction or losses.</p>
-            
-            <button id="btn1" data-div="ans2" onclick="reveal(this)">Reveal Answer</button>
-            <div id="ans2" style="display:none">
+            <div class="button-container">
+                <button id="btn1" data-div="ans2" onclick="reveal(this)">Reveal Answer</button>
+            </div>
+
+            <div id="ans2" style="display:none; background: #e8f5e9; padding: 16px; border-radius: 4px; border-left: 4px solid #4caf50; margin-top: 16px;">
+                <p style="font-weight: 700; color: #2e7d32; margin-bottom: 8px;">Solution:</p>
                 <p>Note that the areas of both pistons uses the formula for the area of a circle</p>
                 $A = \pi r^2 = \pi (\dfrac{d}{2})^2$
                 <p>where $A$ is the area
@@ -49,10 +55,10 @@
                 <p>Area of large piston, $A_2 = \pi \times (0.15)^2 = 0.0707 \text{ m}^2$</p>
                 
                 <p>Pressure on the small piston, $P_1 = \dfrac{F_1}{A_1} = \dfrac{500 \text{ N}}{0.00196 \text{ m}^2} = 2.55 \times 10^5 \text{ Pa}$</p>
-                <p>Force on the large piston, $F_2 = P_1 \times A_2 = 2.55 \times 10^5 \text{ Pa} \times 0.0707 \text{ m}^2 \approx 18 000 \text{ N}$</p>
+                <p>Force on the large piston, $F_2 = P_1 \times A_2 = 2.55 \times 10^5 \text{ Pa} \times 0.0707 \text{ m}^2 \approx 18,000 \text{ N}$</p>
             </div>
-            
-            </td></tr></table>
+        </div>
+    </div>
         
     </body>
 </html>

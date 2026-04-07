@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equations of Motion</title>
+    <title>Speed, Velocity and Acceleration</title>
     <link rel="stylesheet" href="../main.css">
     <link rel="stylesheet" href="../katex.min.css">
     <link rel="stylesheet" href="../katex.css" integrity="sha384-NFGicHNcq1l2DafLerXQeI3h3jJY3dCcDQF+29rtRBHW7P7ti+/XIRY7ALbJOaeh" crossorigin="anonymous">
@@ -18,32 +18,611 @@
 <div id="header-placeholder"></div>
 <div id="breadcrumb"></div>
 <div id="header"></div>
-        <h2>Speed, Velocity and Acceleration</h2>
-        
-    
-        <h3>Speed</h3>
-        <div class="callout">
-        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
-        <span class="callout-text">Speed is the distance traveled per unit of time.</span></div>
-        <p>Speed measures how fast an object changes its position over time, typically expressed as the distance traveled per unit of time. It quantifies the rate of movement through space, reflecting how quickly an object is moving. Speed is a scalar quantity, meaning it only has magnitude and no directional component.</p>
+
+        <h2>Distance and Displacement</h2>
+
+        <h3>Distance</h3>
+        <p>Distance is the total length of path traveled by an object, regardless of the direction of motion. It is a <strong>scalar quantity</strong> and its SI unit is the <strong>metre (m)</strong>.</p>
 
         <h3>Displacement</h3>
-        <p>Displacement is a vector that refers to the change in the position of an object.</p>    
+        <p>Displacement is the distance moved in a specified direction. It is a <strong>vector quantity</strong> that refers to the change in the position of an object from its starting point.</p>    
+
+        <div class="interactive-container" style="background: #fdfdfd; padding: 20px; border-radius: 12px; border: 1px solid #eee; margin: 20px 0;">
+            <p style="margin-bottom: 10px; font-size: 0.9em; color: #666;">Drag the end points of the vectors to change the path.</p>
+            <canvas id="vectorCanvas" width="600" height="400" style="background: white; border: 1px solid #ddd; border-radius: 8px; width: 100%; height: auto; cursor: crosshair; touch-action: none;"></canvas>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #f0f7ff; border-radius: 8px;">
+                <div id="distanceDisplay">Total Distance (A + B): <strong>0 m</strong></div>
+                <div id="displacementDisplay">Resultant Displacement: <strong>0 m</strong></div>
+            </div>
+        </div>
+
+        <script>
+            const canvas = document.getElementById('vectorCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            let start = { x: 120, y: 320 };
+            let p1 = { x: 280, y: 320 };
+            let p2 = { x: 280, y: 200 };
+            
+            let draggingPoint = null;
+
+            function getMousePos(evt) {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
+                const clientY = evt.touches ? evt.touches[0].clientY : evt.clientY;
+                return {
+                    x: (clientX - rect.left) * scaleX,
+                    y: (clientY - rect.top) * scaleY
+                };
+            }
+
+            function isNear(p1, p2) {
+                return Math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2) < 20;
+            }
+
+            canvas.addEventListener('mousedown', (e) => {
+                const pos = getMousePos(e);
+                if (isNear(pos, start)) draggingPoint = start;
+                else if (isNear(pos, p1)) draggingPoint = p1;
+                else if (isNear(pos, p2)) draggingPoint = p2;
+            });
+
+            canvas.addEventListener('mousemove', (e) => {
+                if (!draggingPoint) return;
+                const pos = getMousePos(e);
+                
+                if (draggingPoint === start) {
+                    const dx = pos.x - start.x;
+                    const dy = pos.y - start.y;
+                    start.x = pos.x;
+                    start.y = pos.y;
+                    p1.x += dx;
+                    p1.y += dy;
+                    p2.x += dx;
+                    p2.y += dy;
+                } else if (draggingPoint === p1) {
+                    const dx = pos.x - p1.x;
+                    const dy = pos.y - p1.y;
+                    p1.x = pos.x;
+                    p1.y = pos.y;
+                    p2.x += dx;
+                    p2.y += dy;
+                } else {
+                    p2.x = pos.x;
+                    p2.y = pos.y;
+                }
+                update();
+            });
+
+            window.addEventListener('mouseup', () => draggingPoint = null);
+
+            // Touch events
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const pos = getMousePos(e);
+                if (isNear(pos, start)) draggingPoint = start;
+                else if (isNear(pos, p1)) draggingPoint = p1;
+                else if (isNear(pos, p2)) draggingPoint = p2;
+            }, {passive: false});
+
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                if (!draggingPoint) return;
+                const pos = getMousePos(e);
+                if (draggingPoint === start) {
+                    const dx = pos.x - start.x;
+                    const dy = pos.y - start.y;
+                    start.x = pos.x;
+                    start.y = pos.y;
+                    p1.x += dx;
+                    p1.y += dy;
+                    p2.x += dx;
+                    p2.y += dy;
+                } else if (draggingPoint === p1) {
+                    const dx = pos.x - p1.x;
+                    const dy = pos.y - p1.y;
+                    p1.x = pos.x;
+                    p1.y = pos.y;
+                    p2.x += dx;
+                    p2.y += dy;
+                } else {
+                    p2.x = pos.x;
+                    p2.y = pos.y;
+                }
+                update();
+            }, {passive: false});
+
+            window.addEventListener('touchend', () => draggingPoint = null);
+
+            function drawArrow(x1, y1, x2, y2, color, label, isDash = false, offsetDir = -1) {
+                const headlen = 12;
+                const angle = Math.atan2(y2 - y1, x2 - x1);
+                
+                // Draw line
+                ctx.beginPath();
+                if(isDash) ctx.setLineDash([5, 5]);
+                else ctx.setLineDash([]);
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                // Draw arrowhead
+                ctx.beginPath();
+                ctx.setLineDash([]);
+                ctx.moveTo(x2, y2);
+                ctx.lineTo(x2 - headlen * Math.cos(angle - Math.PI / 6), y2 - headlen * Math.sin(angle - Math.PI / 6));
+                ctx.lineTo(x2 - headlen * Math.cos(angle + Math.PI / 6), y2 - headlen * Math.sin(angle + Math.PI / 6));
+                ctx.closePath();
+                ctx.fillStyle = color;
+                ctx.fill();
+
+                // Draw Label with Background for legibility
+                const midX = (x1 + x2) / 2;
+                const midY = (y1 + y2) / 2;
+                
+                // Offset label perpendicular to the vector
+                const offset = 25 * offsetDir; 
+                const labelX = midX + offset * Math.cos(angle - Math.PI/2);
+                const labelY = midY + offset * Math.sin(angle - Math.PI/2);
+
+                ctx.font = 'bold 13px Arial';
+                const dist = Math.sqrt((x2 - x1)**2 + (y2 - y1)**2) / 20;
+                const text = `${label}: ${dist.toFixed(1)} m`;
+                const textWidth = ctx.measureText(text).width;
+
+                ctx.fillStyle = 'white';
+                ctx.globalAlpha = 0.8;
+                ctx.fillRect(labelX - textWidth/2 - 4, labelY - 10, textWidth + 8, 20);
+                ctx.globalAlpha = 1.0;
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1;
+                ctx.strokeRect(labelX - textWidth/2 - 4, labelY - 10, textWidth + 8, 20);
+                
+                ctx.fillStyle = color;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(text, labelX, labelY);
+            }
+
+            function update() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Grid background
+                ctx.strokeStyle = '#f0f0f0';
+                ctx.setLineDash([]);
+                ctx.lineWidth = 1;
+                for(let i=0; i<canvas.width; i+=40) {
+                    ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+                }
+                for(let i=0; i<canvas.height; i+=40) {
+                    ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke();
+                }
+
+                // Vectors - use different offset directions to avoid overlap
+                drawArrow(start.x, start.y, p1.x, p1.y, '#ff4757', 'A', false, -1);
+                drawArrow(p1.x, p1.y, p2.x, p2.y, '#1e90ff', 'B', false, -1);
+                
+                // Resultant - offset to the other side
+                drawArrow(start.x, start.y, p2.x, p2.y, '#27ae60', 'Disp.', true, 1.2);
+
+                // Points handle UI
+                [start, p1, p2].forEach((p, i) => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
+                    ctx.fillStyle = i === 0 ? '#333' : (i === 1 ? '#ff4757' : '#1e90ff');
+                    ctx.fill();
+                    ctx.strokeStyle = 'white';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                });
+
+                const distA = Math.sqrt((p1.x - start.x)**2 + (p1.y - start.y)**2);
+                const distB = Math.sqrt((p2.x - p1.x)**2 + (p2.y - p1.y)**2);
+                const totalDist = (distA + distB) / 20; 
+                const totalDisp = Math.sqrt((p2.x - start.x)**2 + (p2.y - start.y)**2) / 20;
+                
+                document.getElementById('distanceDisplay').innerHTML = `Total Distance (A + B): <strong>${totalDist.toFixed(1)} m</strong>`;
+                document.getElementById('displacementDisplay').innerHTML = `Resultant Displacement: <strong>${totalDisp.toFixed(1)} m</strong>`;
+            }
+
+            update();
+        </script>
+            
+        <h2>Speed, Velocity and Acceleration</h2>
         
+  
+        <h3>Speed</h3>
+        <div class="callout info">
+            <span class="emoji">📖</span>
+            <div class="callout-text"><strong>Speed</strong> is the distance traveled per unit of time.</div>
+        </div>
+        <p>Speed measures how fast an object changes its position over time, typically expressed as the distance traveled per unit of time. It is a <strong>scalar quantity</strong>, meaning it only has magnitude and no directional component.</p>
+        <p>The average speed of an object is defined as:
+           $$v = \dfrac{\text{total distance}}{\text{total time taken}}$$
+           The SI unit for speed is <strong>metres per second (m/s)</strong>.</p>
+
+
         <h3>Velocity</h3>
-        <div class="callout">
-        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
-        <span class="callout-text">Velocity is the rate of change of displacement.</span></div>    
-        <p><strong></strong> Velocity goes beyond speed by encompassing both the magnitude and direction of an object's motion, depicting how fast it travels in a particular direction through space.</p>
+        <div class="callout info">
+            <span class="emoji">📖</span>
+            <div class="callout-text"><strong>Velocity</strong> is the rate of change of displacement.</div>
+        </div>    
+        <p>Velocity is a vector quantity, encompassing both magnitude (speed) and direction. It depicts how fast an object travels in a particular direction.</p>
+        <p>In symbols: $$v = \dfrac{\Delta s}{\Delta t}$$ where $s$ is displacement.</p>
             
 
         <h3>Acceleration</h3>
-        <div class="callout">
-        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
-        <span class="callout-text">Acceleration is the rate of change of velocity.</span></div>   
-        <p>Acceleration signifies the rate of change of an object's velocity over time, illustrating how quickly its speed and/or direction of motion is altering.</p>
+        <div class="callout info">
+            <span class="emoji">📖</span>
+            <div class="callout-text"><strong>Acceleration</strong> is the rate of change of velocity.</div>
+        </div>   
+        <p>Acceleration signifies how quickly an object's velocity changes over time, including changes in speed or direction.</p>
+        <p>In symbols: $$a = \dfrac{\Delta v}{\Delta t} = \dfrac{v - u}{t}$$ where $v$ is final velocity, $u$ is initial velocity, and $t$ is time.</p>
+        
+        <div class="interactive-container" style="background: #fdfdfd; padding: 20px; border-radius: 12px; border: 1px solid #eee; margin: 20px 0;">
+            <h3>Simulation: Constant Acceleration</h3>
+            <p style="margin-bottom: 15px; font-size: 0.9em; color: #666;">Observe how initial velocity and acceleration affect the motion of the block.</p>
+            
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
+                <div style="flex: 1; min-width: 200px;">
+                    <label>Initial Velocity ($u$): <span id="uVal">5</span> m/s</label><br>
+                    <input type="range" id="uRange" min="0" max="20" value="5" step="1" style="width: 100%;">
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <label>Acceleration ($a$): <span id="aVal">2</span> m/s²</label><br>
+                    <input type="range" id="aRange" min="-5" max="10" value="2" step="0.5" style="width: 100%;">
+                </div>
+            </div>
+
+            <canvas id="motionCanvas" width="600" height="150" style="background: white; border: 1px solid #ddd; border-radius: 8px; width: 100%; height: auto;"></canvas>
+            
+            <div style="margin-top: 15px; display: flex; gap: 10px; align-items: center;">
+                <button id="startBtn" style="padding: 8px 16px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer;">Start</button>
+                <button id="resetBtn" style="padding: 8px 16px; background: #95a5a6; color: white; border: none; border-radius: 4px; cursor: pointer;">Reset</button>
+                <div style="margin-left: auto; font-family: monospace; background: #eee; padding: 5px 10px; border-radius: 4px;">
+                    t: <span id="tDisplay">0.00</span>s | 
+                    v: <span id="vDisplay">0.00</span> m/s | 
+                    s: <span id="sDisplay">0.00</span> m
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const mCanvas = document.getElementById('motionCanvas');
+            const mCtx = mCanvas.getContext('2d');
+            const uRange = document.getElementById('uRange');
+            const aRange = document.getElementById('aRange');
+            const uVal = document.getElementById('uVal');
+            const aVal = document.getElementById('aVal');
+            const startBtn = document.getElementById('startBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const tDisplay = document.getElementById('tDisplay');
+            const vDisplay = document.getElementById('vDisplay');
+            const sDisplay = document.getElementById('sDisplay');
+
+            let time = 0;
+            let animationId = null;
+            let isRunning = false;
+            let startTime = null;
+
+            // Physics scale: 10 pixels = 1 meter
+            const scale = 10;
+
+            function drawMotion() {
+                mCtx.clearRect(0, 0, mCanvas.width, mCanvas.height);
+                
+                const u = parseFloat(uRange.value);
+                const a = parseFloat(aRange.value);
+                const s = u * time + 0.5 * a * time * time;
+                const v = u + a * time;
+
+                // Physics scale: 20 pixels = 1 meter
+                const pScale = 20;
+                
+                // Camera logic: focus on the object
+                let cameraX = (s * pScale) - mCanvas.width / 2;
+
+                // Draw ground/scale markings relative to camera
+                mCtx.strokeStyle = '#ddd';
+                mCtx.fillStyle = '#888';
+                mCtx.font = '10px Arial';
+                mCtx.beginPath();
+                
+                // Visible range
+                const firstMeter = Math.floor(cameraX / pScale);
+                const lastMeter = firstMeter + Math.ceil(mCanvas.width / pScale) + 1;
+                
+                for(let m = firstMeter; m <= lastMeter; m++) {
+                    const x = m * pScale - cameraX;
+                    if (m % 5 === 0) {
+                        mCtx.moveTo(x, 110);
+                        mCtx.lineTo(x, 125);
+                        mCtx.fillText(m + 'm', x - 5, 140);
+                    } else {
+                        mCtx.moveTo(x, 110);
+                        mCtx.lineTo(x, 118);
+                    }
+                }
+                mCtx.moveTo(0, 110);
+                mCtx.lineTo(mCanvas.width, 110);
+                mCtx.stroke();
+
+                tDisplay.innerText = time.toFixed(2);
+                vDisplay.innerText = v.toFixed(2);
+                sDisplay.innerText = s.toFixed(2);
+
+                // Draw Object (Block)
+                const objX = (s * pScale) - cameraX;
+                const objW = 40;
+                const objH = 30;
+                
+                mCtx.fillStyle = '#ff4757';
+                mCtx.fillRect(objX, 70, objW, objH);
+                mCtx.strokeStyle = '#333';
+                mCtx.lineWidth = 2;
+                mCtx.strokeRect(objX, 70, objW, objH);
+
+                // Velocity Arrow
+                if (Math.abs(v) > 0.1) {
+                    const arrowLen = v * 5;
+                    const arrowX = objX + (v >= 0 ? objW : 0);
+                    const arrowY = 85;
+                    mCtx.beginPath();
+                    mCtx.moveTo(arrowX, arrowY);
+                    mCtx.lineTo(arrowX + arrowLen, arrowY);
+                    mCtx.strokeStyle = '#1e90ff';
+                    mCtx.lineWidth = 3;
+                    mCtx.stroke();
+                    // Arrow head
+                    const head = 8 * (v > 0 ? 1 : -1);
+                    mCtx.beginPath();
+                    mCtx.moveTo(arrowX + arrowLen, arrowY);
+                    mCtx.lineTo(arrowX + arrowLen - head, arrowY - 6);
+                    mCtx.lineTo(arrowX + arrowLen - head, arrowY + 6);
+                    mCtx.fillStyle = '#1e90ff';
+                    mCtx.fill();
+                }
+
+                // Simulation Ended Indicator
+                if (time >= 20) {
+                    mCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                    mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
+                    mCtx.fillStyle = 'white';
+                    mCtx.font = 'bold 24px Arial';
+                    mCtx.textAlign = 'center';
+                    mCtx.textBaseline = 'middle';
+                    mCtx.fillText('Simulation Ended', mCanvas.width / 2, mCanvas.height / 2);
+                }
+            }
+
+            function animate(timestamp) {
+                if (!startTime) startTime = timestamp;
+                time = (timestamp - startTime) / 1000;
+                
+                const u = parseFloat(uRange.value);
+                const a = parseFloat(aRange.value);
+                const s = u * time + 0.5 * a * time * time;
+                const v = u + a * time;
+                
+                // Stop criteria: 20 seconds
+                if (time >= 20) {
+                    isRunning = false;
+                    time = 20;
+                    startBtn.innerText = 'Restart';
+                }
+
+                drawMotion();
+                if (isRunning) animationId = requestAnimationFrame(animate);
+            }
+
+            uRange.addEventListener('input', () => {
+                uVal.innerText = uRange.value;
+                if (!isRunning) drawMotion();
+            });
+
+            aRange.addEventListener('input', () => {
+                aVal.innerText = aRange.value;
+                if (!isRunning) drawMotion();
+            });
+
+            startBtn.addEventListener('click', () => {
+                if (isRunning) {
+                    isRunning = false;
+                    startBtn.innerText = 'Resume';
+                    cancelAnimationFrame(animationId);
+                } else {
+                    if (time >= 20) {
+                        time = 0;
+                        startTime = null;
+                    }
+                    isRunning = true;
+                    startBtn.innerText = 'Pause';
+                    startTime = performance.now() - (time * 1000);
+                    animationId = requestAnimationFrame(animate);
+                }
+            });
+
+            resetBtn.addEventListener('click', () => {
+                isRunning = false;
+                cancelAnimationFrame(animationId);
+                time = 0;
+                startTime = null;
+                startBtn.innerText = 'Start';
+                drawMotion();
+            });
+
+            drawMotion();
+        </script>
         
  
+        <div class="quiz-container">
+            <h3>Checking for Understanding</h3>
+            
+            <div class="quiz-content">
+                <div class="problem-box">
+                    <div class="problem" id="problem"></div>
+                </div>
+                
+                <div class="input-group">
+                    <input type="number" id="answer" placeholder=" ">
+                    <label for="answer">Enter your answer</label>
+                    <span id="unit" style="position: absolute; right: 0; top: 12px; color: rgba(0,0,0,0.6); font-weight: 500;"></span>
+                </div>
+                
+                <div class="button-container">
+                    <button id="submit" onclick="checkAnswer()">Submit</button>
+                    <button id="previous" onclick="previousProblem()" class="secondary">Previous</button>
+                    <button id="next" onclick="nextProblem()" class="secondary">Next</button>
+                </div>
+                
+                <div class="quiz-footer">
+                    <div class="score-display" id="score">Score: 0/0</div>
+                    <div class="feedback-display" id="feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            /* Removed redundant inline styles */
+        </style>
+
+        <script>
+            let currentProblemIndex = 0;
+            let score = 0;
+            let attempts = 0;
+            const attemptedProblems = [];
+
+            const problems = [
+                {
+                    question: "A student walks 40 m North and then 30 m East. What is the magnitude of the resultant displacement?",
+                    correctAnswer: 50,
+                    unit: "m",
+                    explanation: "Displacement is the straight-line distance from start to finish. Using Pythagoras: √(40² + 30²) = 50 m."
+                },
+                {
+                    question: "A runner completes one full lap of a 400 m circular track in 80 seconds. What is the magnitude of the average velocity?",
+                    correctAnswer: 0,
+                    unit: "m/s",
+                    explanation: "Since the runner returns to the starting point, the total displacement is 0. Average velocity = Total displacement / Total time = 0 / 80 = 0 m/s."
+                },
+                {
+                    question: "A runner completes one full lap of a 400 m circular track in 80 seconds. What is the average speed?",
+                    correctAnswer: 5.0,
+                    unit: "m/s",
+                    explanation: "Average speed = Total distance / Total time = 400 m / 80 s = 5.0 m/s."
+                },
+                {
+                    question: "A ball is moving at 12 m/s and comes to a stop in 3.0 seconds. What is its acceleration? (Include the negative sign for deceleration)",
+                    correctAnswer: -4.0,
+                    unit: "m/s²",
+                    explanation: "Acceleration = (v - u) / t = (0 - 12) / 3.0 = -4.0 m/s²."
+                }
+            ];
+
+            function shuffle(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            shuffle(problems);
+
+            function displayProblem() {
+                if (currentProblemIndex >= problems.length) {
+                    document.getElementById('problem').innerHTML = '<div style="text-align: center; padding: 20px;"><div style="font-size: 3rem; margin-bottom: 10px;">🎉</div><div style="font-size: 1.25rem; font-weight: 500; color: #3f51b5;">Congratulations!</div><div style="color: rgba(0,0,0,0.6);">You have completed all questions.</div></div>';
+                    document.getElementById('answer').parentElement.style.display = 'none';
+                    document.getElementById('submit').style.display = 'none';
+                    document.getElementById('previous').style.display = 'none';
+                    document.getElementById('next').style.display = 'none';
+                    return;
+                }
+
+                document.getElementById('problem').innerText = problems[(currentProblemIndex)].question;
+                document.getElementById('unit').innerText = problems[(currentProblemIndex)].unit;
+                document.getElementById('feedback').innerText = '';
+                document.getElementById('answer').value = '';
+                document.getElementById('answer').style.display = 'block';
+                document.getElementById('answer').disabled = attemptedProblems.includes(currentProblemIndex);
+                document.getElementById('answer').parentElement.style.display = 'block';
+                document.getElementById('submit').style.display = 'inline-block';
+                document.getElementById('submit').disabled = attemptedProblems.includes(currentProblemIndex);
+                document.getElementById('submit').style.opacity = attemptedProblems.includes(currentProblemIndex) ? '0.5' : '1';
+                
+                if (attemptedProblems.includes(currentProblemIndex)) {
+                    const problem = problems[currentProblemIndex];
+                    // Re-display feedback if already attempted
+                    // We don't store the user's specific wrong answer, just that they attempted it.
+                    // For simplicity, we just show "Already answered" or the explanation.
+                    document.getElementById('feedback').innerText = 'Question already completed.';
+                    document.getElementById('feedback').style.color = 'rgba(0,0,0,0.6)';
+                }
+
+                updateScoreDisplay();
+            }
+
+            function checkAnswer() {
+                const userAnswer = parseFloat(document.getElementById('answer').value);
+                const feedback = document.getElementById('feedback');
+                const problem = problems[currentProblemIndex];
+
+                if (isNaN(userAnswer)) {
+                    feedback.innerText = 'Please enter a valid number.';
+                    feedback.style.color = '#f57c00'; // Material Orange
+                    return;
+                }
+
+                if (!attemptedProblems.includes(currentProblemIndex)) {
+                    attempts++;
+                    attemptedProblems.push(currentProblemIndex);
+                    
+                    const isCorrect = Math.abs(userAnswer - problem.correctAnswer) < 0.01;
+                    if (isCorrect) {
+                        score++;
+                        feedback.innerText = 'Correct! ' + problem.explanation;
+                        feedback.style.color = '#2e7d32'; // Material Green
+                    } else {
+                        feedback.innerText = 'Incorrect. ' + problem.explanation;
+                        feedback.style.color = '#d32f2f'; // Material Red
+                    }
+                    
+                    document.getElementById('answer').disabled = true;
+                    document.getElementById('submit').disabled = true;
+                    document.getElementById('submit').style.opacity = '0.5';
+                }
+                
+                updateScoreDisplay();
+            }
+
+            function updateScoreDisplay() {
+                document.getElementById('score').innerText = `Score: ${score}/${attempts}`;
+            }
+
+            function nextProblem() {
+                if (currentProblemIndex < problems.length - 1) {
+                    currentProblemIndex++;
+                    displayProblem();
+                } else {
+                    currentProblemIndex = problems.length; // Trigger completion view
+                    displayProblem();
+                }
+            }
+
+            function previousProblem() {
+                if (currentProblemIndex > 0) {
+                    currentProblemIndex--;
+                    displayProblem();
+                }
+            }
+
+            displayProblem();
+        </script>
+
         <div id="footer"></div>        
     </body>
 </html>

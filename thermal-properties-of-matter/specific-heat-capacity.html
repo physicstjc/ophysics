@@ -75,53 +75,31 @@
     </table>
     
     <p>To calculate the amount of thermal transfer $Q$ needed to raise a substance of specific heat capacity $c$ and mass $m$ by a temperature change of $\Delta T$, we can use this formula: $$Q = mc\Delta T$$</p>
-    <table width="100%"><tr><td>
-            <h3>Check for Understanding</h3>
-            <p>How much heat energy is required to raise the temperature of 2 kg of water from 25°C to 75°C? The specific heat capacity of water is 4190 J kg<sup>-1</sup> °C<sup>-1</sup>.</p>
-            
-            <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
-            <div id="ans1" style="display:none">
-            
-             <p>Note that the change in temperature is</p>
-            <p>$\Delta T = T_{final} - T_{initial}$ = 75°C - 25°C = 50°C</p>
-            
-            <p>Now, substitute the values into the heat energy formula:</p>
-            <p>$Q = mc\Delta T$</p>
-            <p>$Q$ = (2 kg) × (4190 J/kg·°C) × (50°C)</p>
-            <p>$Q$ = 2 × 4190 × 50</p>
-            <p>$Q$ = 419 000 J</p>
-            
-            <p>So, the heat energy required is <strong>419,000 joules</strong> (or 419 kJ).</p>
-        </div>
-            
-            </td></tr></table>
-        
-    
-    <h3>Heat Capacity</h3>
-    <div class="callout">
-    <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
-        <span class="callout-text"><strong><em>Heat capacity</em></strong> is the amount of heat absorbed by a substance per unit temperature change.</span></div>
-    
-    <p>It is the product of the mass $m$ and the specific heat capacity $c$ of the substance.$$C = mc$$</p>
-    <p>Combining with the expression for specific heat capacity $c = \dfrac{Q}{m \Delta T}$, $$C= \dfrac{Q}{\Delta T}$$</p>
-    <p>where $C$ is the heat capacity of the substance (in J $\degree$C<sup>-1</sup>),<br>
-    $Q$ is the heat transfer or energy absrobed (in J), and<br>
-    $\Delta T$ is the change in temperature (in $\degree$C or K)</p>
-    
-    <p>When two objects of different heat capacities are placed in thermal contact such that heat transfer can take place between them, the final equilibrium temperature will be closer to the initial temperature of the body with a higher heat capacity. The following simulation will demonstrate this.</p>
-    
-    <iframe src="heat-capacity-simulation.html" width="100%" height="460px"></iframe>
-    
-
     <div class="quiz-container">
-        <h3>Check for Understanding</h3>
-        <div class="problem" id="problem"></div><br>
-        <div class="button-container">
-        <button id="submit" onclick="checkAnswer()">Submit</button><br>
-        <button id="previous" onclick="previousProblem()">Previous</button>
-        <button id="next" onclick="nextProblem()">Next</button></div>
-        <div class="feedback" id="feedback"></div>
-        <div class="score" id="score">Score: 0/0</div>
+        <h3>Checking for Understanding</h3>
+        <div class="quiz-content">
+            <div class="problem-box">
+                <div id="problem"></div>
+            </div>
+            
+            <div id="choices-container" class="choice-container"></div>
+
+            <div class="button-container">
+                <button id="submit" onclick="checkAnswer()">Submit</button>
+                <button id="previous" class="secondary" onclick="previousProblem()">Previous</button>
+                <button id="next" class="secondary" onclick="nextProblem()">Next</button>
+            </div>
+            
+            <div class="quiz-footer">
+                <div class="score-display" id="score">Score: 0/0</div>
+                <div class="feedback-display" id="feedback"></div>
+            </div>
+
+            <div id="solution" style="display: none; background: #e8f5e9; padding: 16px; border-radius: 4px; border-left: 4px solid #4caf50; margin-top: 16px;">
+                <div style="font-weight: 700; color: #2e7d32; margin-bottom: 8px;">Explanation:</div>
+                <div id="solution-text" style="font-size: 0.875rem; line-height: 1.5; color: rgba(0,0,0,0.87);"></div>
+            </div>
+        </div>
     </div>
     
     <script>
@@ -131,6 +109,12 @@
         const attemptedProblems = [];
 
         const problems = [
+        {
+            question: "How much heat energy is required to raise the temperature of 2 kg of water from 25°C to 75°C? The specific heat capacity of water is 4190 J kg⁻¹ °C⁻¹.",
+            correctAnswer: "419,000 J",
+            options: ["209,500 J", "419,000 J", "838,000 J", "104,750 J"],
+            explanation: "The change in temperature is ΔT = 75°C - 25°C = 50°C. Using the formula Q = mcΔT = 2 kg × 4190 J/kg°C × 50°C = 419,000 J."
+        },
         {
             question: "Which of the following best defines specific heat capacity?",
             correctAnswer: "The amount of heat required to raise the temperature of 1 kg of a substance by 1°C.",
@@ -152,13 +136,13 @@
             question: "A block of aluminum is heated from 25°C to 75°C. If the heat capacity of the block is 450 J/°C, how much heat is absorbed?",
             correctAnswer: "22,500 J",
             options: ["11,250 J", "22,500 J", "45,000 J", "90,000 J"],
-            explanation: "The heat absorbed (Q) is calculated using Q = CΔT. Here, C = 450 J/kg°C, and ΔT = 50°C, so Q = 450 × 50 = 22,500 J."
+            explanation: "The heat absorbed (Q) is calculated using Q = CΔT. Here, C = 450 J/°C, and ΔT = 50°C, so Q = 450 × 50 = 22,500 J."
         },
         {
             question: "If 200 J of heat is added to 100 g of a substance, raising its temperature by 5°C, what is the specific heat capacity of the substance?",
             correctAnswer: "400 J/kg°C",
             options: ["200 J/kg°C", "400 J/kg°C", "800 J/kg°C", "1600 J/kg°C"],
-            explanation: "The specific heat capacity (c) is calculated using c = Q / (mΔT). Here, Q = 2000 J, m = 0.1 kg, and ΔT = 5°C, so c = 200 / (0.1 × 5) = 400 J/kg°C."
+            explanation: "The specific heat capacity (c) is calculated using c = Q / (mΔT). Here, Q = 200 J, m = 0.1 kg, and ΔT = 5°C, so c = 200 / (0.1 × 5) = 400 J/kg°C."
         },
         {
             question: "A 0.20 kg piece of iron at 150°C is placed in 0.50 kg of water at 25°C. Assuming no heat is lost to the surroundings, what is the final temperature of the system? (Specific heat capacity of iron = 450 J/kg°C, water = 4200 J/kg°C)",
@@ -180,37 +164,68 @@
         shuffle(problems);
        function displayProblem() {
             if (currentProblemIndex >= problems.length) {
-                const summaryMessage = `Congratulations! You have completed all problems. Your score is ${score} out of ${attempts}.`;
-                document.getElementById('problem').innerText = summaryMessage;
+                document.getElementById('problem').innerHTML = `
+                    <div class="quiz-success">
+                        <span class="emoji">🎉</span>
+                        <div class="title">Quiz Completed!</div>
+                        <div class="message">You have completed all specific heat capacity problems.</div>
+                        <div class="message" style="font-weight: 500; color: #9ACD32; margin-top: 8px;">Final Score: ${score} out of ${attempts}</div>
+                        <button onclick="location.reload()" style="margin-top: 24px;">Restart Quiz</button>
+                    </div>
+                `;
+                document.getElementById('choices-container').innerHTML = '';
                 document.getElementById('submit').style.display = 'none';
                 document.getElementById('previous').style.display = 'none';
                 document.getElementById('next').style.display = 'none';
-                document.getElementById('feedback').innerText = '';
+                document.getElementById('feedback').style.display = 'none';
                 return;
             }
 
             const problem = problems[currentProblemIndex];
-            document.getElementById('problem').innerHTML = `
-                <p>${problem.question}</p>
-                ${problem.options.map(option => `
-                    <label>
-                        <input type="radio" name="answer" value="${option}"> ${option}
-                    </label><br>
-                `).join('')}
-            `;
-            document.getElementById('feedback').innerText = '';
+            document.getElementById('problem').innerHTML = `<p>${problem.question}</p>`;
+            document.getElementById('choices-container').innerHTML = problem.options.map((option, index) => `
+                <div class="choice-option" onclick="selectOption(this)">
+                    <input type="radio" name="answer" id="option${index}" value="${option}">
+                    <label for="option${index}"><span>${option}</span></label>
+                </div>
+            `).join('');
+
+            const feedbackEl = document.getElementById('feedback');
+            const solutionEl = document.getElementById('solution');
+            const solutionTextEl = document.getElementById('solution-text');
 
             if (attemptedProblems[currentProblemIndex]) {
-                const { userAnswer, feedback } = attemptedProblems[currentProblemIndex];
-                document.querySelector(`input[name="answer"][value="${userAnswer}"]`).checked = true;
+                const { userAnswer, feedback, isCorrect } = attemptedProblems[currentProblemIndex];
+                const radio = document.querySelector(`input[name="answer"][value="${userAnswer}"]`);
+                if (radio) {
+                    radio.checked = true;
+                    radio.closest('.choice-option').classList.add('selected');
+                }
                 document.querySelectorAll('input[name="answer"]').forEach(radio => radio.disabled = true);
+                document.querySelectorAll('.choice-option').forEach(option => option.style.pointerEvents = 'none');
                 document.getElementById('submit').disabled = true;
-                document.getElementById('submit').classList.add('disabled');
-                document.getElementById('feedback').innerText = feedback;
+                document.getElementById('submit').style.opacity = '0.5';
+                feedbackEl.innerText = feedback;
+                feedbackEl.className = 'feedback-display ' + (isCorrect ? 'correct' : 'incorrect');
+                solutionEl.style.display = 'block';
+                solutionTextEl.innerHTML = problem.explanation;
+                if (typeof renderMathInElement === 'function') {
+                    renderMathInElement(solutionTextEl);
+                }
             } else {
                 document.getElementById('submit').disabled = false;
-                document.getElementById('submit').classList.remove('disabled');
+                document.getElementById('submit').style.opacity = '1';
+                feedbackEl.innerText = '';
+                feedbackEl.className = 'feedback-display';
+                solutionEl.style.display = 'none';
             }
+        }
+
+        function selectOption(element) {
+            if (document.getElementById('submit').disabled) return;
+            document.querySelectorAll('.choice-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            element.querySelector('input').checked = true;
         }
 
 
@@ -219,37 +234,32 @@
         }
 
         function checkAnswer() {
-            const userAnswer = document.querySelector('input[name="answer"]:checked').value;
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (!selectedOption) {
+                alert("⚠️ Please select an answer before submitting.");
+                return;
+            }
+            const userAnswer = selectedOption.value;
             const correctAnswer = problems[currentProblemIndex].correctAnswer;
 
             attempts++;
             let feedback = '';
+            let isCorrect = false;
             if (userAnswer === correctAnswer) {
                 score++;
-                feedback = 'Correct!';
-                document.getElementById('feedback').classList.add('correct');
-                document.getElementById('feedback').classList.remove('incorrect');
+                feedback = '✅ Correct!';
+                isCorrect = true;
             } else {
-                feedback = 'Incorrect. ' + problems[currentProblemIndex].explanation;
-                document.getElementById('feedback').classList.add('incorrect');
-                document.getElementById('feedback').classList.remove('correct');
+                feedback = '❌ Incorrect.';
             }
 
             updateScore();
-            attemptedProblems[currentProblemIndex] = { userAnswer, feedback };
-
-            const radios = document.querySelectorAll('input[name="answer"]');
-            radios.forEach(radio => radio.disabled = true);
-            document.getElementById('submit').disabled = true;
-            document.getElementById('submit').classList.add('disabled');
-            document.getElementById('feedback').innerText = feedback;
+            attemptedProblems[currentProblemIndex] = { userAnswer, feedback, isCorrect };
+            displayProblem();
         }
 
         function nextProblem() {
             if (currentProblemIndex < problems.length - 1) {
-                currentProblemIndex++;
-                displayProblem();
-            } else if (currentProblemIndex === problems.length - 1) {
                 currentProblemIndex++;
                 displayProblem();
             }

@@ -19,32 +19,41 @@
 <div>
     <h1>Electromotive Force and Potential Difference</h1>
     <h3>Definition</h3>
-    <div class="callout">
-        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
+    <div class="callout info">
+        <span class="emoji">�</span>
         <span class="callout-text"><strong>Electromotive force (e.m.f.)</strong> is the work done per unit charge by a source in driving charges around a complete circuit.</span>
     </div>
     <p>In symbols, $$E = \dfrac{W}{Q}$$ and it is measured in volts (V), with \(1\,\mathrm{V} = 1\,\mathrm{J\,C^{-1}}\).</p>
     <p>When several sources are connected in series and oriented in the same direction, the total e.m.f. is the sum of their individual e.m.f.s: \(E_{\text{total}} = E_1 + E_2 + \cdots\). For example, three identical cells of \(1.5\,\mathrm{V}\) in series provide \(E_{\text{total}} = 1.5 + 1.5 + 1.5 = 4.5\,\mathrm{V}\). If one source is reversed, it opposes the others and its e.m.f. subtracts; for instance, \(1.5 + 1.5 - 1.5 = 1.5\,\mathrm{V}\).</p>
     <h3>Definition</h3>
-    <div class="callout">
-        <span role="img" aria-label="*️⃣" class="emoji">*️⃣</span>
+    <div class="callout info">
+        <span class="emoji">📖</span>
         <span class="callout-text"><strong>Potential difference (p.d.)</strong> across a component is the work done per unit charge in driving charges through that component.</span>
     </div>
     <p>In symbols, $$V = \dfrac{W}{Q}$$ and it is measured in volts (V), indicating energy transferred per coulomb across the component.</p>
     <p>In analysis and problem solving, the source e.m.f. sets the energy provided per coulomb to the circuit, while the p.d. across components accounts for the energy used or transferred in those parts of the circuit. In a simple series circuit, the sum of the p.d.s across the components equals the e.m.f. of the source, reflecting energy conservation.</p>
 
-    <div class="quiz-container" style="margin-top:1.5rem;">
-        <h3>Quick Quiz</h3>
-        <div id="epq-problem"></div><br>
-        <div class="button-container">
-            <button id="epq-submit" onclick="epqCheckAnswer()">Submit</button><br><br>
-            <button id="epq-previous" onclick="epqPrevious()">Previous</button>
-            <button id="epq-next" onclick="epqNext()">Next</button>
-        </div>
-        <div class="feedback" id="epq-feedback"></div>
-        <div class="score" id="epq-score">Score: 0/0</div>
-        <div class="progress-container">
-            <div class="progress-bar" id="epq-progress">0%</div>
+    <div class="quiz-container">
+        <h3>Quick Quiz: E.M.F & P.D.</h3>
+        <div class="quiz-content">
+            <div id="epq-problem" class="problem-box"></div>
+            <div id="epq-choices" class="choice-container"></div>
+            <div id="epq-feedback" class="feedback-box"></div>
+            
+            <div class="button-container">
+                <button id="epq-previous" onclick="epqPrevious()">Previous</button>
+                <button id="epq-submit" onclick="epqCheckAnswer()">Submit Answer</button>
+                <button id="epq-next" onclick="epqNext()">Next Question</button>
+            </div>
+
+            <div id="epq-progress-container" style="margin-top: 20px;">
+                <div id="epq-progress-bg" style="background: #e0e0e0; height: 4px; border-radius: 2px;">
+                    <div id="epq-progress" style="background: #3f51b5; height: 100%; width: 0%; transition: width 0.3s; border-radius: 2px;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.85rem; color: rgba(0,0,0,0.6);">
+                    <span id="epq-score">Score: 0/0</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -59,36 +68,63 @@
             { question: "A charge of 2.0 C passes through a component with p.d. 9.0 V. How much work is done?", correctAnswer: "18 J", options: ["9.0 J","18 J","2.0 J","11 J"], explanation: "$$W = VQ = 9.0\\,\\mathrm{V} \\times 2.0\\,\\mathrm{C} = 18\\,\\mathrm{J}$$" },
             { question: "Four 1.5 V cells are in series; one cell is reversed. In a series circuit, two components have p.d. 1.2 V and 0.80 V. What is the p.d. across the third component?", correctAnswer: "1.0 V", options: ["0.50 V","1.0 V","2.0 V","3.0 V"], explanation: "Total e.m.f.: $$E_{\\text{total}} = 1.5+1.5+1.5-1.5 = 3.0\\,\\mathrm{V}$$ Series p.d.s sum to the source: $$V_{3} = E_{\\text{total}} - (1.2+0.80) = 1.0\\,\\mathrm{V}$$" }
         ];
+        function selectOption(el) {
+            if (epqAttempted[epqIndex]) return;
+            document.querySelectorAll('.choice-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
         function epqDisplay(){
             if(epqIndex>=epqProblems.length){
-                document.getElementById('epq-problem').innerHTML = `<p>Completed. Final score: ${epqScore}/${epqProblems.length}.</p>`;
-                document.getElementById('epq-submit').style.display='none';
-                document.getElementById('epq-previous').style.display='none';
-                document.getElementById('epq-next').style.display='none';
+                document.getElementById('epq-problem').innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 3rem; margin-bottom: 10px;">🎉</div>
+                        <div style="font-size: 1.25rem; font-weight: 500; color: #3f51b5;">Congratulations!</div>
+                        <div style="color: rgba(0,0,0,0.6);">You have completed all questions.</div>
+                    </div>`;
+                document.getElementById('epq-choices').style.display = 'none';
+                document.getElementById('epq-submit').style.display = 'none';
+                document.getElementById('epq-previous').style.display = 'none';
+                document.getElementById('epq-next').style.display = 'none';
                 document.getElementById('epq-feedback').innerText='';
-                const p=document.getElementById('epq-progress');
-                p.style.width='100%';
-                p.innerText='100% Completed';
+                const progress = document.getElementById('epq-progress');
+                if (progress) {
+                    progress.style.width = '100%';
+                    progress.innerText = '100%';
+                }
                 return;
             }
             const problem = epqProblems[epqIndex];
-            document.getElementById('epq-problem').innerHTML = `
-                <p>${problem.question}</p>
-                ${problem.options.map(o=>`<label><input type=\"radio\" name=\"epq-answer\" value=\"${o}\"> ${o}</label><br>`).join('')}
-            `;
+            document.getElementById('epq-problem').innerHTML = `<p>${problem.question}</p>`;
+            
+            const choicesContainer = document.getElementById('epq-choices');
+            if (choicesContainer) {
+                choicesContainer.innerHTML = '';
+                problem.options.forEach(o => {
+                    const choiceDiv = document.createElement('div');
+                    choiceDiv.className = 'choice-option';
+                    choiceDiv.onclick = () => selectOption(choiceDiv);
+                    choiceDiv.innerHTML = o;
+                    choicesContainer.appendChild(choiceDiv);
+                });
+            }
+
             document.getElementById('epq-feedback').innerText='';
             if(epqAttempted[epqIndex]){
                 const { userAnswer, feedback, isCorrect } = epqAttempted[epqIndex];
-                const el = document.querySelector(`input[name=\"epq-answer\"][value=\"${userAnswer}\"]`);
-                if(el) el.checked = true;
-                document.querySelectorAll('input[name="epq-answer"]').forEach(r=>r.disabled=true);
+                const choices = document.querySelectorAll('.choice-option');
+                choices.forEach(choice => {
+                    const val = choice.innerText.trim();
+                    if(val === userAnswer) {
+                        choice.classList.add('selected');
+                        if(!isCorrect) choice.style.borderColor = '#d32f2f';
+                    }
+                    choice.style.cursor = 'default';
+                });
                 const s=document.getElementById('epq-submit');
                 s.disabled=true; s.classList.add('disabled');
                 document.getElementById('epq-feedback').innerHTML=feedback;
                 if (typeof renderMathInElement === 'function') { try { renderMathInElement(document.getElementById('epq-feedback')); } catch(e){} }
-                const f=document.getElementById('epq-feedback');
-                if(isCorrect){f.classList.add('correct');f.classList.remove('incorrect');}
-                else {f.classList.add('incorrect');f.classList.remove('correct');}
             } else {
                 const s=document.getElementById('epq-submit');
                 s.disabled=false; s.classList.remove('disabled');
@@ -99,17 +135,22 @@
         }
         function epqUpdateScore(){document.getElementById('epq-score').innerText=`Score: ${epqScore}/${epqAttempts}`}
         function epqCheckAnswer(){
-            const sel=document.querySelector('input[name="epq-answer"]:checked');
+            const sel=document.querySelector('.choice-option.selected');
             if(!sel){alert('Please select an answer before submitting.');return;}
-            const ua=sel.value; const ca=epqProblems[epqIndex].correctAnswer;
+            const ua=sel.innerText.trim(); const ca=epqProblems[epqIndex].correctAnswer;
             epqAttempts++;
             let fb=''; let ok=false;
             const exp = epqProblems[epqIndex].explanation;
-            if(ua===ca){epqScore++; fb=`<strong>Correct!</strong> ${exp}`; ok=true; const f=document.getElementById('epq-feedback'); f.classList.add('correct'); f.classList.remove('incorrect');}
-            else {fb=`<strong>Incorrect.</strong> ${exp}`; const f=document.getElementById('epq-feedback'); f.classList.add('incorrect'); f.classList.remove('correct');}
+            if(ua===ca){
+                epqScore++; 
+                fb=`<strong>Correct!</strong> ${exp}`; 
+                ok=true; 
+            } else {
+                fb=`<strong>Incorrect.</strong> ${exp}`; 
+                sel.style.borderColor = '#d32f2f';
+            }
             epqUpdateScore();
             epqAttempted[epqIndex]={userAnswer:ua,feedback:fb,isCorrect:ok};
-            document.querySelectorAll('input[name="epq-answer"]').forEach(r=>r.disabled=true);
             const s=document.getElementById('epq-submit'); s.disabled=true; s.classList.add('disabled');
             document.getElementById('epq-feedback').innerHTML=fb;
             if (typeof renderMathInElement === 'function') { try { renderMathInElement(document.getElementById('epq-feedback')); } catch(e){} }
@@ -119,8 +160,10 @@
         function epqUpdateProgress(){
             const pct = Math.round(((epqIndex)/(epqProblems.length))*100);
             const p=document.getElementById('epq-progress');
-            p.style.width = `${pct}%`;
-            p.innerText = `${pct}%`;
+            if (p) {
+                p.style.width = `${pct}%`;
+                p.innerText = `${pct}%`;
+            }
         }
         epqDisplay();
     </script>

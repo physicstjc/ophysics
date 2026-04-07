@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kinematics: Displacement-Time Interactive</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: transparent;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+            overflow: hidden;
+        }
+        #app-container {
+            width: 100%;
+            height: 100vh;
+            background: white;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            user-select: none;
+        }
+        canvas { display: block; width: 100%; height: 100%; }
+        .canvas-wrapper { position: relative; flex: 1; }
+        
+        #calcBox {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 11px;
+            cursor: move;
+            z-index: 10;
+            pointer-events: auto;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        #graphCanvas { cursor: crosshair; }
+
+        #quiz-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: #f8fafc;
+            padding: 12px 24px;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .quiz-option {
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .quiz-option:hover {
+            background-color: #f1f5f9;
+            border-color: #6366f1;
+        }
+        .feedback-item {
+            border-left: 3px solid #ef4444;
+            background: #fef2f2;
+            padding: 8px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-container">
+    <div class="px-4 py-3 border-b border-gray-100 flex justify-between items-center bg-white shrink-0">
+        <div>
+            <h1 class="text-base font-bold text-gray-800">Kinematics Displacement-Time</h1>
+            <p class="text-[10px] text-gray-500 uppercase tracking-tight" id="subtitle">Describe the motion!</p>
+        </div>
+        <div class="flex items-center gap-4">
+            <button id="toggleQuiz" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 border border-indigo-200 px-3 py-1 rounded-full transition-colors">
+                Switch to Quiz Mode
+            </button>
+            <label class="flex items-center text-xs font-medium text-gray-600 cursor-pointer">
+                <input type="checkbox" id="showCalc" checked class="mr-2 rounded border-gray-300"> Show Calculation
+            </label>
+            <button id="playBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1 rounded-md text-sm font-medium transition-all w-20">
+                Play
+            </button>
+        </div>
+    </div>
+
+    <div class="canvas-wrapper bg-slate-50 border-b border-gray-100" style="max-height: 160px;">
+        <div id="track-container" class="w-full h-full relative">
+            <canvas id="animationCanvas"></canvas>
+            <div class="absolute bottom-1 left-4 text-[9px] font-bold text-slate-400 uppercase">Track View</div>
+        </div>
+        
+        <div id="quiz-overlay">
+            <div class="flex justify-between items-center mb-2 shrink-0">
+                <span class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest" id="quiz-progress">Question 1/7</span>
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest" id="quiz-score">Score: 0</span>
+            </div>
+            <div id="quiz-content" class="flex flex-col h-full">
+                <h2 id="quiz-question" class="text-sm font-bold text-slate-800 mb-3">Describe the motion between 0s and 2s:</h2>
+                <div id="quiz-options" class="grid grid-cols-2 gap-2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="canvas-wrapper bg-white" id="graphContainer">
+        <canvas id="graphCanvas"></canvas>
+        
+        <div id="calcBox">
+            <div class="text-slate-400 mb-2 border-b border-slate-100 pb-1 flex justify-between items-center">
+                <span>VELOCITY GRADIENT</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l7-7 7 7M5 15l7 7 7-7"/></svg>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-slate-600 italic">v</span> = 
+                <div class="flex flex-col items-center">
+                    <span id="yDiff" class="border-b border-slate-800 px-1">Δy</span>
+                    <span id="xDiff" class="px-1">Δx</span>
+                </div>
+                <span>=</span>
+                <span id="gradResult" class="font-bold text-indigo-600 text-sm">0.00</span>
+                <span class="text-slate-400 text-[9px]">m/s</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const animCanvas = document.getElementById('animationCanvas');
+    const graphCanvas = document.getElementById('graphCanvas');
+    const playBtn = document.getElementById('playBtn');
+    const showCalc = document.getElementById('showCalc');
+    const calcBox = document.getElementById('calcBox');
+    const toggleQuizBtn = document.getElementById('toggleQuiz');
+    const quizOverlay = document.getElementById('quiz-overlay');
+    const trackContainer = document.getElementById('track-container');
+    
+    const ctxA = animCanvas.getContext('2d');
+    const ctxG = graphCanvas.getContext('2d');
+
+    let startTime = null;
+    let isRunning = false;
+    let currentTimeMs = 0;
+    const duration = 14000; 
+
+    const colors = {
+        phaseA: '#f472b6',
+        phaseB: '#60a5fa'
+    };
+
+    let isDraggingCalc = false;
+    let isScrubbing = false;
+    let dragOffset = { x: 0, y: 0 };
+    let quizMode = false;
+
+    const quizData = [
+        { 
+            q: "Between 0s - 2s, the object is...", 
+            options: ["Accelerating away", "At constant speed", "Decelerating", "Moving backwards"], 
+            correct: 0,
+            feedback: "The curve gets steeper upward, meaning the gradient (velocity) is increasing from zero."
+        },
+        { 
+            q: "Between 2s - 4s, what is the velocity?", 
+            options: ["0 m/s", "1.5 m/s", "3.0 m/s", "6.0 m/s"], 
+            correct: 2,
+            feedback: "The line is straight, meaning velocity is constant. Slope = Δy/Δx = (9-3)/(4-2) = 3 m/s."
+        },
+        { 
+            q: "Between 4s - 6s, the gradient is...", 
+            options: ["Increasing", "Decreasing", "Zero", "Negative"], 
+            correct: 1,
+            feedback: "The curve flattens out, meaning the velocity (gradient) is dropping toward zero."
+        },
+        { 
+            q: "Between 6s - 8s, the object is...", 
+            options: ["Moving slowly", "Stationary", "Returning home", "Accelerating"], 
+            correct: 1,
+            feedback: "The displacement is constant at 12m. No change in position means v = 0."
+        },
+        { 
+            q: "Between 8s - 10s, the displacement is...", 
+            options: [
+                "Increasing at an increasing rate", 
+                "Increasing at a decreasing rate", 
+                "Decreasing at an increasing rate", 
+                "Decreasing at a decreasing rate"
+            ], 
+            correct: 2,
+            feedback: "The displacement is decreasing (moving toward 0). Because the curve gets steeper downwards, the magnitude of the negative gradient is increasing (speeding up in the negative direction)."
+        },
+        { 
+            q: "Between 10s - 12s, the motion is...", 
+            options: ["Constant velocity", "Constant acceleration", "Changing direction", "Speeding up"], 
+            correct: 0,
+            feedback: "The line is straight and diagonal, which indicates a steady (constant) negative velocity."
+        },
+        { 
+            q: "Between 12s - 14s, describe the motion:", 
+            options: ["Decelerating into negative displacement", "Accelerating toward origin", "Constant velocity at -4m/s", "Stopping exactly at origin"], 
+            correct: 0,
+            feedback: "The object crosses 0m (origin) and continues into negative displacement. The curve is flattening out (gradient approaching zero), which indicates deceleration."
+        }
+    ];
+    let currentQuizIndex = 0;
+    let score = 0;
+    let userAnswers = [];
+
+    function resize() {
+        animCanvas.width = animCanvas.clientWidth;
+        animCanvas.height = animCanvas.clientHeight;
+        graphCanvas.width = graphCanvas.clientWidth;
+        graphCanvas.height = graphCanvas.clientHeight;
+        drawScene(currentTimeMs);
+    }
+
+    window.addEventListener('resize', resize);
+
+    function getMotion(timeMs) {
+        const t = Math.max(0, Math.min(timeMs / 1000, 14));
+        let pos = 0;
+        let vel = 0;
+        let phase = 0;
+
+        if (t <= 2) { 
+            phase = 0; pos = 0.5 * 1.5 * t * t; vel = 1.5 * t;
+        } else if (t <= 4) { 
+            phase = 1; pos = 3 + 3 * (t - 2); vel = 3;
+        } else if (t <= 6) { 
+            phase = 2; pos = 9 + (3 * (t - 4)) + (0.5 * -1.5 * Math.pow(t - 4, 2)); vel = 3 + (-1.5 * (t - 4));
+        } else if (t <= 8) { 
+            phase = 3; pos = 12; vel = 0;
+        } else if (t <= 10) { 
+            phase = 4; pos = 12 + (0.5 * -2 * Math.pow(t - 8, 2)); vel = -2 * (t - 8);
+        } else if (t <= 12) { 
+            phase = 5; pos = 8 + (-4 * (t - 10)); vel = -4;
+        } else { 
+            const localT = t - 12;
+            phase = 6; 
+            pos = 0 + (-4 * localT) + (0.5 * 2 * Math.pow(localT, 2)); 
+            vel = -4 + (2 * localT);
+        }
+        
+        return { 
+            vel, rawPos: pos, rawT: t,
+            color: phase % 2 === 0 ? colors.phaseA : colors.phaseB,
+            phase
+        }; 
+    }
+
+    function drawScene(elapsed = 0) {
+        const w = graphCanvas.width;
+        const h = graphCanvas.height;
+        const aw = animCanvas.width;
+        const ah = animCanvas.height;
+
+        ctxA.clearRect(0, 0, aw, ah);
+        ctxG.clearRect(0, 0, w, h);
+
+        const current = getMotion(elapsed);
+        const marginX = 60;
+        const marginY = 40;
+        const gW = w - marginX - 40;
+        const gH = h - (marginY * 2);
+        const zeroY = (h - marginY) - (5 / 20) * gH;
+
+        if (!quizMode) {
+            const startX = aw / 4;
+            const trackY = ah / 2;
+            const pScale = (aw - startX - 80) / 14; 
+            ctxA.strokeStyle = '#e2e8f0';
+            ctxA.lineWidth = 1;
+            ctxA.beginPath(); ctxA.moveTo(0, trackY); ctxA.lineTo(aw, trackY); ctxA.stroke();
+            const startLineX = startX + (0 * pScale);
+            ctxA.strokeStyle = '#94a3b8';
+            ctxA.lineWidth = 2;
+            ctxA.beginPath(); ctxA.moveTo(startLineX, 15); ctxA.lineTo(startLineX, ah - 15); ctxA.stroke();
+            ctxA.fillStyle = '#64748b';
+            ctxA.font = 'bold 10px sans-serif';
+            ctxA.fillText('0m', startLineX - 8, ah - 5);
+            const pScreenX = startLineX + (current.rawPos * pScale);
+            ctxA.fillStyle = current.color;
+            ctxA.beginPath();
+            ctxA.arc(pScreenX, trackY, 14, 0, Math.PI * 2);
+            ctxA.fill();
+            ctxA.strokeStyle = 'white';
+            ctxA.lineWidth = 3;
+            ctxA.stroke();
+        }
+
+        ctxG.strokeStyle = '#334155';
+        ctxG.lineWidth = 2;
+        ctxG.beginPath(); ctxG.moveTo(marginX, zeroY); ctxG.lineTo(w - 20, zeroY); ctxG.stroke();
+        ctxG.beginPath(); ctxG.moveTo(marginX, 20); ctxG.lineTo(marginX, h - 20); ctxG.stroke();
+
+        ctxG.strokeStyle = '#f1f5f9';
+        ctxG.lineWidth = 1;
+        for(let i=1; i<=14; i++) {
+            let x = marginX + (i/14) * gW;
+            ctxG.beginPath(); ctxG.moveTo(x, 20); ctxG.lineTo(x, h-20); ctxG.stroke();
+        }
+
+        ctxG.globalAlpha = isRunning ? 1.0 : 0.3;
+        for (let phase = 0; phase < 7; phase++) {
+            const phaseStart = phase * 2;
+            const phaseEnd = (phase + 1) * 2;
+            const drawEnd = isRunning ? Math.min(phaseEnd, elapsed / 1000) : phaseEnd;
+            if (drawEnd <= phaseStart && isRunning) continue;
+
+            ctxG.beginPath();
+            ctxG.lineWidth = 4;
+            ctxG.strokeStyle = phase % 2 === 0 ? colors.phaseA : colors.phaseB;
+            
+            if(quizMode && phase === currentQuizIndex) {
+                ctxG.lineWidth = 8;
+                ctxG.globalAlpha = 1.0;
+            }
+
+            for (let t = phaseStart; t <= drawEnd; t += 0.05) {
+                const p = getMotion(t * 1000);
+                const gx = marginX + (p.rawT / 14) * gW;
+                const gy = zeroY - (p.rawPos / 20) * gH;
+                if (t === phaseStart) ctxG.moveTo(gx, gy); else ctxG.lineTo(gx, gy);
+            }
+            const pFinal = getMotion(drawEnd * 1000);
+            ctxG.lineTo(marginX + (pFinal.rawT / 14) * gW, zeroY - (pFinal.rawPos / 20) * gH);
+            ctxG.stroke();
+            ctxG.lineWidth = 4;
+            ctxG.globalAlpha = isRunning ? 1.0 : 0.3;
+        }
+        ctxG.globalAlpha = 1.0;
+
+        const gx = marginX + (current.rawT / 14) * gW;
+        const gy = zeroY - (current.rawPos / 20) * gH;
+
+        if (showCalc.checked) {
+            calcBox.style.display = 'block';
+            const visualSlope = (current.vel * (gH / 20)) / (gW / 14); 
+            const tLen = 60;
+            ctxG.setLineDash([4, 2]);
+            ctxG.strokeStyle = '#475569';
+            ctxG.lineWidth = 1;
+            ctxG.beginPath();
+            ctxG.moveTo(gx - tLen, gy + tLen * visualSlope);
+            ctxG.lineTo(gx + tLen, gy - tLen * visualSlope);
+            ctxG.stroke();
+            ctxG.setLineDash([]);
+            const dt = 0.5;
+            const p1y = getMotion((current.rawT - dt) * 1000).rawPos;
+            const p2y = getMotion((current.rawT + dt) * 1000).rawPos;
+            document.getElementById('yDiff').innerText = `(${(p2y).toFixed(2)}) - (${(p1y).toFixed(2)})`;
+            document.getElementById('xDiff').innerText = `(${(current.rawT + dt).toFixed(2)}) - (${(current.rawT - dt).toFixed(2)})`;
+            document.getElementById('gradResult').innerText = Math.abs(current.vel) < 0.001 ? "0.00" : current.vel.toFixed(2);
+        } else {
+            calcBox.style.display = 'none';
+        }
+
+        ctxG.fillStyle = '#1e293b';
+        ctxG.strokeStyle = 'white';
+        ctxG.lineWidth = 2;
+        ctxG.beginPath(); 
+        ctxG.arc(gx, gy, isScrubbing ? 8 : 6, 0, Math.PI * 2); 
+        ctxG.fill();
+        ctxG.stroke();
+
+        ctxG.fillStyle = '#475569';
+        ctxG.font = 'bold 11px sans-serif';
+        ctxG.fillText('displacement / m', marginX + 10, 30);
+        ctxG.fillText('time / s', w - 50, zeroY + 20);
+        ctxG.fillText('0', marginX - 15, zeroY + 5);
+        ctxG.fillText('-5m', marginX - 30, zeroY + (5/20)*gH);
+        ctxG.fillText('15m', marginX - 30, zeroY - (15/20)*gH);
+    }
+
+    function initQuiz() {
+        const questionData = quizData[currentQuizIndex];
+        document.getElementById('quiz-progress').innerText = `Question ${currentQuizIndex + 1}/7`;
+        document.getElementById('quiz-score').innerText = `Score: ${score}`;
+        document.getElementById('quiz-question').innerText = questionData.q;
+        
+        const optionsContainer = document.getElementById('quiz-options');
+        optionsContainer.innerHTML = '';
+        
+        questionData.options.forEach((opt, idx) => {
+            const btn = document.createElement('div');
+            btn.className = 'quiz-option bg-white border border-slate-200 p-2 rounded text-[11px] text-slate-700 font-medium flex items-center justify-center text-center';
+            btn.innerText = opt;
+            btn.onclick = () => handleAnswer(idx);
+            optionsContainer.appendChild(btn);
+        });
+
+        currentTimeMs = (currentQuizIndex * 2) * 1000;
+        drawScene(currentTimeMs);
+    }
+
+    function handleAnswer(idx) {
+        userAnswers.push(idx);
+        if (idx === quizData[currentQuizIndex].correct) {
+            score++;
+        }
+        
+        if (currentQuizIndex < quizData.length - 1) {
+            currentQuizIndex++;
+            initQuiz();
+        } else {
+            showResults();
+        }
+    }
+
+    function showResults() {
+        document.getElementById('quiz-progress').innerText = "Quiz Results";
+        document.getElementById('quiz-score').innerText = `Final Score: ${score} / 7`;
+        
+        const content = document.getElementById('quiz-content');
+        content.innerHTML = `
+            <div class="mb-3">
+                <p class="text-[12px] text-slate-600 mb-2">Review your incorrect answers below:</p>
+                <div id="feedback-list" class="max-h-[140px] overflow-y-auto mb-3"></div>
+            </div>
+            <div onclick="resetQuiz()" class="quiz-option bg-indigo-600 text-white p-2 rounded font-bold text-center text-sm">
+                Try Again
+            </div>
+        `;
+
+        const feedbackList = document.getElementById('feedback-list');
+        let errorCount = 0;
+        
+        userAnswers.forEach((ans, i) => {
+            if (ans !== quizData[i].correct) {
+                errorCount++;
+                const item = document.createElement('div');
+                item.className = 'feedback-item';
+                item.innerHTML = `
+                    <div class="font-bold text-slate-800">Section: ${i*2}s-${(i+1)*2}s</div>
+                    <div class="text-red-500 line-through">You said: ${quizData[i].options[ans]}</div>
+                    <div class="text-indigo-600">Correct: ${quizData[i].options[quizData[i].correct]}</div>
+                    <div class="mt-1 italic text-slate-500">${quizData[i].feedback}</div>
+                `;
+                feedbackList.appendChild(item);
+            }
+        });
+
+        if (errorCount === 0) {
+            feedbackList.innerHTML = '<div class="text-green-600 font-bold p-2 bg-green-50 rounded text-center">Perfect score! You have a great grasp of kinematics!</div>';
+        }
+    }
+
+    function resetQuiz() {
+        currentQuizIndex = 0;
+        score = 0;
+        userAnswers = [];
+        const content = document.getElementById('quiz-content');
+        content.innerHTML = `
+            <h2 id="quiz-question" class="text-sm font-bold text-slate-800 mb-3"></h2>
+            <div id="quiz-options" class="grid grid-cols-2 gap-2"></div>
+        `;
+        initQuiz();
+    }
+
+    toggleQuizBtn.addEventListener('click', () => {
+        quizMode = !quizMode;
+        if (quizMode) {
+            quizOverlay.style.display = 'flex';
+            trackContainer.style.display = 'none';
+            toggleQuizBtn.innerText = "Switch to Track Mode";
+            isRunning = false;
+            playBtn.innerText = "Play";
+            initQuiz();
+        } else {
+            quizOverlay.style.display = 'none';
+            trackContainer.style.display = 'block';
+            toggleQuizBtn.innerText = "Switch to Quiz Mode";
+            drawScene(currentTimeMs);
+        }
+    });
+
+    calcBox.addEventListener('mousedown', (e) => {
+        isDraggingCalc = true;
+        dragOffset.x = e.clientX - calcBox.offsetLeft;
+        dragOffset.y = e.clientY - calcBox.offsetTop;
+        calcBox.style.transform = 'none';
+        calcBox.style.left = calcBox.offsetLeft + 'px';
+        e.stopPropagation();
+    });
+
+    graphCanvas.addEventListener('mousedown', (e) => {
+        const rect = graphCanvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const marginX = 60;
+        const gW = graphCanvas.width - marginX - 40;
+        const t = ((x - marginX) / gW) * 14;
+        if (t >= -0.5 && t <= 14.5) {
+            isScrubbing = true;
+            isRunning = false;
+            playBtn.innerText = "Play";
+            updateScrub(e);
+        }
+    });
+
+    function updateScrub(e) {
+        if (!isScrubbing) return;
+        const rect = graphCanvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const marginX = 60;
+        const gW = graphCanvas.width - marginX - 40;
+        let t = ((x - marginX) / gW) * 14;
+        currentTimeMs = Math.max(0, Math.min(t, 14)) * 1000;
+        drawScene(currentTimeMs);
+    }
+
+    window.addEventListener('mousemove', (e) => {
+        if (isDraggingCalc) {
+            const container = document.getElementById('graphContainer').getBoundingClientRect();
+            let left = e.clientX - dragOffset.x;
+            let top = e.clientY - dragOffset.y;
+            left = Math.max(0, Math.min(left, container.width - calcBox.offsetWidth));
+            top = Math.max(0, Math.min(top, container.height - calcBox.offsetHeight));
+            calcBox.style.left = left + 'px';
+            calcBox.style.top = top + 'px';
+            calcBox.style.bottom = 'auto';
+            calcBox.style.right = 'auto';
+        }
+        if (isScrubbing) updateScrub(e);
+    });
+
+    window.addEventListener('mouseup', () => {
+        isDraggingCalc = false;
+        isScrubbing = false;
+        drawScene(currentTimeMs);
+    });
+
+    function loop(timestamp) {
+        if (!isRunning) return;
+        if (!startTime) startTime = timestamp - currentTimeMs;
+        currentTimeMs = timestamp - startTime;
+        drawScene(Math.min(currentTimeMs, duration));
+        if (currentTimeMs < duration && isRunning) requestAnimationFrame(loop);
+        else { isRunning = false; playBtn.innerText = "Reset"; }
+    }
+
+    playBtn.addEventListener('click', () => {
+        if (playBtn.innerText === "Reset") {
+            currentTimeMs = 0; startTime = null; isRunning = false;
+            drawScene(0); playBtn.innerText = "Play"; return;
+        }
+        if (isRunning) { isRunning = false; playBtn.innerText = "Play"; } 
+        else { isRunning = true; playBtn.innerText = "Pause"; startTime = performance.now() - currentTimeMs; requestAnimationFrame(loop); }
+    });
+
+    setTimeout(resize, 0);
+</script>
+
+</body>
+</html>

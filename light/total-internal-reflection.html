@@ -43,15 +43,24 @@
                 <li>Angle of Incidence must be greater than the Critical Angle: When the angle of incidence exceeds the critical angle, refraction cannot occur, and all the light is reflected internally.</li>
             </ol>
         
-        <table width="100%"><tr><td>
-            <h3>Check for Understanding</h3>
-            <p>Consider light traveling from water ($n_1 = 1.33$) to air ($n_2 = 1$). Calculate the critical angle.</p>
-            <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
-            <div id="ans1" style="display:none">
+    <div class="quiz-container">
+        <h3>Sample Problem</h3>
+        <div class="quiz-content">
+            <div class="problem-box">
+                <p>Consider light traveling from water ($n_1 = 1.33$) to air ($n_2 = 1$). Calculate the critical angle.</p>
+            </div>
+            
+            <div class="button-container">
+                <button id="btn1" data-div="ans1" onclick="reveal(this)">Reveal Answer</button>
+            </div>
+
+            <div id="ans1" style="display:none; background: #e8f5e9; padding: 16px; border-radius: 4px; border-left: 4px solid #4caf50; margin-top: 16px;">
+                <p style="font-weight: 700; color: #2e7d32; margin-bottom: 8px;">Solution:</p>
                 <p>$$\sin \theta_c = \dfrac{n_2}{n_1} = \dfrac{1}{1.33}$$
                 $$ \theta_c = \sin^{-1}(\dfrac{1}{1.33}) \approx 48.6 \degree$$</p>
             </div>
-            </td></tr></table>
+        </div>
+    </div>
         
         <p>Using the simulation below, vary the refractive indices and practise calculating the critical angles.</p>
         
@@ -75,15 +84,24 @@
             
         <p>Optical fibres can also deliver laser energy precisely to target tissues, used in various surgical procedures. This enables minimally invasive surgeries and diagnostic procedures, reducing patient recovery time and risk of complications.</p>
         
-        <div class="quiz-container">
-        <h3>Check for Understanding</h3>
-        <div class="score" id="score2">Score: 0/0</div>
-        <div class="problem" id="problem2"></div><br>
-        <div class="button-container">
-        <button id="submit2" onclick="quiz2.checkAnswer()">Submit</button><br>
-        <button id="previous2" onclick="quiz2.previousProblem()">Previous</button>
-        <button id="next2" onclick="quiz2.nextProblem()">Next</button></div>
-        <div class="feedback" id="feedback2"></div>
+    <div class="quiz-container">
+        <h3>Checking for Understanding</h3>
+        <div class="quiz-content">
+            <div class="problem-box">
+                <div class="problem" id="problem2"></div>
+            </div>
+            <div id="choices-container" class="choice-container"></div>
+            <div class="button-container">
+                <button id="submit2" onclick="quiz2.checkAnswer()">Submit</button>
+                <button id="previous2" onclick="quiz2.previousProblem()" class="secondary">Previous</button>
+                <button id="next2" onclick="quiz2.nextProblem()" class="secondary">Next</button>
+            </div>
+            <div class="quiz-footer">
+                <div class="score-display" id="score2">Score: 0/0</div>
+                <div class="feedback-display" id="feedback2"></div>
+            </div>
+        </div>
+    </div>
             
         <script>
             const quiz2 = (function() {
@@ -142,37 +160,63 @@
 
             function displayProblem() {
                 if (currentProblemIndex >= problems.length) {
-                    const summaryMessage = `Congratulations! You have completed all problems. Your score is ${score} out of ${attempts}.`;
-                    document.getElementById('problem2').innerText = summaryMessage;
+                    document.getElementById('problem2').innerHTML = '<div style="text-align: center; padding: 20px;"><div style="font-size: 3rem; margin-bottom: 10px;">🎉</div><div style="font-size: 1.25rem; font-weight: 500; color: #3f51b5;">Congratulations!</div><div style="color: rgba(0,0,0,0.6);">You have completed all questions.</div></div>';
+                    document.getElementById('choices-container').style.display = 'none';
                     document.getElementById('submit2').style.display = 'none';
                     document.getElementById('previous2').style.display = 'none';
                     document.getElementById('next2').style.display = 'none';
-                    document.getElementById('feedback2').innerText = '';
                     return;
                 }
 
                 const problem = problems[currentProblemIndex];
-                document.getElementById('problem2').innerHTML = `
-                    <p>${problem.question}</p>
-                    ${problem.options.map(option => `
-                        <label>
-                            <input type="radio" name="answer2" value="${option}"> ${option}
-                        </label><br>
-                    `).join('')}
-                `;
-                document.getElementById('feedback2').innerText = '';
+                document.getElementById('problem2').innerText = problem.question;
+                
+                const choicesContainer = document.getElementById('choices-container');
+                choicesContainer.innerHTML = '';
+                choicesContainer.style.display = 'flex';
+                
+                problem.options.forEach((option) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'choice-option';
+                    const isAttempted = !!attemptedProblems[currentProblemIndex];
+                    const isSelected = isAttempted && attemptedProblems[currentProblemIndex].userAnswer === option;
+                    
+                    if (isSelected) {
+                        optionDiv.classList.add('selected');
+                    }
+                    
+                    optionDiv.onclick = () => {
+                        if (!isAttempted) {
+                            document.querySelectorAll('.choice-option').forEach(el => el.classList.remove('selected'));
+                            optionDiv.classList.add('selected');
+                            optionDiv.querySelector('input').checked = true;
+                        }
+                    };
+                    
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = 'answer2';
+                    radio.value = option;
+                    radio.disabled = isAttempted;
+                    if (isSelected) radio.checked = true;
+                    
+                    const span = document.createElement('span');
+                    span.innerText = option;
+                    
+                    optionDiv.appendChild(radio);
+                    optionDiv.appendChild(span);
+                    choicesContainer.appendChild(optionDiv);
+                });
 
-                if (attemptedProblems[currentProblemIndex]) {
-                    const { userAnswer, feedback } = attemptedProblems[currentProblemIndex];
-                    document.querySelector(`input[name="answer2"][value="${userAnswer}"]`).checked = true;
-                    document.querySelectorAll('input[name="answer2"]').forEach(radio => radio.disabled = true);
-                    document.getElementById('submit2').disabled = true;
-                    document.getElementById('submit2').classList.add('disabled');
-                    document.getElementById('feedback2').innerText = feedback;
-                } else {
-                    document.getElementById('submit2').disabled = false;
-                    document.getElementById('submit2').classList.remove('disabled');
-                }
+                const submitBtn = document.getElementById('submit2');
+                submitBtn.disabled = !!attemptedProblems[currentProblemIndex];
+                submitBtn.style.opacity = attemptedProblems[currentProblemIndex] ? '0.5' : '1';
+                
+                const feedbackEl = document.getElementById('feedback2');
+                feedbackEl.innerText = attemptedProblems[currentProblemIndex] ? attemptedProblems[currentProblemIndex].feedback : '';
+                feedbackEl.style.color = (attemptedProblems[currentProblemIndex] && attemptedProblems[currentProblemIndex].feedback.startsWith('Correct')) ? '#2e7d32' : '#d32f2f';
+                
+                updateScore();
             }
 
             function updateScore() {
@@ -180,35 +224,44 @@
             }
 
             function checkAnswer() {
-                const userAnswer = document.querySelector('input[name="answer2"]:checked').value;
-                const correctAnswer = problems[currentProblemIndex].correctAnswer;
+                const selectedRadio = document.querySelector('input[name="answer2"]:checked');
+                const feedbackEl = document.getElementById('feedback2');
+                const problem = problems[currentProblemIndex];
 
+                if (!selectedRadio) {
+                    feedbackEl.innerText = 'Please select an option.';
+                    feedbackEl.style.color = '#f57c00';
+                    return;
+                }
+
+                const userAnswer = selectedRadio.value;
                 attempts++;
-                let feedback = '';
-                if (userAnswer === correctAnswer) {
+                let feedbackText = '';
+                
+                if (userAnswer === problem.correctAnswer) {
                     score++;
-                    feedback = 'Correct!';
-                    document.getElementById('feedback2').classList.add('correct');
-                    document.getElementById('feedback2').classList.remove('incorrect');
+                    feedbackText = 'Correct! ' + (problem.explanation || '');
+                    feedbackEl.style.color = '#2e7d32';
                 } else {
-                    feedback = 'Incorrect. ' + problems[currentProblemIndex].explanation;
-                    document.getElementById('feedback2').classList.add('incorrect');
-                    document.getElementById('feedback2').classList.remove('correct');
+                    feedbackText = 'Incorrect. ' + problem.explanation;
+                    feedbackEl.style.color = '#d32f2f';
                 }
 
                 updateScore();
-                attemptedProblems[currentProblemIndex] = { userAnswer, feedback };
+                attemptedProblems[currentProblemIndex] = { userAnswer, feedback: feedbackText };
 
-                const radios = document.querySelectorAll('input[name="answer2"]');
-                radios.forEach(radio => radio.disabled = true);
                 document.getElementById('submit2').disabled = true;
-                document.getElementById('submit2').classList.add('disabled');
-                document.getElementById('feedback2').innerText = feedback;
+                document.getElementById('submit2').style.opacity = '0.5';
+                document.querySelectorAll('input[name="answer2"]').forEach(radio => radio.disabled = true);
+                feedbackEl.innerText = feedbackText;
             }
 
             function nextProblem() {
                 if (currentProblemIndex < problems.length - 1) {
                     currentProblemIndex++;
+                    displayProblem();
+                } else {
+                    currentProblemIndex = problems.length;
                     displayProblem();
                 }
             }
@@ -219,6 +272,17 @@
                     displayProblem();
                 }
             }
+
+            return {
+                checkAnswer,
+                previousProblem,
+                nextProblem,
+                init: displayProblem
+            };
+        })();
+
+        quiz2.init();
+        </script>
 
             displayProblem();
 
